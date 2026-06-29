@@ -3,7 +3,7 @@ import { cases } from "@/lib/data";
 import { useState } from "react";
 import { motion } from "motion/react";
 
-export const Route = createFileRoute("/work")({
+export const Route = createFileRoute("/work/")({
   head: () => ({
     meta: [
       { title: "Work — flow/studio" },

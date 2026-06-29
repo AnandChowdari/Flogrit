@@ -47,7 +47,7 @@ function CasePage() {
           <p className="mt-6 text-lg text-muted-foreground">{c.summary}</p>
 
           <dl className="mt-10 grid grid-cols-3 gap-4 border-t border-border pt-8">
-            {c.metric.map((m) => (
+            {c.metric.map((m: { label: string; value: string }) => (
               <div key={m.label}>
                 <dt className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{m.label}</dt>
                 <dd className="mt-2 font-mono text-3xl text-primary md:text-4xl">{m.value}</dd>
