@@ -98,8 +98,8 @@ function FunnelDiagram() {
       </div>
 
       <div className="mt-8 grid gap-4 md:grid-cols-[1fr_auto_1.2fr_auto_1fr] md:items-stretch">
-        {stages.map((s, i) => (
-          <>
+        {stages.flatMap((s, i) => {
+          const node = (
             <motion.div
               key={s.label}
               initial={{ opacity: 0, y: 12 }}
@@ -120,14 +120,19 @@ function FunnelDiagram() {
                 ))}
               </ul>
             </motion.div>
-            {i < stages.length - 1 && (
+          );
+          if (i < stages.length - 1) {
+            return [
+              node,
               <div key={`arrow-${i}`} className="flex items-center justify-center py-3 md:py-0">
                 <Arrow />
-              </div>
-            )}
-          </>
-        ))}
+              </div>,
+            ];
+          }
+          return [node];
+        })}
       </div>
+
     </div>
   );
 }
