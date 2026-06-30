@@ -23,22 +23,23 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { FlowProvider } from "../lib/flow";
 import { Nav } from "../components/site/Nav";
 import { Footer } from "../components/site/Footer";
+import flogritLogo from "@/assets/flogrit-logo.svg.asset.json";
 
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <p className="font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground">error 404</p>
-        <h1 className="mt-4 font-display text-7xl font-bold text-foreground">Off the flow.</h1>
+        <h1 className="mt-4 font-display text-7xl font-semibold text-foreground">Not in the system.</h1>
         <p className="mt-4 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist — or we re-routed it.
+          The page you're looking for doesn't exist — or it moved.
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
           >
-            Back to the studio →
+            Back to home →
           </Link>
         </div>
       </div>
@@ -84,18 +85,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "flow/studio — attention to leads, by design" },
+      { title: "Flogrit — turn attention into customers" },
       {
         name: "description",
         content:
-          "We create a flow of attention to leads for your business. Video and content that earns reach, AI systems that turn it into booked calls.",
+          "Flogrit is a Growth Systems Company. We design and build connected systems for Attention, Conversion and Automation — so the parts of your business work together.",
       },
       { name: "theme-color", content: "#121212" },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "flow/studio" },
+      { property: "og:site_name", content: "Flogrit" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/svg+xml", href: flogritLogo.url },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,

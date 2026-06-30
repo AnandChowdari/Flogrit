@@ -10,16 +10,16 @@ type Node = {
 
 const NODES: Node[] = [
   {
-    x: 0.18, y: 0.5, label: "REACH",
-    sub: ["Video editing", "Content strategy", "Branding"],
+    x: 0.18, y: 0.5, label: "ATTENTION",
+    sub: ["Content strategy", "Video & motion", "Brand"],
   },
   {
-    x: 0.5, y: 0.5, label: "LEADS",
-    sub: ["Meta ads", "AI automation", "SEO + sites"],
+    x: 0.5, y: 0.5, label: "CONVERSION",
+    sub: ["Websites", "Funnels", "Copy"],
   },
   {
-    x: 0.82, y: 0.5, label: "SYSTEMS",
-    sub: ["WhatsApp / IG bots", "Voice agents", "CRM sync"],
+    x: 0.82, y: 0.5, label: "AUTOMATION",
+    sub: ["AI agents", "CRM workflows", "Reporting"],
   },
 ];
 
@@ -220,10 +220,10 @@ export function HeroFlowAnimation() {
     >
       <canvas ref={canvasRef} className="absolute inset-0" />
       <div className="pointer-events-none absolute left-4 top-4 z-10 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-        live · attention → leads → systems
+        the system · attention → conversion → automation
       </div>
       <div className="pointer-events-none absolute right-4 top-4 z-10 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-        <span className="size-1.5 animate-pulse rounded-full bg-primary" /> flow.live
+        <span className="size-1.5 animate-pulse rounded-full bg-primary" /> flogrit.live
       </div>
     </div>
   );

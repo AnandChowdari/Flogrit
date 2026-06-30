@@ -4,23 +4,25 @@ import { Play } from "lucide-react";
 
 export function StudioStrip() {
   return (
-    <section className="relative overflow-hidden border-b border-border bg-background grain">
+    <section className="relative overflow-hidden border-b border-border bg-background">
       <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <div>
+          <div className="max-w-2xl">
             <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-              ░ track 01 — studio
+              Attention, in motion
             </p>
-            <h2 className="mt-3 max-w-3xl font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl">
-              Built in our studio. <span className="text-primary">Watched</span> by your buyers.
+            <h2 className="mt-3 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.02em] md:text-5xl">
+              The output of the first pillar.
             </h2>
+            <p className="mt-4 max-w-xl text-muted-foreground">
+              A snapshot of recent work — the content that earns the room before any system gets to do its job.
+            </p>
           </div>
-          <div className="hidden font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground md:block">
-            12M+ views · 36 reels shipped this quarter
+          <div className="hidden font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground md:block">
+            12M+ views · 36 pieces shipped this quarter
           </div>
         </div>
 
-        {/* scrubber */}
         <div className="relative mt-10 h-px w-full bg-border">
           <motion.div
             initial={{ x: "-10%" }}
@@ -54,12 +56,12 @@ function ReelCard({ reel, index }: { reel: typeof reels[number]; index: number }
       <div
         className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
         style={{
-          background: `radial-gradient(circle at 30% 20%, oklch(0.45 0.18 ${reel.hue} / 0.7), oklch(0.18 0.04 ${reel.hue} / 0.95))`,
+          background: `radial-gradient(circle at 30% 20%, oklch(0.45 0.16 ${reel.hue} / 0.7), oklch(0.18 0.04 ${reel.hue} / 0.95))`,
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
 
-      <div className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-background/70 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.15em] text-foreground backdrop-blur">
+      <div className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-background/70 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground backdrop-blur">
         <span className="size-1 rounded-full bg-primary" /> {reel.watch}
       </div>
 

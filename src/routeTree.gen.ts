@@ -15,8 +15,9 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
-import { Route as ServicesSystemsRouteImport } from './routes/services.systems'
-import { Route as ServicesContentRouteImport } from './routes/services.content'
+import { Route as ServicesConversionRouteImport } from './routes/services.conversion'
+import { Route as ServicesAutomationRouteImport } from './routes/services.automation'
+import { Route as ServicesAttentionRouteImport } from './routes/services.attention'
 
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
@@ -48,14 +49,19 @@ const WorkSlugRoute = WorkSlugRouteImport.update({
   path: '/work/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesSystemsRoute = ServicesSystemsRouteImport.update({
-  id: '/services/systems',
-  path: '/services/systems',
+const ServicesConversionRoute = ServicesConversionRouteImport.update({
+  id: '/services/conversion',
+  path: '/services/conversion',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesContentRoute = ServicesContentRouteImport.update({
-  id: '/services/content',
-  path: '/services/content',
+const ServicesAutomationRoute = ServicesAutomationRouteImport.update({
+  id: '/services/automation',
+  path: '/services/automation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesAttentionRoute = ServicesAttentionRouteImport.update({
+  id: '/services/attention',
+  path: '/services/attention',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -64,8 +70,9 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
-  '/services/content': typeof ServicesContentRoute
-  '/services/systems': typeof ServicesSystemsRoute
+  '/services/attention': typeof ServicesAttentionRoute
+  '/services/automation': typeof ServicesAutomationRoute
+  '/services/conversion': typeof ServicesConversionRoute
   '/work/$slug': typeof WorkSlugRoute
   '/work/': typeof WorkIndexRoute
 }
@@ -74,8 +81,9 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
-  '/services/content': typeof ServicesContentRoute
-  '/services/systems': typeof ServicesSystemsRoute
+  '/services/attention': typeof ServicesAttentionRoute
+  '/services/automation': typeof ServicesAutomationRoute
+  '/services/conversion': typeof ServicesConversionRoute
   '/work/$slug': typeof WorkSlugRoute
   '/work': typeof WorkIndexRoute
 }
@@ -85,8 +93,9 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
-  '/services/content': typeof ServicesContentRoute
-  '/services/systems': typeof ServicesSystemsRoute
+  '/services/attention': typeof ServicesAttentionRoute
+  '/services/automation': typeof ServicesAutomationRoute
+  '/services/conversion': typeof ServicesConversionRoute
   '/work/$slug': typeof WorkSlugRoute
   '/work/': typeof WorkIndexRoute
 }
@@ -97,8 +106,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/pricing'
-    | '/services/content'
-    | '/services/systems'
+    | '/services/attention'
+    | '/services/automation'
+    | '/services/conversion'
     | '/work/$slug'
     | '/work/'
   fileRoutesByTo: FileRoutesByTo
@@ -107,8 +117,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/pricing'
-    | '/services/content'
-    | '/services/systems'
+    | '/services/attention'
+    | '/services/automation'
+    | '/services/conversion'
     | '/work/$slug'
     | '/work'
   id:
@@ -117,8 +128,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/pricing'
-    | '/services/content'
-    | '/services/systems'
+    | '/services/attention'
+    | '/services/automation'
+    | '/services/conversion'
     | '/work/$slug'
     | '/work/'
   fileRoutesById: FileRoutesById
@@ -128,8 +140,9 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   PricingRoute: typeof PricingRoute
-  ServicesContentRoute: typeof ServicesContentRoute
-  ServicesSystemsRoute: typeof ServicesSystemsRoute
+  ServicesAttentionRoute: typeof ServicesAttentionRoute
+  ServicesAutomationRoute: typeof ServicesAutomationRoute
+  ServicesConversionRoute: typeof ServicesConversionRoute
   WorkSlugRoute: typeof WorkSlugRoute
   WorkIndexRoute: typeof WorkIndexRoute
 }
@@ -178,18 +191,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services/systems': {
-      id: '/services/systems'
-      path: '/services/systems'
-      fullPath: '/services/systems'
-      preLoaderRoute: typeof ServicesSystemsRouteImport
+    '/services/conversion': {
+      id: '/services/conversion'
+      path: '/services/conversion'
+      fullPath: '/services/conversion'
+      preLoaderRoute: typeof ServicesConversionRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services/content': {
-      id: '/services/content'
-      path: '/services/content'
-      fullPath: '/services/content'
-      preLoaderRoute: typeof ServicesContentRouteImport
+    '/services/automation': {
+      id: '/services/automation'
+      path: '/services/automation'
+      fullPath: '/services/automation'
+      preLoaderRoute: typeof ServicesAutomationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/attention': {
+      id: '/services/attention'
+      path: '/services/attention'
+      fullPath: '/services/attention'
+      preLoaderRoute: typeof ServicesAttentionRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -200,8 +220,9 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   PricingRoute: PricingRoute,
-  ServicesContentRoute: ServicesContentRoute,
-  ServicesSystemsRoute: ServicesSystemsRoute,
+  ServicesAttentionRoute: ServicesAttentionRoute,
+  ServicesAutomationRoute: ServicesAutomationRoute,
+  ServicesConversionRoute: ServicesConversionRoute,
   WorkSlugRoute: WorkSlugRoute,
   WorkIndexRoute: WorkIndexRoute,
 }

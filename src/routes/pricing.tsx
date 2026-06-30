@@ -4,10 +4,10 @@ import { simplePlans, precisePlans } from "@/lib/data";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — flow/studio" },
-      { name: "description", content: "Transparent pricing for video plans, custom productions, and AI conversion systems." },
-      { property: "og:title", content: "Pricing — flow/studio" },
-      { property: "og:description", content: "Transparent pricing for content and AI conversion systems." },
+      { title: "Pricing — Flogrit" },
+      { name: "description", content: "Engagements are scoped to the system, not the deliverable. Indicative pricing for content cadences and conversion systems." },
+      { property: "og:title", content: "Pricing — Flogrit" },
+      { property: "og:description", content: "Indicative pricing for the Flogrit growth system." },
     ],
   }),
   component: PricingPage,
@@ -18,20 +18,24 @@ function PricingPage() {
     <section className="bg-background">
       <div className="mx-auto max-w-7xl px-5 py-24 lg:px-8 lg:py-32">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          ░ pricing — all of it, no asterisks
+          Pricing
         </p>
-        <h1 className="mt-4 font-display text-5xl font-bold leading-[1.02] tracking-tight md:text-7xl">
-          Honest pricing. <span className="text-primary">Pick your pace.</span>
+        <h1 className="mt-4 font-display text-5xl font-semibold leading-[1.02] tracking-[-0.02em] md:text-7xl">
+          Scoped to the system. <span className="text-primary">Not the deliverable.</span>
         </h1>
+        <p className="mt-6 max-w-2xl text-muted-foreground">
+          Engagements start with a single pillar and extend as the system proves itself. Below is what a typical entry point looks like.
+        </p>
 
-        <h2 className="mt-20 font-display text-3xl font-bold tracking-tight">Video — monthly retainers</h2>
+        <h2 className="mt-20 font-display text-3xl font-semibold tracking-[-0.02em]">Attention — content cadence</h2>
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">Monthly retainers for the video and content pillar.</p>
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
           {[
             { name: "Simple", tagline: "Fast turnaround. Strong fundamentals.", plans: simplePlans },
             { name: "Precise", tagline: "Cinematic. Strategic. Founder-led.", plans: precisePlans, highlight: true },
           ].map((t) => (
             <div key={t.name} className={`rounded-2xl border bg-card p-8 ${t.highlight ? "border-primary/50" : "border-border"}`}>
-              <h3 className="font-display text-2xl font-bold">{t.name}</h3>
+              <h3 className="font-display text-2xl font-semibold">{t.name}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{t.tagline}</p>
               <ul className="mt-6 divide-y divide-border">
                 {t.plans.map((p) => (
@@ -48,32 +52,19 @@ function PricingPage() {
           ))}
         </div>
 
-        <h2 className="mt-20 font-display text-3xl font-bold tracking-tight">Custom productions</h2>
-        <div className="mt-8 rounded-2xl border border-border bg-gradient-to-br from-secondary/60 to-card p-8 md:p-10">
-          <div className="grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-center">
-            <div>
-              <h3 className="font-display text-2xl font-bold leading-tight md:text-3xl">
-                SaaS animations, product launches, branding
-              </h3>
-              <p className="mt-3 text-muted-foreground">Bespoke scope. Fixed-fee or milestone-based. We'll quote after a 30-min call.</p>
-            </div>
-            <div className="text-right">
-              <div className="font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground">starts from</div>
-              <div className="mt-1 font-display text-5xl font-bold text-primary">₹26,000</div>
-            </div>
-          </div>
-        </div>
-
-        <h2 className="mt-20 font-display text-3xl font-bold tracking-tight">AI conversion systems</h2>
+        <h2 className="mt-20 font-display text-3xl font-semibold tracking-[-0.02em]">Conversion & Automation</h2>
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+          Sites, funnels and connected systems are scoped per engagement — fixed-fee for builds, retainer for ongoing optimization.
+        </p>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {[
-            { name: "Spark", price: "₹45k / mo", features: ["1 funnel", "WhatsApp automation", "Basic analytics"] },
-            { name: "Engine", price: "₹95k / mo", features: ["3 funnels", "Voice agent + chatbot", "CRM + calendar sync", "Weekly reports"], highlight: true },
-            { name: "Empire", price: "Custom", features: ["Unlimited funnels", "Multi-region voice", "Custom integrations", "Dedicated pod"] },
+            { name: "Foundation", price: "from ₹45k / mo", features: ["One funnel or one workflow", "Site or landing page", "Basic tracking & reporting"] },
+            { name: "System", price: "from ₹95k / mo", features: ["Site + funnels + automations", "AI agent or voice fallback", "CRM + calendar integration", "Weekly reporting"], highlight: true },
+            { name: "Engine", price: "Scoped", features: ["Multi-product systems", "Operations layer", "Custom integrations", "Dedicated team"] },
           ].map((t) => (
             <div key={t.name} className={`rounded-2xl border bg-card p-8 ${t.highlight ? "border-primary/50" : "border-border"}`}>
-              <h3 className="font-display text-2xl font-bold">{t.name}</h3>
-              <div className="mt-2 font-mono text-2xl text-foreground">{t.price}</div>
+              <h3 className="font-display text-2xl font-semibold">{t.name}</h3>
+              <div className="mt-2 font-mono text-lg text-foreground">{t.price}</div>
               <ul className="mt-6 space-y-2">
                 {t.features.map((f) => (
                   <li key={f} className="flex items-center gap-2 text-sm">
@@ -85,9 +76,9 @@ function PricingPage() {
           ))}
         </div>
 
-        <div className="mt-16 text-center">
-          <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-4 text-base font-semibold text-primary-foreground">
-            Book a discovery call →
+        <div className="mt-16">
+          <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-4 text-base font-medium text-primary-foreground">
+            Scope an engagement →
           </Link>
         </div>
       </div>

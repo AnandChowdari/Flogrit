@@ -1,17 +1,17 @@
-import { cases } from "@/lib/data";
+import { cases, pillars } from "@/lib/data";
 import { Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 
 export function Proof() {
   return (
-    <section className="relative border-b border-border bg-background grain">
-      <div className="mx-auto max-w-7xl px-5 py-24 lg:px-8 lg:py-32">
+    <section className="relative border-b border-border bg-background">
+      <div className="mx-auto max-w-7xl px-5 py-24 lg:px-8 lg:py-28">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-2xl">
             <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-              ░ proof — shipped, measured, repeated
+              Proof
             </p>
-            <h2 className="mt-3 font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl">
+            <h2 className="mt-3 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.02em] md:text-5xl">
               The work, told in numbers.
             </h2>
           </div>
@@ -34,12 +34,12 @@ export function Proof() {
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                   {c.industry}
                 </span>
-                <span className={`font-mono text-[10px] uppercase tracking-[0.18em] ${c.pillar === "content" ? "text-primary" : "text-accent-foreground"}`}>
-                  {c.pillar}
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-primary">
+                  {pillars[c.pillar].label}
                 </span>
               </div>
 
-              <h3 className="mt-6 font-display text-xl font-bold leading-tight md:text-2xl">
+              <h3 className="mt-6 font-display text-xl font-semibold leading-tight md:text-2xl">
                 {c.title}
               </h3>
               <p className="mt-3 text-sm text-muted-foreground">{c.summary}</p>
@@ -47,7 +47,7 @@ export function Proof() {
               <dl className="mt-6 grid grid-cols-3 gap-2 border-t border-border pt-5">
                 {c.metric.map((m) => (
                   <div key={m.label}>
-                    <dt className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{m.label}</dt>
+                    <dt className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">{m.label}</dt>
                     <dd className="mt-1 font-mono text-lg text-foreground">{m.value}</dd>
                   </div>
                 ))}

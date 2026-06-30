@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 
-export type Flow = "A" | "B";
+export type Flow = "attention" | "conversion" | "automation";
 
 type FlowCtx = {
   flow: Flow;
@@ -9,29 +9,30 @@ type FlowCtx = {
 };
 
 const Ctx = createContext<FlowCtx | null>(null);
-const KEY = "flow.preference";
+const KEY = "flogrit.flow";
+const VALID: Flow[] = ["attention", "conversion", "automation"];
 
 export function FlowProvider({ children }: { children: ReactNode }) {
-  const [flow, setFlowState] = useState<Flow>("A");
+  const [flow, setFlowState] = useState<Flow>("conversion");
   const [hasChosen, setHasChosen] = useState(false);
 
   useEffect(() => {
     try {
       const url = new URL(window.location.href);
-      const q = url.searchParams.get("flow")?.toUpperCase();
-      if (q === "A" || q === "B") {
-        setFlowState(q);
+      const q = url.searchParams.get("flow")?.toLowerCase();
+      if (q && (VALID as string[]).includes(q)) {
+        setFlowState(q as Flow);
         setHasChosen(true);
         localStorage.setItem(KEY, q);
         return;
       }
       const stored = localStorage.getItem(KEY);
-      if (stored === "A" || stored === "B") {
-        setFlowState(stored);
+      if (stored && (VALID as string[]).includes(stored)) {
+        setFlowState(stored as Flow);
         setHasChosen(true);
       }
     } catch {
-      // ignore
+      /* noop */
     }
   }, []);
 
@@ -41,7 +42,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     try {
       localStorage.setItem(KEY, f);
     } catch {
-      // ignore
+      /* noop */
     }
   }, []);
 

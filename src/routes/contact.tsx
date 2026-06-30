@@ -5,10 +5,10 @@ import { ArrowUpRight, Mail, Calendar, MapPin } from "lucide-react";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — flow/studio" },
-      { name: "description", content: "Book a 30-minute discovery call. No pitch, just diagnosis." },
-      { property: "og:title", content: "Contact — flow/studio" },
-      { property: "og:description", content: "Book a 30-minute discovery call. No pitch, just diagnosis." },
+      { title: "Contact — Flogrit" },
+      { name: "description", content: "Book a 30-minute conversation. We'll diagnose the bottleneck and tell you what we'd build first." },
+      { property: "og:title", content: "Contact — Flogrit" },
+      { property: "og:description", content: "Book a 30-minute conversation. No pitch — diagnosis." },
     ],
   }),
   component: ContactPage,
@@ -21,18 +21,18 @@ function ContactPage() {
     <section className="bg-background">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-24 lg:grid-cols-[1.1fr_1fr] lg:gap-20 lg:px-8 lg:py-32">
         <div>
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">░ contact</p>
-          <h1 className="mt-4 font-display text-5xl font-bold leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
-            Let's diagnose the leak. <span className="text-primary">30 minutes, free.</span>
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Contact</p>
+          <h1 className="mt-4 font-display text-5xl font-semibold leading-[1.02] tracking-[-0.02em] md:text-6xl lg:text-7xl">
+            Let's diagnose the bottleneck. <span className="text-primary">30 minutes.</span>
           </h1>
           <p className="mt-6 max-w-md text-muted-foreground">
-            Tell us where it hurts — attention, conversion, or both. We'll come back with a sharp first move.
+            Tell us where the system breaks — Attention, Conversion, Automation, or all of it. We'll come back with a sharp first move.
           </p>
 
           <ul className="mt-12 space-y-5">
-            <ContactRow Icon={Mail} label="Email" value="hello@flowstudio.in" href="mailto:hello@flowstudio.in" />
-            <ContactRow Icon={Calendar} label="Direct calendar" value="cal.com/flowstudio" href="#" />
-            <ContactRow Icon={MapPin} label="Studio" value="Hyderabad · IN" />
+            <ContactRow Icon={Mail} label="Email" value="hello@flogrit.com" href="mailto:hello@flogrit.com" />
+            <ContactRow Icon={Calendar} label="Direct calendar" value="cal.com/flogrit" href="#" />
+            <ContactRow Icon={MapPin} label="Based in" value="Hyderabad · IN" />
           </ul>
         </div>
 
