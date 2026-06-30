@@ -56,7 +56,7 @@ function TierCard({ tier, delay }: { tier: PricingTier; delay: number }) {
         intensity={5}
       >
         {tier.highlight && (
-          <span className="absolute -top-3 left-7 z-10 rounded-full bg-primary px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-primary-foreground shadow-[0_8px_24px_-8px_oklch(0.85_0.2_125_/_0.6)]">
+          <span className="absolute right-5 top-5 z-10 rounded-full bg-primary px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-primary-foreground shadow-[0_8px_24px_-8px_oklch(0.85_0.2_125_/_0.6)]">
             Most picked
           </span>
         )}
