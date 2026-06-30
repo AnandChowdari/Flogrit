@@ -23,6 +23,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { FlowProvider } from "../lib/flow";
 import { Nav } from "../components/site/Nav";
 import { Footer } from "../components/site/Footer";
+import { AmbientBackground } from "../components/site/AmbientBackground";
 import flogritLogo from "@/assets/flogrit-logo.svg.asset.json";
 
 function NotFoundComponent() {
@@ -132,7 +133,8 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <FlowProvider>
-        <div className="flex min-h-screen flex-col bg-background text-foreground">
+        <AmbientBackground />
+        <div className="relative z-10 flex min-h-screen flex-col text-foreground">
           <Nav />
           <main className="flex-1">
             <Outlet />

@@ -8,6 +8,7 @@ import { PillarSection } from "@/components/home/PillarSection";
 import { Proof } from "@/components/home/Proof";
 import { FAQ } from "@/components/home/FAQ";
 import { FinalCTA } from "@/components/home/FinalCTA";
+import { Testimonials } from "@/components/site/Testimonials";
 
 const BRIDGES: Record<PillarKey, string> = {
   attention: "Attention without conversion is noise. Here's what catches it.",
@@ -57,6 +58,7 @@ function Index() {
       ))}
 
       <Proof />
+      <Testimonials />
       <FAQ />
       <FinalCTA />
     </>
