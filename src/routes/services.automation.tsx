@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { pillars } from "@/lib/data";
 import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
+import { PricingMatrix } from "@/components/pricing/PricingMatrix";
+import { Testimonials } from "@/components/site/Testimonials";
 
 const p = pillars.automation;
 
