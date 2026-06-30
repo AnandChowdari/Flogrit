@@ -226,3 +226,226 @@ export const faqs = [
     a: "Founders, coaches, consultants, SaaS, agencies, D2C and service businesses that already have something worth selling and want predictable growth around it.",
   },
 ];
+
+// =============================================================
+// Per-pillar dynamic pricing — drives <PricingMatrix /> cards.
+// Prices are indicative INR; tweak in one place.
+// =============================================================
+export type PricingOption = {
+  label: string;        // segmented control label, e.g. "8 videos"
+  qty: number;          // numeric value driving per-unit math
+  unit: string;         // "video" | "page" | "month" | "channel" | "mins"
+  price: number;        // total INR
+  note?: string;        // optional under-price line
+};
+
+export type PricingTier = {
+  id: string;
+  name: string;
+  tagline: string;
+  highlight?: boolean;
+  features: string[];
+  cta: string;
+  options: PricingOption[];
+};
+
+export const pillarPricing: Record<PillarKey, { heading: string; sub: string; tiers: PricingTier[] }> = {
+  attention: {
+    heading: "Pricing — Attention",
+    sub: "Pick the cadence. Pricing scales with how much we ship, not how loud the deck is.",
+    tiers: [
+      {
+        id: "simple",
+        name: "Simple Edits",
+        tagline: "Fast turnaround. Clean cuts. Hook-led.",
+        cta: "Start simple",
+        features: ["Reels / Shorts format", "Captions + SFX", "2 revisions", "48-hr turnaround"],
+        options: [
+          { label: "4 videos", qty: 4, unit: "video", price: 16000, note: "₹4,000 / video" },
+          { label: "8 videos", qty: 8, unit: "video", price: 30400, note: "₹3,800 / video" },
+          { label: "12 videos", qty: 12, unit: "video", price: 42000, note: "₹3,500 / video" },
+          { label: "20 videos", qty: 20, unit: "video", price: 64000, note: "₹3,200 / video" },
+        ],
+      },
+      {
+        id: "precise",
+        name: "Precise Edits",
+        tagline: "Cinematic. Color-graded. Story-led.",
+        highlight: true,
+        cta: "Go precise",
+        features: ["Color grade + sound design", "Motion graphics", "Founder-led direction", "3 revisions"],
+        options: [
+          { label: "4 videos", qty: 4, unit: "video", price: 28000, note: "₹7,000 / video" },
+          { label: "8 videos", qty: 8, unit: "video", price: 54400, note: "₹6,800 / video" },
+          { label: "12 videos", qty: 12, unit: "video", price: 78000, note: "₹6,500 / video" },
+        ],
+      },
+      {
+        id: "engine",
+        name: "Content Engine",
+        tagline: "Strategy + shooting direction + posting — a whole retainer.",
+        cta: "Build the engine",
+        features: ["90-day editorial plan", "Hook library", "Weekly publishing", "Analytics review"],
+        options: [
+          { label: "1 month", qty: 1, unit: "month", price: 85000, note: "Pilot sprint" },
+          { label: "3 months", qty: 3, unit: "month", price: 230000, note: "₹76,600 / month" },
+          { label: "6 months", qty: 6, unit: "month", price: 420000, note: "₹70,000 / month" },
+        ],
+      },
+    ],
+  },
+  conversion: {
+    heading: "Pricing — Conversion",
+    sub: "Sites, landers and funnels — scoped to the decision you want the visitor to make.",
+    tiers: [
+      {
+        id: "lander",
+        name: "Landing Page",
+        tagline: "One page. One decision. Built to convert.",
+        cta: "Ship a lander",
+        features: ["Custom design + copy", "Event tracking", "A/B-ready", "1-week delivery"],
+        options: [
+          { label: "1 page", qty: 1, unit: "page", price: 35000, note: "₹35,000 / page" },
+          { label: "3 pages", qty: 3, unit: "page", price: 96000, note: "₹32,000 / page" },
+          { label: "5 pages", qty: 5, unit: "page", price: 140000, note: "₹28,000 / page" },
+        ],
+      },
+      {
+        id: "site",
+        name: "Full Site",
+        tagline: "Brand-grade site, instrumented end-to-end.",
+        highlight: true,
+        cta: "Build the site",
+        features: ["Design system", "CMS-ready", "Performance > 95", "Lead routing"],
+        options: [
+          { label: "5 pages", qty: 5, unit: "page", price: 120000, note: "₹24,000 / page" },
+          { label: "8 pages", qty: 8, unit: "page", price: 180000, note: "₹22,500 / page" },
+          { label: "12 pages", qty: 12, unit: "page", price: 240000, note: "₹20,000 / page" },
+        ],
+      },
+      {
+        id: "funnel",
+        name: "Funnel + Copy",
+        tagline: "Full sales funnel with research-backed copy.",
+        cta: "Design a funnel",
+        features: ["Buyer research", "Funnel architecture", "Email sequences", "Booking flow"],
+        options: [
+          { label: "1 funnel", qty: 1, unit: "funnel", price: 65000, note: "Single offer" },
+          { label: "2 funnels", qty: 2, unit: "funnel", price: 120000, note: "₹60,000 / funnel" },
+          { label: "3 funnels", qty: 3, unit: "funnel", price: 165000, note: "₹55,000 / funnel" },
+        ],
+      },
+    ],
+  },
+  automation: {
+    heading: "Pricing — Automation",
+    sub: "AI agents and workflows priced by surface area, not seat count.",
+    tiers: [
+      {
+        id: "chatbot",
+        name: "AI Chatbot",
+        tagline: "Trained on your business. Lives on web + WhatsApp.",
+        cta: "Deploy a chatbot",
+        features: ["Knowledge base + RAG", "Lead capture + CRM sync", "Handoff to humans", "Monthly tuning"],
+        options: [
+          { label: "1 channel", qty: 1, unit: "channel", price: 45000, note: "Web OR WhatsApp" },
+          { label: "2 channels", qty: 2, unit: "channel", price: 72000, note: "Web + WhatsApp" },
+          { label: "3 channels", qty: 3, unit: "channel", price: 95000, note: "+ Instagram DM" },
+        ],
+      },
+      {
+        id: "voice",
+        name: "Voice AI Agent",
+        tagline: "Answers, qualifies, books — 24/7.",
+        highlight: true,
+        cta: "Get the voice agent",
+        features: ["Inbound + outbound", "CRM logging", "Call transcripts", "Live escalation"],
+        options: [
+          { label: "500 mins / mo", qty: 500, unit: "min", price: 25000, note: "₹50 / min" },
+          { label: "1,500 mins / mo", qty: 1500, unit: "min", price: 52000, note: "₹35 / min" },
+          { label: "3,000 mins / mo", qty: 3000, unit: "min", price: 88000, note: "₹29 / min" },
+        ],
+      },
+      {
+        id: "ops",
+        name: "CRM + Workflow",
+        tagline: "Pipelines, follow-ups, reporting — quietly running.",
+        cta: "Wire the ops layer",
+        features: ["CRM setup", "Workflow automations", "Dashboards", "Weekly review"],
+        options: [
+          { label: "Starter", qty: 1, unit: "month", price: 35000, note: "Up to 3 workflows" },
+          { label: "Growth", qty: 1, unit: "month", price: 75000, note: "Up to 8 workflows" },
+          { label: "Engine", qty: 1, unit: "month", price: 140000, note: "Unlimited + reporting" },
+        ],
+      },
+    ],
+  },
+};
+
+// =============================================================
+// Testimonials
+// =============================================================
+export type Testimonial = {
+  id: string;
+  name: string;
+  role: string;
+  company: string;
+  quote: string;
+  metric?: { label: string; value: string };
+  pillar: PillarKey;
+};
+
+export const testimonials: Testimonial[] = [
+  {
+    id: "t1",
+    name: "Aarav Mehta",
+    role: "Founder",
+    company: "Lumen AI",
+    quote: "Flogrit replaced a six-figure ad budget with a content engine that just… keeps shipping. We stopped paying for attention.",
+    metric: { label: "Organic views / qtr", value: "2.4M" },
+    pillar: "attention",
+  },
+  {
+    id: "t2",
+    name: "Priya Nair",
+    role: "Head of Growth",
+    company: "Ridgeway",
+    quote: "They rebuilt our site around one question buyers were actually asking. Conversion more than doubled in five weeks.",
+    metric: { label: "Conversion", value: "+112%" },
+    pillar: "conversion",
+  },
+  {
+    id: "t3",
+    name: "Karan Shah",
+    role: "COO",
+    company: "Atlas Fit",
+    quote: "The voice agent picks up in under a second at 2am. Our follow-up team became a closing team overnight.",
+    metric: { label: "Lead → call", value: "41%" },
+    pillar: "automation",
+  },
+  {
+    id: "t4",
+    name: "Ishita Rao",
+    role: "Creative Director",
+    company: "Hearth & Co.",
+    quote: "Every reel feels like it belongs to the brand — not a trend. That's the bar nobody else cleared.",
+    pillar: "attention",
+  },
+  {
+    id: "t5",
+    name: "Devansh Patel",
+    role: "CEO",
+    company: "Pebble Health",
+    quote: "Our funnel went from a leaky bucket to a measurable machine. We finally know what works.",
+    metric: { label: "CAC", value: "−38%" },
+    pillar: "conversion",
+  },
+  {
+    id: "t6",
+    name: "Meera Iyer",
+    role: "Operations Lead",
+    company: "Quay",
+    quote: "Half our internal tickets disappeared the week the automations went live. It feels like hiring three people.",
+    pillar: "automation",
+  },
+];
