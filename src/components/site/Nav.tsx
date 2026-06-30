@@ -62,13 +62,13 @@ export function Nav() {
       </div>
 
       {open && (
-        <div className="border-t border-border bg-background md:hidden">
-          <div className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-3">
+        <div className="mx-auto mt-2 max-w-7xl rounded-2xl border border-white/10 bg-background/70 backdrop-blur-xl md:hidden">
+          <div className="flex flex-col gap-1 px-3 py-3">
             {links.map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
-                className="rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
+                className="rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
                 onClick={() => setOpen(false)}
               >
                 {l.label}
