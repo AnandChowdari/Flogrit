@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 
 export default function Navbar({ onBuyNow }) {
   const [isScrolled, setIsScrolled] = useState(false);

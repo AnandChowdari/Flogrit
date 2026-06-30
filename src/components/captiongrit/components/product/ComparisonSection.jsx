@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Check, X } from 'lucide-react';
 
 export default function ComparisonSection() {

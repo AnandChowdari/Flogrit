@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { fadeUpVariant } from '../../lib/motionVariants';
 
 export default function BeforeAfterSection() {

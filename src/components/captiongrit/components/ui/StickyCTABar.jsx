@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { useLocation, Link } from '@tanstack/react-router';
 import { siteConfig } from '../../config/site';
 

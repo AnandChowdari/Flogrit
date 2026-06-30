@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'motion/react';
 
 // Layout
 import CaptiongritNavbar from '../../components/layout/CaptiongritNavbar';

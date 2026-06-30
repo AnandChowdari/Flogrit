@@ -1,5 +1,5 @@
 import { Star } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 export default function TestimonialsSection() {
   const testimonials = [

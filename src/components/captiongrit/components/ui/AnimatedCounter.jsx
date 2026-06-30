@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useInView } from 'framer-motion';
+import { useInView } from 'motion/react';
 
 export default function AnimatedCounter({ target, suffix = '', duration = 2000 }) {
   const ref = useRef(null);

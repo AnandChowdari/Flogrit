@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { Plus, Minus, Search } from 'lucide-react';
 import { fadeUpVariant } from '../../lib/motionVariants';
 

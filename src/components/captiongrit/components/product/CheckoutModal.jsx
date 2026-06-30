@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { X, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
