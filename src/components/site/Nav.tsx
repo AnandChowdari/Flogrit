@@ -15,6 +15,7 @@ export function Nav() {
     { to: "/services/automation", label: "Automation" },
     { to: "/work", label: "Work" },
     { to: "/about", label: "About" },
+    { to: "/captiongrit", label: "Captiongrit" },
   ] as const;
 
   return (

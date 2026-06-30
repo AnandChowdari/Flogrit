@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CaptiongritRouteImport } from './routes/captiongrit'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
@@ -27,6 +28,11 @@ const PricingRoute = PricingRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaptiongritRoute = CaptiongritRouteImport.update({
+  id: '/captiongrit',
+  path: '/captiongrit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -68,6 +74,7 @@ const ServicesAttentionRoute = ServicesAttentionRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/captiongrit': typeof CaptiongritRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/services/attention': typeof ServicesAttentionRoute
@@ -79,6 +86,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/captiongrit': typeof CaptiongritRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/services/attention': typeof ServicesAttentionRoute
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/captiongrit': typeof CaptiongritRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/services/attention': typeof ServicesAttentionRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/captiongrit'
     | '/contact'
     | '/pricing'
     | '/services/attention'
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/captiongrit'
     | '/contact'
     | '/pricing'
     | '/services/attention'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/captiongrit'
     | '/contact'
     | '/pricing'
     | '/services/attention'
@@ -138,6 +150,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CaptiongritRoute: typeof CaptiongritRoute
   ContactRoute: typeof ContactRoute
   PricingRoute: typeof PricingRoute
   ServicesAttentionRoute: typeof ServicesAttentionRoute
@@ -161,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/captiongrit': {
+      id: '/captiongrit'
+      path: '/captiongrit'
+      fullPath: '/captiongrit'
+      preLoaderRoute: typeof CaptiongritRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -218,6 +238,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CaptiongritRoute: CaptiongritRoute,
   ContactRoute: ContactRoute,
   PricingRoute: PricingRoute,
   ServicesAttentionRoute: ServicesAttentionRoute,

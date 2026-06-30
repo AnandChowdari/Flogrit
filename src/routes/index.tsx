@@ -9,6 +9,7 @@ import { Proof } from "@/components/home/Proof";
 import { FAQ } from "@/components/home/FAQ";
 import { FinalCTA } from "@/components/home/FinalCTA";
 import { Testimonials } from "@/components/site/Testimonials";
+import { CaptiongritPopup } from "@/components/home/CaptiongritPopup";
 
 const BRIDGES: Record<PillarKey, string> = {
   attention: "Attention without conversion is noise. Here's what catches it.",
@@ -61,6 +62,7 @@ function Index() {
       <Testimonials />
       <FAQ />
       <FinalCTA />
+      <CaptiongritPopup />
     </>
   );
 }
