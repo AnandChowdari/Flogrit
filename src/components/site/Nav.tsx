@@ -25,11 +25,12 @@ export function Nav() {
       >
         <Link
           to="/"
-          className="flex items-center gap-2.5 font-display text-[1.5rem] font-semibold leading-none tracking-[-0.04em] text-primary"
+          className="flex items-center gap-2 font-display text-[1.25rem] font-semibold leading-none tracking-[-0.04em] sm:gap-2.5 sm:text-[1.4rem] lg:text-[1.55rem]"
         >
-          <LogoMark size={34} className="text-primary" />
+          <LogoMark className="h-7 w-7 shrink-0 text-primary sm:h-8 sm:w-8 lg:h-9 lg:w-9" />
           <span className="text-foreground">Flogrit</span>
         </Link>
+
 
 
         <nav className="hidden items-center gap-7 md:flex">

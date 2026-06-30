@@ -164,11 +164,12 @@
 }
 
 @keyframes logo-mark-a {
-  0%, 100% { transform: translate(80px, -80px); }
-  45%, 55% { transform: translate(0, 0); }
+  0%, 100% { transform: translateX(120px); }
+  45%, 55% { transform: translateX(0); }
 }
 @keyframes logo-mark-b {
-  0%, 100% { transform: translate(-80px, 80px); }
-  45%, 55% { transform: translate(0, 0); }
+  0%, 100% { transform: translateX(-120px); }
+  45%, 55% { transform: translateX(0); }
 }
+
 
