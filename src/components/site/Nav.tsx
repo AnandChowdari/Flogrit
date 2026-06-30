@@ -27,7 +27,7 @@ export function Nav() {
           to="/"
           className="flex items-center gap-2.5 font-display text-[1.35rem] font-semibold leading-none tracking-[-0.04em]"
         >
-          <img src={logo.url} alt="" width={56} height={56} className="h-[1.4rem] w-[1.4rem]" />
+          <img src={logo.url} alt="" width={100} height={100} className="h-[1.4rem] w-[1.4rem]" />
           <span>Flogrit</span>
         </Link>
 
