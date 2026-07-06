@@ -1,87 +1,92 @@
 
-# Plan — Pricing, Looping Reels, Testimonials, Live Feel
+# Captiongrit Redesign — Bold & Toy-like
 
-Goal: each pillar page (Attention / Conversion / Automation) gets its own dynamic pricing system inline. Attention gets a looping video gallery showing edited work. Every page picks up testimonials, scroll/hover animations, and a richer dark texture so the site feels alive instead of static.
+## Positioning we're designing around
+- **One-time purchase.** No subs, no seat licenses.
+- **Lives inside Premiere Pro & After Effects** (Win + Mac).
+- **Native + Roman captions** for Indian languages, hand-pickable.
+- **Seconds, not hours.**
 
-## 1. Pricing data (per pillar)
+Every section will carry one of these four beats — no filler.
 
-Extend `src/lib/data.ts` with a new `pillarPricing` record keyed by pillar. Each pillar has 2–3 "tiers" (cards), and each tier has multiple **selectable quantity options** powering the dynamic card.
+## Visual direction
 
-- **Attention**
-  - *Simple Edits* — toggles: 4 / 8 / 12 / 20 videos (₹4k → ₹3.2k per video)
-  - *Precise Edits* — toggles: 4 / 8 / 12 videos (cinematic, ₹7k → ₹6.2k per video)
-  - *Content Engine retainer* — toggles: 1 / 3 / 6 months (strategy + shoot direction + posting)
-- **Conversion**
-  - *Landing page* — toggles: 1 / 3 / 5 pages (₹35k → ₹28k per page)
-  - *Full site build* — toggles: 5 / 8 / 12 pages (from ₹1.2L)
-  - *Funnel + copy system* — toggles: 1 / 2 / 3 funnels (research-backed market rates ₹60k–₹1.8L)
-- **Automation**
-  - *AI Chatbot (web + WhatsApp)* — toggles: 1 / 2 / 3 channels (₹45k → ₹95k setup + retainer)
-  - *Voice AI agent* — toggles: 500 / 1500 / 3000 mins/mo (₹25k → ₹70k)
-  - *CRM + workflow system* — toggles: Starter / Growth / Engine (₹35k / ₹75k / ₹1.4L per month)
+Captiongrit needs to feel like a **toy that ships in a Flogrit box**: same DNA, different energy. Playful, chunky, tactile — but still engineered.
 
-Each tier card shows: tier name, tagline, the segmented toggle, the live computed price, per-unit price, included bullets, CTA.
+**Palette (Captiongrit-only tokens, scoped under `.captiongrit-container`):**
+- Base: `#0B0B0F` ink, `#13131A` card
+- Primary accent: `#C6FF34` (shared with Flogrit — the family tie)
+- **New playful accent: `#FF5A3C` (hot coral)** — used on badges, stickers, tab pills, "Buy" hover states. This is what separates Captiongrit from Flogrit at a glance.
+- Support: `#8B7BFF` soft violet for secondary chips
+- Text: `#F5F5F0` / `#9A9AA5`
 
-## 2. Component: `<PricingMatrix pillar="…" />`
+**Type:**
+- Display: **Bricolage Grotesque** at very heavy weights (800/900) with tighter tracking — already in the Flogrit family, dialed up chunkier.
+- Body: keep Inter Tight.
+- Mono labels: JetBrains Mono for "SRT.file", timecodes, keyboard hints.
 
-New file `src/components/pricing/PricingMatrix.tsx`.
-- Renders the tier cards for a given pillar from `pillarPricing`.
-- Each card uses local `useState` for selected option index.
-- Segmented control (pill buttons) flips the option; price + per-unit animate (Framer Motion `AnimatePresence` + numeric tween).
-- Hover: lime glow + slight lift (`shadow-[0_0_0_1px_var(--lime)/40,0_30px_60px_-20px_var(--lime)/20]`).
-- Mount on `services.attention.tsx`, `services.conversion.tsx`, `services.automation.tsx` as a new "Pricing" section.
-- Update `/pricing` page to render all three matrices stacked under section headers so the global pricing page stays consistent.
+**Shape language:**
+- Rounded-3xl everywhere (24–32px radii), no sharp corners.
+- Chunky drop shadows offset (`8px 8px 0 #C6FF34` sticker-style) on key cards.
+- Sticker-badges: rotated ±3°, dashed borders, tape-corner accents.
+- Hand-drawn underline SVGs under key phrases.
 
-## 3. Looping reel gallery (Attention page)
+**Motion register:**
+- Springy (stiffness 400, damping 20) on hover — buttons squish and rebound.
+- Elements enter with a slight overshoot + rotate (`rotate: -2 → 0`).
+- **No heavy WebGL.** Ambient = 1 lime blob + faint grain (per your "Subtle" pick).
 
-New `src/components/attention/ReelGallery.tsx`.
-- 6–8 cards, each is a CSS-driven looping "edit" preview: a small SVG/Canvas mock of a video player (timeline scrubber animates, waveform pulses, cut-marks flash) — no real video files needed. Uses the existing `reels` data for titles/clients/views.
-- Auto-scrolling marquee row (uses existing `@keyframes marquee`) on top, static grid below; hover pauses marquee and shows a "play" lime ring with title overlay slide-up.
-- Sits between hero and pricing on `/services/attention`.
+## Signature hero scene — "Watch the plugin work"
 
-## 4. Testimonials
+A stylized, isometric mock of the Premiere panel, ~500px wide, sitting to the right of the headline. Autoplaying loop, ~6s:
 
-Add `testimonials` array to `src/lib/data.ts` (6 entries, one+ tied to each pillar, with name/role/company/quote/metric).
-New `src/components/site/Testimonials.tsx`:
-- Marquee row of quote cards (infinite horizontal scroll, pauses on hover) + a featured "spotlight" card with avatar initials and metric chip.
-- Cards have subtle lime border-glow on hover and a quote-mark watermark.
-- Mounted on: home (`index.tsx`) before FinalCTA, and at the bottom of each pillar page.
+```text
+1. Video clip pill slides into a timeline lane      (0.0s)
+2. Captiongrit panel pops in, tilts 6° into place   (0.8s)
+3. Language dropdown flips: "Telugu"                (1.6s)
+4. Toggle switches ON: "Roman transliteration"      (2.2s)
+5. Big lime "Generate" button squishes on click     (2.8s)
+6. Progress bar zips left→right                     (3.4s)
+7. Two caption tracks type onto the video preview:
+     Native (Telugu script)  +  Roman (below it)    (4.0s)
+8. An "SRT.file" chip ejects out the side, spins    (5.4s)
+9. Loop restarts                                    (6.0s)
+```
 
-## 5. Live feel — animations & dark texture
+Built with Framer Motion timelines + a `useEffect` interval, no video assets, no 3D lib. Cursor over the panel pauses the loop and lets the user click through it manually.
 
-- **Global background texture:** layer the existing `grain` utility on `<body>` plus a new fixed `@utility noise-bg` (radial vignette + faint lime/purple aurora blobs that slowly drift via `@keyframes aurora-drift`). Implemented as a single fixed `<div aria-hidden>` inside `__root.tsx`.
-- **Nav:** keep glass pill; add a soft animated lime underglow that pulses on scroll-stuck state and a hairline scanline texture inside the pill.
-- **Section reveals:** wrap each pillar service card, pricing card, testimonial, reel card with Framer Motion `whileInView` (y:24 → 0, stagger 0.06s).
-- **Hover micro-interactions:**
-  - Buttons/cards → lime ring + scale 1.02 + cursor-tracking radial highlight (CSS `--mx/--my` vars updated on `onMouseMove`).
-  - Service titles → `story-link` underline reveal.
-  - Pricing numbers → swap with motion `key={option}` for a slot-machine feel.
-- **Scroll progress bar** in nav (1px lime line) tied to `useScroll` from motion.
-- **3D tilt** on the pricing tier cards and reel cards (lightweight: `rotateX/rotateY` from pointer position, no library).
+## Section-by-section plan (order unchanged)
 
-## 6. Files
+1. **Navbar** — Keep pill glass. Coral dot next to logo. Nav links get a coral underline squiggle on hover.
+2. **Hero** — Restructured around the signature scene above. Headline gets a coral hand-drawn underline under "seconds". Trust chips become chunky sticker pills.
+3. **SocialProofBar** — 4 features become 4 sticker cards with offset lime shadows, slight rotation, hover-bounce.
+4. **CaptionModes** — "Native / Roman / Both" as three chunky toggle cards, each with a mini live caption preview inside.
+5. **HowItWorks** — Keep desktop split (steps left, sticky panel right). The sticky panel now mirrors the hero plugin, scroll-scrubbed: each step scroll = one panel action. Mobile accordion stays.
+6. **Features** — Grid of tactile "trading card" tiles. Coral corner-fold on hover. Keep "AI Verification Pass — Pro only" copy.
+7. **LanguageMarquee** — Language chips become sticker-badges (rotation, tape corners). Speed slows on hover instead of pausing hard.
+8. **Pricing** — Keep 3-column layout. Cards get sticker shadows; Pro tier gets a rotated "Most Popular" tape badge in coral. **Fix SSR hydration mismatch on the region toggle** (India/International) — read region only in `useEffect` after mount and initialize to India on both server and client.
+9. **Comparison** — Restyle table as two mascot columns ("Manual You" 😩 vs "Captiongrit You" 😎), coral vs lime.
+10. **Testimonials** — Chunky quote cards, rotated ±2°, avatar as circle sticker with lime ring.
+11. **FAQ** — Accordion items become tactile pills; open state slides down with spring, "+" rotates to "×".
+12. **FinalCTA** — Oversized display type, coral "Buy Now" button with lime shadow that squishes.
+13. **Footer** — Keep as-is (already fixed last round).
 
-New:
-- `src/components/pricing/PricingMatrix.tsx`
-- `src/components/attention/ReelGallery.tsx`
-- `src/components/site/Testimonials.tsx`
-- `src/components/site/AmbientBackground.tsx` (fixed aurora + grain layer)
-- `src/components/ui/TiltCard.tsx` (shared pointer-tilt wrapper)
+## Ambient background (subtle)
+- One slow-drifting lime radial (already there) + one smaller coral radial in the lower-third
+- Faint film grain overlay (already there)
+- No particles, no canvas
 
-Modified:
-- `src/lib/data.ts` — add `pillarPricing`, `testimonials`.
-- `src/styles.css` — `noise-bg`, `aurora-drift`, `tilt-card`, hover-glow utilities, scrollbar-progress keyframes.
-- `src/routes/__root.tsx` — mount `<AmbientBackground />`, scroll progress bar.
-- `src/routes/services.attention.tsx` — add ReelGallery + PricingMatrix + Testimonials.
-- `src/routes/services.conversion.tsx` — add PricingMatrix + Testimonials.
-- `src/routes/services.automation.tsx` — add PricingMatrix + Testimonials.
-- `src/routes/pricing.tsx` — replace static tier blocks with three `<PricingMatrix>` instances.
-- `src/routes/index.tsx` — slot Testimonials before FinalCTA.
-- `src/components/site/Nav.tsx` — scroll progress + subtle inner scanline.
+## Consistency with Flogrit
+- Same nav pill shape, same section-divider component, same footer link back to Flogrit — the chrome ties them together.
+- Playfulness lives inside sections, not in the shell.
 
 ## Technical notes
-- No new dependencies; uses already-installed `motion` and Tailwind v4 utilities.
-- All prices live in `data.ts` so they stay editable in one place.
-- Tilt + cursor-glow use pure React state + CSS vars — no perf hit.
-- Aurora background is a single fixed element with `pointer-events:none` so it never blocks clicks.
-- Respects `prefers-reduced-motion` (disables aurora drift, marquee, tilt).
+- All new tokens (`--coral`, `--violet-soft`, `--shadow-sticker`) added to `src/styles.css` under a `.captiongrit-container` scope so Flogrit is untouched.
+- Bricolage Grotesque already loaded — bump weight utilities only.
+- Motion via existing `motion/react` (framer-motion drop-in) — no new deps.
+- Fix `PricingSection` region toggle SSR mismatch (see step 8) as part of this pass.
+
+## Out of scope
+- No content/copy rewrites beyond micro-labels.
+- No new sections, no removed sections.
+- No changes to Flogrit routes or shared components.
