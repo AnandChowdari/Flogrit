@@ -63,31 +63,36 @@ export default function TestimonialsSection() {
       {/* Marquee container */}
       <div className="relative">
 
-        <div className="flex w-max animate-marquee-testimonials hover:[animation-play-state:paused]">
-          {marqueeItems.map((test, idx) => (
-            <div
-              key={idx}
-              className="glass-card p-6 flex flex-col justify-between w-[320px] shrink-0 mx-4"
-            >
-              <div>
-                <div className="flex gap-1 mb-4">
-                  {[...Array(test.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-accent-primary text-accent-primary" />
-                  ))}
-                </div>
-                <p className="text-white/90 text-sm leading-relaxed mb-6">"{test.quote}"</p>
-              </div>
-              <div className="flex items-center gap-3 border-t border-white/5 pt-4">
-                <div className="w-8 h-8 rounded-full bg-accent-primary/20 flex items-center justify-center font-bold text-accent-primary text-sm">
-                  {test.name.charAt(0)}
-                </div>
+        <div className="flex w-max animate-marquee-testimonials hover:[animation-play-state:paused] py-6">
+          {marqueeItems.map((test, idx) => {
+            const rot = idx % 2 === 0 ? '-rotate-1' : 'rotate-1';
+            const shadow = idx % 3 === 0 ? '#FF5A3C' : '#C6FF34';
+            return (
+              <div
+                key={idx}
+                className={`bg-[#13131A] border border-white/10 rounded-2xl p-6 flex flex-col justify-between w-[320px] shrink-0 mx-4 transform ${rot} hover:rotate-0 transition-transform`}
+                style={{ boxShadow: `5px 5px 0 0 ${shadow}` }}
+              >
                 <div>
-                  <h4 className="font-bold text-white text-xs">{test.name}</h4>
-                  <p className="text-text-secondary text-xs">{test.role}</p>
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(test.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-accent-primary text-accent-primary" />
+                    ))}
+                  </div>
+                  <p className="text-white/90 text-sm leading-relaxed mb-6">"{test.quote}"</p>
+                </div>
+                <div className="flex items-center gap-3 border-t border-white/5 pt-4">
+                  <div className="w-9 h-9 rounded-full bg-accent-primary flex items-center justify-center font-black text-black text-sm ring-2 ring-[#FF5A3C]/50">
+                    {test.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white text-xs">{test.name}</h4>
+                    <p className="text-text-secondary text-xs">{test.role}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

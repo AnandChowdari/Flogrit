@@ -34,9 +34,9 @@ export default function HeroSection({ onBuyNow }) {
               Now Available — Version 1.0
             </div>
             
-            <h1 className="font-display text-[2.6rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] font-extrabold leading-[1.05] mb-5 text-white tracking-tight">
+            <h1 className="font-display text-[2.6rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] font-black leading-[1.02] mb-5 text-white tracking-tight">
               Don't waste hours.<br />
-              <span className="font-accent glow-text text-accent-primary">Create captions in seconds.</span>
+              <span className="font-accent glow-text text-accent-primary">Create captions in <span className="cg-underline-coral">seconds</span>.</span>
             </h1>
 
             <p className="text-base md:text-lg font-body text-text-secondary leading-relaxed mb-8 max-w-xl">
@@ -46,9 +46,9 @@ export default function HeroSection({ onBuyNow }) {
             <div className="flex flex-col sm:flex-row gap-3 mb-8 w-full sm:w-auto">
               <button
                 onClick={onBuyNow}
-                className="bg-accent-primary hover:bg-accent-secondary text-black px-7 py-3.5 rounded-xl font-bold text-base font-display transition-all shadow-[0_0_20px_rgba(198,255,52,0.2)] hover:shadow-[0_0_30px_rgba(198,255,52,0.4)] hover:-translate-y-1"
+                className="cg-squish bg-accent-primary text-black px-7 py-3.5 rounded-2xl font-black text-base font-display shadow-[6px_6px_0_0_#FF5A3C] hover:shadow-[8px_8px_0_0_#FF5A3C]"
               >
-                Buy Now — Starting at ₹399
+                Buy Now — from ₹399
               </button>
               <a
                 href="#how-it-works"
@@ -58,13 +58,16 @@ export default function HeroSection({ onBuyNow }) {
               </a>
             </div>
             
-            <div className="flex flex-wrap gap-x-6 gap-y-3">
-              {trustItems.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-sm text-text-secondary">
-                  <CheckCircle2 className="w-4 h-4 text-accent-primary" />
-                  {item}
-                </div>
-              ))}
+            <div className="flex flex-wrap gap-2">
+              {trustItems.map((item, idx) => {
+                const rot = ['-rotate-2', 'rotate-1', '-rotate-1', 'rotate-2'][idx % 4];
+                return (
+                  <div key={idx} className={`flex items-center gap-1.5 text-xs font-bold text-white bg-white/5 border border-white/10 px-3 py-1.5 rounded-full transform ${rot} hover:rotate-0 hover:border-accent-primary/50 transition-transform`}>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-accent-primary" />
+                    {item}
+                  </div>
+                );
+              })}
             </div>
           </motion.div>
 
@@ -85,9 +88,9 @@ export default function HeroSection({ onBuyNow }) {
               </div>
               
               {/* Floating badge */}
-              <div className="absolute -bottom-3 -right-3 bg-[#111111] border border-accent-primary/30 rounded-xl px-4 py-2 flex items-center gap-2 shadow-lg z-10">
-                <span className="w-2 h-2 rounded-full bg-accent-primary animate-pulse" />
-                <span className="text-xs font-mono text-accent-primary">Live Interactive Demo</span>
+              <div className="absolute -bottom-3 -right-3 bg-[#FF5A3C] text-black rounded-xl px-4 py-2 flex items-center gap-2 shadow-[4px_4px_0_0_#C6FF34] z-10 -rotate-3 hover:rotate-0 transition-transform">
+                <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
+                <span className="text-xs font-black uppercase tracking-widest">Live Demo</span>
               </div>
             </div>
           </motion.div>
