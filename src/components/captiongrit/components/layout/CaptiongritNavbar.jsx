@@ -76,7 +76,7 @@ export default function Navbar({ onBuyNow }) {
         <div className="relative z-10 flex items-center gap-2">
           <button
             onClick={onBuyNow}
-            className="cg-squish hidden rounded-full bg-[#C6FF34] px-4 py-2 text-sm font-black text-black shadow-[3px_3px_0_0_#3B82F6] hover:shadow-[5px_5px_0_0_#3B82F6] md:inline-block"
+            className="cg-brut hidden rounded-full bg-[#C6FF34] px-4 py-2 text-sm font-black text-black shadow-[3px_3px_0_0_#3B82F6] md:inline-block"
           >
             Buy now
           </button>

@@ -37,13 +37,13 @@ export default function FinalCtaSection({ onBuyNow }) {
         >
           <button
             onClick={onBuyNow}
-            className="cg-squish bg-accent-primary text-black px-10 py-5 rounded-2xl font-black text-xl shadow-[8px_8px_0_0_#3B82F6] hover:shadow-[10px_10px_0_0_#3B82F6]"
+            className="cg-brut bg-accent-primary text-black px-10 py-5 rounded-2xl font-black text-xl shadow-[8px_8px_0_0_#3B82F6]"
           >
             Buy Now
           </button>
           <a
             href="#pricing"
-            className="cg-squish flex items-center justify-center px-10 py-5 rounded-2xl font-black text-xl border-2 border-white/20 hover:border-[#3B82F6]/60 hover:text-[#3B82F6] text-white transition-colors"
+            className="cg-brut inline-flex items-center justify-center px-10 py-5 rounded-2xl font-black text-xl border-2 border-white/20 text-white bg-[#13131A] shadow-[8px_8px_0_0_#C6FF34]"
           >
             Compare Plans
           </a>

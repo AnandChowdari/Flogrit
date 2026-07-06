@@ -46,13 +46,13 @@ export default function HeroSection({ onBuyNow }) {
             <div className="flex flex-col sm:flex-row gap-3 mb-8 w-full sm:w-auto">
               <button
                 onClick={onBuyNow}
-                className="cg-squish bg-accent-primary text-black px-7 py-3.5 rounded-2xl font-black text-base font-display shadow-[6px_6px_0_0_#3B82F6] hover:shadow-[8px_8px_0_0_#3B82F6]"
+                className="cg-brut bg-accent-primary text-black px-7 py-3.5 rounded-2xl font-black text-base font-display shadow-[6px_6px_0_0_#3B82F6]"
               >
                 Buy Now — from ₹399
               </button>
               <a
                 href="#how-it-works"
-                className="flex items-center justify-center px-7 py-3.5 rounded-xl font-bold text-base border border-white/15 hover:bg-white/5 transition-all text-white"
+                className="cg-brut inline-flex items-center justify-center px-7 py-3.5 rounded-2xl font-black text-base border-2 border-white/20 text-white bg-[#13131A] shadow-[6px_6px_0_0_#C6FF34]"
               >
                 See How It Works
               </a>
