@@ -2,51 +2,37 @@ import { motion } from 'motion/react';
 
 export default function FinalCtaSection({ onBuyNow }) {
   return (
-    <section className="relative py-40 px-6 overflow-hidden border-t border-white/5">
-      {/* Glow Background */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-primary/20 rounded-full blur-[150px] pointer-events-none" />
-      <div className="noise-overlay" />
-
-      <div className="max-w-4xl mx-auto text-center relative z-10">
+    <section className="relative py-28 sm:py-36 px-5 sm:px-6 border-t border-white/[0.06]">
+      <div className="max-w-3xl mx-auto text-center relative z-10">
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="font-display text-5xl md:text-7xl font-black mb-6 text-white leading-[1.02]"
+          className="font-display font-semibold text-white tracking-[-0.02em] mb-5"
+          style={{ fontSize: 'clamp(2rem, 4.5vw, 3rem)' }}
         >
-          Start captioning <br className="hidden md:block" />
-          <span className="font-accent text-accent-primary glow-text cg-underline-coral">smarter today.</span>
+          Start captioning <span className="cg-hl">smarter</span> today.
         </motion.h2>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-xl text-text-secondary mb-12"
+          className="text-white/55 mb-10 text-base"
         >
-          One-time. ₹399 / $9. That's it.
+          One-time. From ₹399 / $9. That&rsquo;s it.
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-3 justify-center items-center"
         >
-          <button
-            onClick={onBuyNow}
-            className="cg-brut bg-accent-primary text-black px-10 py-5 rounded-2xl font-black text-xl shadow-[8px_8px_0_0_#3B82F6]"
-          >
-            Buy Now
-          </button>
-          <a
-            href="#pricing"
-            className="cg-brut inline-flex items-center justify-center px-10 py-5 rounded-2xl font-black text-xl border-2 border-white/20 text-white bg-[#13131A] shadow-[8px_8px_0_0_#C6FF34]"
-          >
-            Compare Plans
-          </a>
+          <button onClick={onBuyNow} className="cg-btn-primary text-base">Buy now</button>
+          <a href="#pricing" className="cg-btn-ghost text-base">Compare plans</a>
         </motion.div>
       </div>
     </section>
