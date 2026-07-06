@@ -266,7 +266,7 @@ export default function PricingSection({ onBuyNow }) {
                       <div className="space-y-3">
                         <button
                           onClick={() => onBuyNow(selectedPlan)}
-                          className="w-full bg-accent-primary hover:bg-accent-secondary text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(198,255,52,0.2)] hover:-translate-y-1"
+                          className="cg-brut w-full bg-accent-primary text-black font-black py-4 rounded-2xl flex items-center justify-center gap-2 shadow-[6px_6px_0_0_#3B82F6]"
                         >
                           Buy Now <ArrowRight className="w-4 h-4" />
                         </button>
