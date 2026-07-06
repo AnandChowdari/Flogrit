@@ -66,7 +66,7 @@ export default function TestimonialsSection() {
         <div className="flex w-max animate-marquee-testimonials hover:[animation-play-state:paused] py-6">
           {marqueeItems.map((test, idx) => {
             const rot = idx % 2 === 0 ? '-rotate-1' : 'rotate-1';
-            const shadow = idx % 3 === 0 ? '#FF5A3C' : '#C6FF34';
+            const shadow = idx % 3 === 0 ? '#3B82F6' : '#C6FF34';
             return (
               <div
                 key={idx}
@@ -82,7 +82,7 @@ export default function TestimonialsSection() {
                   <p className="text-white/90 text-sm leading-relaxed mb-6">"{test.quote}"</p>
                 </div>
                 <div className="flex items-center gap-3 border-t border-white/5 pt-4">
-                  <div className="w-9 h-9 rounded-full bg-accent-primary flex items-center justify-center font-black text-black text-sm ring-2 ring-[#FF5A3C]/50">
+                  <div className="w-9 h-9 rounded-full bg-accent-primary flex items-center justify-center font-black text-black text-sm ring-2 ring-[#3B82F6]/50">
                     {test.name.charAt(0)}
                   </div>
                   <div>

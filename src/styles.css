@@ -271,8 +271,10 @@
   --color-bg-tertiary: #161620;
   --color-accent-primary: #C6FF34;
   --color-accent-secondary: #A8E620;
-  --color-cg-coral: #FF5A3C;
-  --color-cg-coral-soft: #FF7A5C;
+  --color-cg-blue: #3B82F6;
+  --color-cg-blue-soft: #60A5FA;
+  --color-cg-coral: #3B82F6;
+  --color-cg-coral-soft: #60A5FA;
   --color-cg-violet: #8B7BFF;
   --color-text-primary: #F5F5F0;
   --color-text-secondary: #9A9AA5;
@@ -284,7 +286,7 @@
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
 }
-/* Ambient coral radial in lower third — only inside captiongrit */
+/* Ambient blue radial in lower third — only inside captiongrit */
 .captiongrit-container::before {
   content: "";
   position: fixed;
@@ -293,7 +295,7 @@
   width: 520px;
   height: 520px;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(255, 90, 60, 0.14), transparent 65%);
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.16), transparent 65%);
   filter: blur(60px);
   pointer-events: none;
   z-index: 0;
@@ -345,29 +347,29 @@
 }
 .cg-sticker-coral {
   border-radius: 1.25rem;
-  border: 1px solid rgba(255, 90, 60, 0.35);
+  border: 1px solid rgba(59, 130, 246, 0.4);
   background: #13131A;
-  box-shadow: 6px 6px 0 0 var(--color-cg-coral);
+  box-shadow: 6px 6px 0 0 var(--color-cg-blue);
   transition: transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 260ms;
 }
 .cg-sticker-coral:hover {
   transform: translate(-2px, -2px) rotate(0.6deg);
-  box-shadow: 10px 10px 0 0 var(--color-cg-coral);
+  box-shadow: 10px 10px 0 0 var(--color-cg-blue);
 }
 .cg-tape {
   position: absolute;
   top: -0.75rem;
   left: 50%;
   transform: translateX(-50%) rotate(-3deg);
-  background: var(--color-cg-coral);
-  color: #0B0B0F;
+  background: var(--color-cg-blue);
+  color: #ffffff;
   font-weight: 900;
   font-size: 0.65rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 0.28rem 0.85rem;
   border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(255, 90, 60, 0.35);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.45);
   z-index: 10;
   white-space: nowrap;
 }
@@ -376,6 +378,21 @@
 }
 .cg-squish:hover { transform: translateY(-3px) scale(1.02); }
 .cg-squish:active { transform: translateY(1px) scale(0.97); }
+
+/* Neo-brutalist button — hard shadow, click into shadow */
+.cg-brut {
+  position: relative;
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 220ms;
+  will-change: transform;
+}
+.cg-brut:hover {
+  transform: translate(-2px, -2px);
+}
+.cg-brut:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 0 transparent !important;
+  transition: transform 60ms ease-out, box-shadow 60ms ease-out;
+}
 
 .cg-underline-coral {
   position: relative;
@@ -388,7 +405,7 @@
   right: -4%;
   bottom: -0.15em;
   height: 0.35em;
-  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'><path d='M2 8 Q 50 2 100 6 T 198 5' stroke='%23FF5A3C' stroke-width='4' fill='none' stroke-linecap='round'/></svg>") no-repeat center / 100% 100%;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'><path d='M2 8 Q 50 2 100 6 T 198 5' stroke='%233B82F6' stroke-width='4' fill='none' stroke-linecap='round'/></svg>") no-repeat center / 100% 100%;
   pointer-events: none;
 }
 

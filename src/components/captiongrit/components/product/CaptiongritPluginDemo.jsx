@@ -350,9 +350,10 @@ export default function CaptiongritPluginDemo() {
             </span>
           </div>
 
-          {/* Scrollable CEP Panel Content */}
-          <div className="flex-grow overflow-y-auto min-h-0 bg-[#111] flex flex-col">
+          {/* CEP Panel Content — no scroll, everything fits */}
+          <div className="flex-grow overflow-hidden min-h-0 bg-[#111] flex flex-col">
             <div className="flex flex-col text-left">
+
                 
                 {/* 1. Source Language Cycle List */}
                 <div 
@@ -400,95 +401,23 @@ export default function CaptiongritPluginDemo() {
                   </span>
                 </div>
 
-                {/* 3. Waveform scanning panel visual */}
-                <div className="mx-4 my-2 bg-[#161618] rounded-xl p-3 border border-white/5">
-                  <div className="text-[9px] text-white/30 font-bold uppercase tracking-wider mb-2 font-mono">Audio Waveform</div>
-                  <div className="flex gap-[2px] items-center h-8 mb-2">
-                    {WAVE_HEIGHTS.map((h, i) => {
-                      const activeIndex = Math.floor((progress / 100) * WAVE_HEIGHTS.length);
-                      const isScanned = i < activeIndex - 1;
-                      const isActive = i === activeIndex - 1;
-                      return (
-                        <div
-                          key={i}
-                          className="flex-grow rounded-full transition-colors duration-100"
-                          style={{
-                            height: `${h}px`,
-                            backgroundColor: isActive
-                              ? '#ffffff'
-                              : isScanned
-                              ? accentColor
-                              : `${accentColor}20`,
-                          }}
-                        />
-                      );
-                    })}
-                  </div>
-                  <div className="h-0.5 bg-white/5 rounded-full overflow-hidden">
-                    <div
-                      className="h-full transition-all duration-75 ease-linear"
-                      style={{ width: `${progress}%`, backgroundColor: accentColor }}
-                    />
-                  </div>
+                {/* Combined engine info line (replaces waveform panel, STT/AI pills, progress steps) */}
+                <div className="mx-4 mb-2 flex items-center gap-2 text-[10px] font-mono text-white/60 flex-wrap">
+                  <span className={step >= 1 ? 'text-white/85' : 'text-white/25'}>
+                    <span className="inline-block w-1.5 h-1.5 rounded-full mr-1 align-middle" style={{ backgroundColor: step >= 1 ? accentColor : '#333' }} />
+                    {activeLanguage.stt}
+                  </span>
+                  <span className="text-white/20">·</span>
+                  <span className={step >= 2 ? 'text-white/85' : 'text-white/25'}>
+                    <span className="inline-block w-1.5 h-1.5 rounded-full mr-1 align-middle" style={{ backgroundColor: step >= 2 ? accentColor : '#333' }} />
+                    {activeLanguage.ai}
+                  </span>
+                  <span className="text-white/20">·</span>
+                  <span className={step >= 3 ? 'text-white/85' : 'text-white/25'}>
+                    {activeLanguage.mode}
+                  </span>
                 </div>
 
-                {/* 4. STT / AI Info pills */}
-                <div className="flex gap-2 px-4 py-2 flex-wrap">
-                  <div 
-                    className={`text-[10px] px-2.5 py-1 rounded-lg border flex items-center gap-1.5 font-medium transition-all ${
-                      step >= 1 ? 'text-white/85 border-white/10' : 'text-white/20 border-white/5'
-                    }`}
-                  >
-                    <span 
-                      className="w-1.5 h-1.5 rounded-full transition-colors" 
-                      style={{ backgroundColor: step >= 1 ? accentColor : '#333' }}
-                    />
-                    <span>STT: {activeLanguage.stt}</span>
-                  </div>
-                  <div 
-                    className={`text-[10px] px-2.5 py-1 rounded-lg border flex items-center gap-1.5 font-medium transition-all ${
-                      step >= 2 ? 'text-white/85 border-white/10' : 'text-white/20 border-white/5'
-                    }`}
-                  >
-                    <span 
-                      className="w-1.5 h-1.5 rounded-full transition-colors" 
-                      style={{ backgroundColor: step >= 2 ? accentColor : '#333' }}
-                    />
-                    <span>AI: {activeLanguage.ai}</span>
-                  </div>
-                  <div 
-                    className={`text-[10px] px-2.5 py-1 rounded-lg border flex items-center gap-1.5 font-medium transition-all ${
-                      step >= 3 ? 'text-white/85 border-white/10' : 'text-white/20 border-white/5'
-                    }`}
-                  >
-                    <span 
-                      className="w-1.5 h-1.5 rounded-full transition-colors" 
-                      style={{ backgroundColor: step >= 3 ? accentColor : '#333' }}
-                    />
-                    <span>Output: {activeLanguage.mode}</span>
-                  </div>
-                </div>
-
-                {/* 5. Progress steps line */}
-                <div className="flex gap-1.5 px-4 py-2 items-center">
-                  {[0, 1, 2, 3].map((s) => {
-                    const isDone = s < step;
-                    const isActive = s === step;
-                    return (
-                      <div
-                        key={s}
-                        className="h-1 flex-grow rounded-full transition-colors duration-300"
-                        style={{
-                          backgroundColor: isDone
-                            ? accentColor
-                            : isActive
-                            ? `${accentColor}60`
-                            : '#1e1e1e',
-                        }}
-                      />
-                    );
-                  })}
-                </div>
 
                 {/* 6. Status Bar */}
                 <div className="flex items-center gap-2 px-4 py-1.5 select-none text-left">
@@ -517,15 +446,17 @@ export default function CaptiongritPluginDemo() {
                 >
                   • Caption Output
                 </div>
-                <div className="mx-4 mb-3 bg-[#161618] border border-white/5 rounded-xl overflow-hidden flex flex-col font-mono">
+                <div
+                  className="mx-4 mb-3 bg-[#161618] border border-white/5 rounded-xl overflow-hidden flex flex-col font-mono"
+                >
                   <div className="px-4 py-2 border-b border-white/5 bg-[#121214] flex justify-between items-center">
                     <span className="text-[9px] text-white/30 font-bold uppercase tracking-wider">Generated Captions</span>
                     <span className="text-[10px] font-bold" style={{ color: accentColor }}>
                       {captionLogs.length > 0 ? `${captionLogs.length} lines` : ''}
                     </span>
                   </div>
-                  <div 
-                    className="p-1 flex flex-col gap-0 min-h-[120px] max-h-[140px] overflow-y-auto scrollbar-none"
+                  <div
+                    className="p-1 flex flex-col gap-0 h-[110px] overflow-hidden"
                     id="caption-log-container"
                   >
                     {captionLogs.length === 0 ? (
@@ -533,7 +464,7 @@ export default function CaptiongritPluginDemo() {
                         Waiting for engine...
                       </div>
                     ) : (
-                      captionLogs.map((c, i) => (
+                      captionLogs.slice(-3).map((c, i) => (
                         <div
                           key={i}
                           className="flex gap-3 items-start p-2 border-b border-white/[0.03] last:border-b-0 animate-[popIn_0.25s_ease_forwards] text-left"
@@ -541,39 +472,23 @@ export default function CaptiongritPluginDemo() {
                           <span className="text-[10px] font-mono font-semibold shrink-0 mt-0.5" style={{ color: accentColor }}>
                             {c.time}
                           </span>
-                          <span className="text-xs text-white/80 leading-relaxed font-sans">{c.text}</span>
+                          <span className="text-xs text-white/80 leading-relaxed font-sans truncate">{c.text}</span>
                         </div>
                       ))
                     )}
                   </div>
                 </div>
-
-                {/* 8. Loop Dot indicator */}
-                <div className="flex items-center justify-center gap-2 py-1 select-none">
-                  <span className="text-[9px] text-white/25 uppercase tracking-widest font-bold font-mono">Auto-looping</span>
-                  <div className="flex gap-1">
-                    {LANGUAGES.map((_, idx) => (
-                      <div
-                        key={idx}
-                        className="w-1.5 h-1.5 rounded-full transition-colors duration-300"
-                        style={{
-                          backgroundColor: idx === currentIdx ? accentColor : '#1e1e1e',
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* 9. Control button */}
+                {/* Control button — neo-brutalist */}
                 <div className="px-4 pt-2 pb-4">
                   <button
                     onClick={() => setPaused(!paused)}
-                    className="w-full text-black font-extrabold text-xs py-3 px-4 rounded-xl tracking-wider uppercase transition-all duration-300 transform active:scale-[0.98] select-none cursor-pointer"
-                    style={{ backgroundColor: accentColor }}
+                    className="cg-brut w-full text-black font-black text-xs py-3 px-4 rounded-xl tracking-wider uppercase select-none cursor-pointer"
+                    style={{ backgroundColor: accentColor, boxShadow: '4px 4px 0 0 #3B82F6' }}
                   >
                     {paused ? '▶ Resume Demo' : '⏸ Pause Demo'}
                   </button>
                 </div>
+
 
               </div>
           </div>

@@ -13,7 +13,7 @@ export default function SocialProofBar() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {features.map((feat, idx) => {
           const rots = ['-rotate-2', 'rotate-1', '-rotate-1', 'rotate-2'];
-          const shadowColor = idx % 2 === 0 ? '#C6FF34' : '#FF5A3C';
+          const shadowColor = idx % 2 === 0 ? '#C6FF34' : '#3B82F6';
           return (
             <motion.div
               key={idx}

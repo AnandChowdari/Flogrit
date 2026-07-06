@@ -1,92 +1,88 @@
+# Captiongrit v2 tweaks — Blue swap + polish
 
-# Captiongrit Redesign — Bold & Toy-like
+## 1. Coral → Blue
 
-## Positioning we're designing around
-- **One-time purchase.** No subs, no seat licenses.
-- **Lives inside Premiere Pro & After Effects** (Win + Mac).
-- **Native + Roman captions** for Indian languages, hand-pickable.
-- **Seconds, not hours.**
+Global find-and-replace of the coral accent with a vibrant blue that harmonizes with lime.
 
-Every section will carry one of these four beats — no filler.
+- Old: `#FF5A3C` (coral) / `#FF7A5C`
+- New: `**#3B82F6**` (vivid blue, primary playful accent) / `**#60A5FA**` (soft)
+- Token rename: `--color-cg-coral` → `--color-cg-blue` (keep the old name as alias for one commit so nothing breaks mid-refactor, then rename call sites)
+- Every place currently painted coral (sticker shadows, "Pro only" badge, tape badge on Pro plan, hero underline SVG, hero "Live Demo" badge, navbar dot, FAQ open state, testimonial ring, comparison highlights) picks up blue.
+- Coral radial in `.captiongrit-container::before` → blue radial.
+- The lime + blue combo lands the same "sport tech / toy" energy without competing with lime like coral did.
 
-## Visual direction
+## 2. Hero plugin demo — kill the scrollbars
 
-Captiongrit needs to feel like a **toy that ships in a Flogrit box**: same DNA, different energy. Playful, chunky, tactile — but still engineered.
+Root cause: the right-side CEP panel stacks 9 sub-components inside a fixed 550px column, forcing vertical scroll. There is also a redundant caption-log inner scroll.
 
-**Palette (Captiongrit-only tokens, scoped under `.captiongrit-container`):**
-- Base: `#0B0B0F` ink, `#13131A` card
-- Primary accent: `#C6FF34` (shared with Flogrit — the family tie)
-- **New playful accent: `#FF5A3C` (hot coral)** — used on badges, stickers, tab pills, "Buy" hover states. This is what separates Captiongrit from Flogrit at a glance.
-- Support: `#8B7BFF` soft violet for secondary chips
-- Text: `#F5F5F0` / `#9A9AA5`
+Trim to 5 essentials so it fits in one frame:
 
-**Type:**
-- Display: **Bricolage Grotesque** at very heavy weights (800/900) with tighter tracking — already in the Flogrit family, dialed up chunkier.
-- Body: keep Inter Tight.
-- Mono labels: JetBrains Mono for "SRT.file", timecodes, keyboard hints.
+Keep: Source Language cycle · Selected Clip · Status bar · Caption Output list · Pause/Resume button.
 
-**Shape language:**
-- Rounded-3xl everywhere (24–32px radii), no sharp corners.
-- Chunky drop shadows offset (`8px 8px 0 #C6FF34` sticker-style) on key cards.
-- Sticker-badges: rotated ±3°, dashed borders, tape-corner accents.
-- Hand-drawn underline SVGs under key phrases.
+Remove (redundant with the left timeline/monitor):
 
-**Motion register:**
-- Springy (stiffness 400, damping 20) on hover — buttons squish and rebound.
-- Elements enter with a slight overshoot + rotate (`rotate: -2 → 0`).
-- **No heavy WebGL.** Ambient = 1 lime blob + faint grain (per your "Subtle" pick).
+- Standalone Audio Waveform panel (already shown on the left timeline)
+- Progress-steps 4-segment line (status text already communicates step)
+- Auto-looping dot indicator (source-language cycle already highlights current)
 
-## Signature hero scene — "Watch the plugin work"
+Merge: STT / AI / Output pills collapse into a single mono line under the status bar (`Deepgram · Groq Llama · Native`), one row, no wrap.
 
-A stylized, isometric mock of the Premiere panel, ~500px wide, sitting to the right of the headline. Autoplaying loop, ~6s:
+Also:
 
-```text
-1. Video clip pill slides into a timeline lane      (0.0s)
-2. Captiongrit panel pops in, tilts 6° into place   (0.8s)
-3. Language dropdown flips: "Telugu"                (1.6s)
-4. Toggle switches ON: "Roman transliteration"      (2.2s)
-5. Big lime "Generate" button squishes on click     (2.8s)
-6. Progress bar zips left→right                     (3.4s)
-7. Two caption tracks type onto the video preview:
-     Native (Telugu script)  +  Roman (below it)    (4.0s)
-8. An "SRT.file" chip ejects out the side, spins    (5.4s)
-9. Loop restarts                                    (6.0s)
+- Remove `overflow-y-auto` on the outer right-panel container; give the caption-log a fixed height that fits (~5 lines, no scroll — captions auto-cycle anyway).
+- Cap the entire demo height at `540px` on desktop so nothing spills.
+
+Left side stays as-is.
+
+## 3. "Pro only" badge is masked
+
+The AI Verification Pass card has `overflow-hidden` on its container, which clips the `-top-2` badge. Fix by removing `overflow-hidden` from feature cards (or moving the badge inside the padding with a small inline sticker instead of a floating tab). Going with **inline sticker** — a small blue pill inside the card next to the title — so it always renders regardless of card clipping.
+
+## 4. LanguageMarquee — Roman + native script pairs
+
+Currently chips show one Roman/English name per chip. Replace with dual-script chips:
+
+```
+Hindi हिन्दी    Telugu తెలుగు    Tamil தமிழ்    Kannada ಕನ್ನಡ
+Malayalam മലയാളം    Marathi मराठी    Bengali বাংলা
+Gujarati ગુજરાતી    Punjabi ਪੰਜਾਬੀ    Odia ଓଡ଼ିଆ
 ```
 
-Built with Framer Motion timelines + a `useEffect` interval, no video assets, no 3D lib. Cursor over the panel pauses the loop and lets the user click through it manually.
+Non-Indian languages (English, Spanish, French, German, Japanese, Korean, Arabic, etc.) also get their native form where meaningful (`Japanese 日本語`, `Korean 한국어`, `Arabic العربية`, `Russian Русский`, `Chinese 中文`). Latin-script European languages that already read the same either get their native spelling (`Français`, `Español`, `Português`, `Deutsch`) or stay single.
 
-## Section-by-section plan (order unchanged)
+Chip layout: Roman on left in bold, native script on right in a lighter weight and slightly smaller — same chip, no extra space cost.
 
-1. **Navbar** — Keep pill glass. Coral dot next to logo. Nav links get a coral underline squiggle on hover.
-2. **Hero** — Restructured around the signature scene above. Headline gets a coral hand-drawn underline under "seconds". Trust chips become chunky sticker pills.
-3. **SocialProofBar** — 4 features become 4 sticker cards with offset lime shadows, slight rotation, hover-bounce.
-4. **CaptionModes** — "Native / Roman / Both" as three chunky toggle cards, each with a mini live caption preview inside.
-5. **HowItWorks** — Keep desktop split (steps left, sticky panel right). The sticky panel now mirrors the hero plugin, scroll-scrubbed: each step scroll = one panel action. Mobile accordion stays.
-6. **Features** — Grid of tactile "trading card" tiles. Coral corner-fold on hover. Keep "AI Verification Pass — Pro only" copy.
-7. **LanguageMarquee** — Language chips become sticker-badges (rotation, tape corners). Speed slows on hover instead of pausing hard.
-8. **Pricing** — Keep 3-column layout. Cards get sticker shadows; Pro tier gets a rotated "Most Popular" tape badge in coral. **Fix SSR hydration mismatch on the region toggle** (India/International) — read region only in `useEffect` after mount and initialize to India on both server and client.
-9. **Comparison** — Restyle table as two mascot columns ("Manual You" 😩 vs "Captiongrit You" 😎), coral vs lime.
-10. **Testimonials** — Chunky quote cards, rotated ±2°, avatar as circle sticker with lime ring.
-11. **FAQ** — Accordion items become tactile pills; open state slides down with spring, "+" rotates to "×".
-12. **FinalCTA** — Oversized display type, coral "Buy Now" button with lime shadow that squishes.
-13. **Footer** — Keep as-is (already fixed last round).
+## 5. Neo-brutalist button press feel
 
-## Ambient background (subtle)
-- One slow-drifting lime radial (already there) + one smaller coral radial in the lower-third
-- Faint film grain overlay (already there)
-- No particles, no canvas
+New `.cg-brut` utility applied to every meaningful button (Hero Buy Now, Hero secondary, Final CTA both buttons, Navbar Buy Now, Pricing plan cards' "View details" hover state, Pricing Buy Now inside detail view, Comparison CTA if any, plugin demo Pause/Resume).
 
-## Consistency with Flogrit
-- Same nav pill shape, same section-divider component, same footer link back to Flogrit — the chrome ties them together.
-- Playfulness lives inside sections, not in the shell.
+Behavior:
 
-## Technical notes
-- All new tokens (`--coral`, `--violet-soft`, `--shadow-sticker`) added to `src/styles.css` under a `.captiongrit-container` scope so Flogrit is untouched.
-- Bricolage Grotesque already loaded — bump weight utilities only.
-- Motion via existing `motion/react` (framer-motion drop-in) — no new deps.
-- Fix `PricingSection` region toggle SSR mismatch (see step 8) as part of this pass.
+- Rest: solid color, hard 6px offset shadow in a contrasting color
+- Hover: translate `-2px, -2px`, shadow grows to 8px offset (button "lifts")
+- Active: translate `+3px, +3px`, shadow collapses to 0 (button "clicks into" the shadow)
+- No transition on active — instant snap for tactile feel; smooth spring on hover release
+
+This replaces `cg-squish` where a brutalist press is more appropriate. Non-button links (nav links, breadcrumbs) keep the subtle hover.
+
+## Files touched
+
+- `src/styles.css` — swap coral tokens to blue, add `.cg-brut` utility, update `.cg-sticker-*` shadow color, radial color.
+- `src/components/captiongrit/components/product/CaptiongritPluginDemo.jsx` — trim right panel, remove inner scroll.
+- `src/components/captiongrit/components/product/FeaturesSection.jsx` — remove `overflow-hidden`, move "Pro only" badge inline.
+- `src/components/captiongrit/components/product/LanguageMarquee.jsx` — dual-script chip data.
+- `src/components/captiongrit/components/product/HeroSection.jsx` — apply `.cg-brut` to CTAs, swap coral shadow to blue.
+- `src/components/captiongrit/components/product/FinalCtaSection.jsx` — apply `.cg-brut` to both CTAs.
+- `src/components/captiongrit/components/product/PricingSection.jsx` — swap tape/shadow color; apply `.cg-brut` to Buy Now.
+- `src/components/captiongrit/components/product/FaqSection.jsx` — swap coral open-state color to blue.
+- `src/components/captiongrit/components/product/TestimonialsSection.jsx` — avatar ring blue.
+- `src/components/captiongrit/components/product/SocialProofBar.jsx` — alternating shadow color blue.
+- `src/components/captiongrit/components/layout/CaptiongritNavbar.jsx` — logo dot blue, Buy now button `.cg-brut`.
 
 ## Out of scope
-- No content/copy rewrites beyond micro-labels.
-- No new sections, no removed sections.
-- No changes to Flogrit routes or shared components.
+
+- No content rewrites.
+- No layout restructuring beyond the plugin-demo trim.
+- No new sections.  
+  
+So I think we should keep the metadata also very clean so that we should get this website at the top if someone searches for "captiongrit". Make sure that is good if it is not products, all that stuff. If it is not fit for that, you can make it flowgrit/caption[grit.com](http://grid.com), whatever. Think about it 
