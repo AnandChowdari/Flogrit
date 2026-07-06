@@ -47,12 +47,15 @@ export default function Navbar({ onBuyNow }) {
             <ArrowLeft size={12} /> Flogrit
           </Link>
           <a href="#" className="flex items-center gap-2 group shrink-0">
-            <img
-              src="/captiongrit-logo.svg"
-              alt="Captiongrit"
-              className="h-8 w-8 object-contain transition-transform group-hover:scale-110 md:h-9 md:w-9"
-            />
-            <span className="font-display text-[1.15rem] font-semibold leading-none tracking-[-0.03em] text-white sm:text-[1.3rem]">
+            <div className="relative">
+              <img
+                src="/captiongrit-logo.svg"
+                alt="Captiongrit"
+                className="h-8 w-8 object-contain transition-transform group-hover:scale-110 md:h-9 md:w-9"
+              />
+              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#FF5A3C] ring-2 ring-[#0c0c0f]" />
+            </div>
+            <span className="font-display text-[1.15rem] font-black leading-none tracking-[-0.03em] text-white sm:text-[1.3rem]">
               Captiongrit
             </span>
           </a>
@@ -73,7 +76,7 @@ export default function Navbar({ onBuyNow }) {
         <div className="relative z-10 flex items-center gap-2">
           <button
             onClick={onBuyNow}
-            className="hidden rounded-full bg-[#C6FF34] px-4 py-2 text-sm font-semibold text-black transition-transform hover:scale-[1.02] md:inline-block"
+            className="cg-squish hidden rounded-full bg-[#C6FF34] px-4 py-2 text-sm font-black text-black shadow-[3px_3px_0_0_#FF5A3C] hover:shadow-[5px_5px_0_0_#FF5A3C] md:inline-block"
           >
             Buy now
           </button>

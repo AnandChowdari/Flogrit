@@ -12,10 +12,10 @@ export default function FinalCtaSection({ onBuyNow }) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="font-display text-5xl md:text-7xl font-bold mb-6 text-white leading-tight"
+          className="font-display text-5xl md:text-7xl font-black mb-6 text-white leading-[1.02]"
         >
           Start captioning <br className="hidden md:block" />
-          <span className="font-accent text-accent-primary glow-text">smarter today.</span>
+          <span className="font-accent text-accent-primary glow-text cg-underline-coral">smarter today.</span>
         </motion.h2>
 
         <motion.p
@@ -25,7 +25,7 @@ export default function FinalCtaSection({ onBuyNow }) {
           transition={{ delay: 0.1 }}
           className="text-xl text-text-secondary mb-12"
         >
-          Starting at just ₹399 / $9 — one-time.
+          One-time. ₹399 / $9. That's it.
         </motion.p>
 
         <motion.div
@@ -33,17 +33,17 @@ export default function FinalCtaSection({ onBuyNow }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <button
             onClick={onBuyNow}
-            className="bg-accent-primary hover:bg-accent-secondary text-black px-10 py-5 rounded-xl font-bold text-xl transition-all shadow-[0_0_20px_rgba(198,255,52,0.3)] hover:shadow-[0_0_40px_rgba(198,255,52,0.5)] hover:-translate-y-1"
+            className="cg-squish bg-accent-primary text-black px-10 py-5 rounded-2xl font-black text-xl shadow-[8px_8px_0_0_#FF5A3C] hover:shadow-[10px_10px_0_0_#FF5A3C]"
           >
             Buy Now
           </button>
           <a
             href="#pricing"
-            className="flex items-center justify-center px-10 py-5 rounded-xl font-bold text-xl border border-white/20 hover:bg-white/5 transition-all text-white"
+            className="cg-squish flex items-center justify-center px-10 py-5 rounded-2xl font-black text-xl border-2 border-white/20 hover:border-[#FF5A3C]/60 hover:text-[#FF5A3C] text-white transition-colors"
           >
             Compare Plans
           </a>

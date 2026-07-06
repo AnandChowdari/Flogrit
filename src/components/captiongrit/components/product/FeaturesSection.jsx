@@ -52,25 +52,31 @@ export default function FeaturesSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feat, idx) => {
             const Icon = feat.icon;
+            const rotClasses = ['-rotate-1', 'rotate-1', '-rotate-1', 'rotate-1', '-rotate-1', 'rotate-1'];
+            const shadow = feat.highlight ? '6px 6px 0 0 #FF5A3C' : '5px 5px 0 0 #C6FF34';
             return (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ rotate: 0, y: -4 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className={`glass-card p-8 flex flex-col gap-4 relative overflow-hidden group ${feat.highlight ? 'border-accent-primary/30' : ''}`}
+                transition={{ type: 'spring', stiffness: 260, damping: 20, delay: idx * 0.06 }}
+                className={`relative bg-[#13131A] border rounded-2xl p-7 flex flex-col gap-4 overflow-hidden transform ${rotClasses[idx % 6]} ${feat.highlight ? 'border-[#FF5A3C]/40' : 'border-white/10'}`}
+                style={{ boxShadow: shadow }}
               >
                 {feat.highlight && (
-                  <div className="absolute inset-0 bg-accent-primary/5 pointer-events-none" />
+                  <span className="absolute -top-2 right-4 bg-[#FF5A3C] text-black text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded rotate-3">
+                    Pro only
+                  </span>
                 )}
-                
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${feat.highlight ? 'bg-accent-primary/20 text-accent-primary shadow-[0_0_15px_rgba(198,255,52,0.3)]' : 'bg-white/5 text-white'}`}>
+
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${feat.highlight ? 'bg-[#FF5A3C]/20 text-[#FF5A3C]' : 'bg-accent-primary/15 text-accent-primary'}`}>
                   <Icon className="w-6 h-6" />
                 </div>
-                
-                <h3 className="font-display font-bold text-xl text-white mt-2">{feat.title}</h3>
-                <p className="text-base font-body text-text-secondary leading-relaxed">{feat.desc}</p>
+
+                <h3 className="font-display font-black text-xl text-white mt-1">{feat.title}</h3>
+                <p className="text-sm font-body text-text-secondary leading-relaxed">{feat.desc}</p>
               </motion.div>
             );
           })}

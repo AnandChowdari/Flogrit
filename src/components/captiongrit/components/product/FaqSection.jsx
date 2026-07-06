@@ -60,44 +60,46 @@ export default function FaqSection() {
         </motion.div>
 
         {/* 2-column FAQ grid on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {filteredFaqs.map((faq, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.03 }}
-              className="glass-card overflow-hidden"
-            >
-              <button
-                onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-                className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {filteredFaqs.map((faq, idx) => {
+            const isOpen = openIndex === idx;
+            return (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.03 }}
+                className={`overflow-hidden rounded-2xl bg-[#13131A] border-2 transition-all ${isOpen ? 'border-[#FF5A3C]/50' : 'border-white/10 hover:border-accent-primary/30'}`}
+                style={isOpen ? { boxShadow: '5px 5px 0 0 #FF5A3C' } : undefined}
               >
-                <span className="font-bold text-white pr-8 text-sm">{faq.q}</span>
-                {openIndex === idx ? (
-                  <Minus className="w-5 h-5 text-accent-primary shrink-0" />
-                ) : (
-                  <Plus className="w-5 h-5 text-text-secondary shrink-0" />
-                )}
-              </button>
-
-              <AnimatePresence>
-                {openIndex === idx && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="px-6 pb-6 text-sm text-text-secondary font-body leading-relaxed border-t border-white/5 pt-4 mt-2">
-                      {faq.a}
-                    </div>
+                <button
+                  onClick={() => setOpenIndex(isOpen ? null : idx)}
+                  className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
+                >
+                  <span className="font-black text-white pr-8 text-sm">{faq.q}</span>
+                  <motion.div animate={{ rotate: isOpen ? 45 : 0 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className="shrink-0">
+                    <Plus className={`w-5 h-5 ${isOpen ? 'text-[#FF5A3C]' : 'text-text-secondary'}`} />
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
+                </button>
+
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ type: 'spring', stiffness: 200, damping: 24 }}
+                    >
+                      <div className="px-6 pb-6 text-sm text-text-secondary font-body leading-relaxed border-t border-white/5 pt-4 mt-2">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
         </div>
 
         {filteredFaqs.length === 0 && (

@@ -1,22 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, X, ShieldCheck, ArrowLeft, Sparkles, MessageSquare, ArrowRight } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { PRICING } from '../../config/pricing';
 
 export default function PricingSection({ onBuyNow }) {
-  const [region, setRegion] = useState(() => {
+  // Init to 'india' on BOTH server and client to avoid hydration mismatch,
+  // then detect region on the client only.
+  const [region, setRegion] = useState('india');
+  const [selectedPlanId, setSelectedPlanId] = useState(null);
+
+  useEffect(() => {
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       if (tz && !tz.toLowerCase().includes('calcutta') && !tz.toLowerCase().includes('kolkata')) {
-        return 'international';
+        setRegion('international');
       }
     } catch {
-      // Ignore timezone detection errors
+      // ignore
     }
-    return 'india';
-  });
-  const [selectedPlanId, setSelectedPlanId] = useState(null);
+  }, []);
 
   const pricingData = PRICING[region];
 
@@ -161,15 +164,16 @@ export default function PricingSection({ onBuyNow }) {
                         <button
                           key={plan.id}
                           onClick={() => setSelectedPlanId(plan.id)}
-                          className={`group relative text-left rounded-2xl p-6 flex flex-col gap-5 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/40 hover:-translate-y-1 ${
+                          className={`group relative text-left rounded-2xl p-6 flex flex-col gap-5 transition-transform duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/40 hover:-translate-y-1 ${
                             isPro
-                              ? 'bg-gradient-to-b from-accent-primary/[0.08] to-white/[0.02] border border-accent-primary/40 shadow-[0_0_30px_rgba(198,255,52,0.10)]'
+                              ? 'bg-gradient-to-b from-accent-primary/[0.08] to-white/[0.02] border-2 border-accent-primary/50'
                               : 'bg-white/[0.02] border border-white/10 hover:border-accent-primary/30'
                           }`}
+                          style={isPro ? { boxShadow: '6px 6px 0 0 #FF5A3C' } : undefined}
                         >
                           {isPro && (
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-primary text-black px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow-md whitespace-nowrap">
-                              <Sparkles className="w-2.5 h-2.5" /> Most Popular
+                            <div className="cg-tape">
+                              <Sparkles className="w-2.5 h-2.5 inline mr-1" /> Most Popular
                             </div>
                           )}
 
