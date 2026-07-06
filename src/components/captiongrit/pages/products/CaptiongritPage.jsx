@@ -8,28 +8,19 @@ import CaptiongritFooter from '../../components/layout/CaptiongritFooter';
 // Sections
 import HeroSection from '../../components/product/HeroSection';
 import SocialProofBar from '../../components/product/SocialProofBar';
-
-import CaptionModesSection from '../../components/product/CaptionModesSection';
+import LiveDemoSection from '../../components/product/LiveDemoSection';
 import HowItWorksSection from '../../components/product/HowItWorksSection';
 import FeaturesSection from '../../components/product/FeaturesSection';
 import LanguageMarquee from '../../components/product/LanguageMarquee';
 import PricingSection from '../../components/product/PricingSection';
-import ComparisonSection from '../../components/product/ComparisonSection';
-import TestimonialsSection from '../../components/product/TestimonialsSection';
 import FaqSection from '../../components/product/FaqSection';
 import FinalCtaSection from '../../components/product/FinalCtaSection';
 import CheckoutModal from '../../components/product/CheckoutModal';
-import SectionDivider from '../../components/ui/SectionDivider';
-
-// Hidden Sections
-// import CaseStudiesSection from '../../components/product/CaseStudiesSection';
-// import AutomationWorkflowsSection from '../../components/product/AutomationWorkflowsSection';
 
 export default function LandingPage() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
-  // When clicking generic 'Buy Now' buttons, we can just scroll to pricing or open modal with a default plan
   const handleGenericBuyNow = () => {
     document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
   };
@@ -39,7 +30,6 @@ export default function LandingPage() {
     setIsCheckoutOpen(true);
   };
 
-  // Prevent background scrolling when modal is open
   useEffect(() => {
     if (isCheckoutOpen) {
       document.body.style.overflow = 'hidden';
@@ -55,27 +45,16 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col bg-bg-primary font-body text-text-primary selection:bg-accent-primary/30 selection:text-white">
       <CaptiongritNavbar onBuyNow={handleGenericBuyNow} />
 
-      <main className="flex-grow">
+      <main className="flex-grow relative z-10">
         <HeroSection onBuyNow={handleGenericBuyNow} />
         <SocialProofBar />
-        <SectionDivider direction="down" />
-
-        <CaptionModesSection />
+        <LiveDemoSection />
         <HowItWorksSection />
-        <SectionDivider direction="down" />
         <FeaturesSection />
         <LanguageMarquee />
-        <SectionDivider direction="down" />
         <PricingSection onBuyNow={handleSelectPlan} />
-        <ComparisonSection />
-        <SectionDivider direction="down" />
-        <TestimonialsSection />
         <FaqSection />
         <FinalCtaSection onBuyNow={handleGenericBuyNow} />
-
-        {/* Hidden Sections */}
-        {/* <CaseStudiesSection /> */}
-        {/* <AutomationWorkflowsSection /> */}
       </main>
 
       <CaptiongritFooter />
@@ -92,3 +71,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
