@@ -478,35 +478,17 @@ export default function CaptiongritPluginDemo() {
                     )}
                   </div>
                 </div>
-
-
-
-                {/* 8. Loop Dot indicator */}
-                <div className="flex items-center justify-center gap-2 py-1 select-none">
-                  <span className="text-[9px] text-white/25 uppercase tracking-widest font-bold font-mono">Auto-looping</span>
-                  <div className="flex gap-1">
-                    {LANGUAGES.map((_, idx) => (
-                      <div
-                        key={idx}
-                        className="w-1.5 h-1.5 rounded-full transition-colors duration-300"
-                        style={{
-                          backgroundColor: idx === currentIdx ? accentColor : '#1e1e1e',
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* 9. Control button */}
+                {/* Control button — neo-brutalist */}
                 <div className="px-4 pt-2 pb-4">
                   <button
                     onClick={() => setPaused(!paused)}
-                    className="w-full text-black font-extrabold text-xs py-3 px-4 rounded-xl tracking-wider uppercase transition-all duration-300 transform active:scale-[0.98] select-none cursor-pointer"
-                    style={{ backgroundColor: accentColor }}
+                    className="cg-brut w-full text-black font-black text-xs py-3 px-4 rounded-xl tracking-wider uppercase select-none cursor-pointer"
+                    style={{ backgroundColor: accentColor, boxShadow: '4px 4px 0 0 #3B82F6' }}
                   >
                     {paused ? '▶ Resume Demo' : '⏸ Pause Demo'}
                   </button>
                 </div>
+
 
               </div>
           </div>
