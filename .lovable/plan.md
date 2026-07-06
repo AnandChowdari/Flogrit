@@ -1,88 +1,100 @@
-# Captiongrit v2 tweaks — Blue swap + polish
+# Captiongrit — Calm Linear-style Redesign
 
-## 1. Coral → Blue
+## What's wrong right now
+- Home view is packed: hero text + big rotated demo + floating badge + trust chips + underline squiggle all fight for attention.
+- The neo-brutalist sticker vocabulary (blue offset shadows on Buy Now, rotated tape badges, hand-drawn coral/blue underline, rotated demo card) reads as immature next to a premium plugin.
+- Live demo mock is busy and doesn't feel like the real Adobe panel.
+- Blue is used as a *decoration* (shadows, tape) instead of as a *highlight* for meaning.
 
-Global find-and-replace of the coral accent with a vibrant blue that harmonizes with lime.
+## Direction
+Move from "playful sticker" → "calm engineered product page" (Linear / Mercury / Framer register). Lime + blue stay, but their **role** changes: lime is the primary product accent, blue is used sparingly as a semantic highlight on key words ("seconds", "one‑time", "24 languages"). Backgrounds carry a soft lime→blue gradient wash for the premium feel.
 
-- Old: `#FF5A3C` (coral) / `#FF7A5C`
-- New: `**#3B82F6**` (vivid blue, primary playful accent) / `**#60A5FA**` (soft)
-- Token rename: `--color-cg-coral` → `--color-cg-blue` (keep the old name as alias for one commit so nothing breaks mid-refactor, then rename call sites)
-- Every place currently painted coral (sticker shadows, "Pro only" badge, tape badge on Pro plan, hero underline SVG, hero "Live Demo" badge, navbar dot, FAQ open state, testimonial ring, comparison highlights) picks up blue.
-- Coral radial in `.captiongrit-container::before` → blue radial.
-- The lime + blue combo lands the same "sport tech / toy" energy without competing with lime like coral did.
+## 1. Kill the sticker layer (global)
+- Remove `.cg-brut` hard offset shadows, rotated tape badges, `cg-underline-coral` squiggle SVG, `-rotate-*` transforms on chips/cards, and the "Live Demo" floating tab.
+- Replace with: flat rounded buttons, 1px hairline borders (`white/8`), soft shadows (`shadow-[0_1px_0_0_rgba(255,255,255,0.05)_inset,0_20px_60px_-30px_rgba(198,255,52,0.25)]`), and quiet hover states (subtle brightness/translate-y-[1px]).
+- Buttons: primary = solid lime on ink, no offset shadow; secondary = ghost with hairline border. Both get a gentle lime glow on hover, not a clunk.
 
-## 2. Hero plugin demo — kill the scrollbars
+## 2. Blue as a highlight token, not a shadow
+- Introduce `.cg-hl` utility: `color: #60A5FA; font-weight: inherit;` — used inline on 1–2 words per headline max.
+- Hero: "Don't waste hours. Create captions in <span class="cg-hl">seconds</span>."
+- Pricing header, Features header, FAQ header: same pattern — one blue word.
+- Remove blue from Buy Now shadow, Pro badge background, navbar dot, ambient radial. Those revert to lime or neutral.
 
-Root cause: the right-side CEP panel stacks 9 sub-components inside a fixed 550px column, forcing vertical scroll. There is also a redundant caption-log inner scroll.
+## 3. Premium gradient background
+- Body: base `#0B0B0F` ink.
+- Add a single soft radial: lime (top‑left, 15% opacity, 900px blur) blending into blue (bottom‑right, 10%, 900px blur) — one layer, page-wide, fixed. This is the Lovable/Linear "aurora" feel.
+- Kill per-section colored blobs.
 
-Trim to 5 essentials so it fits in one frame:
+## 4. Home view (above the fold) — breathe
+Restructure hero to a **single-column, centered, narrow** layout:
 
-Keep: Source Language cycle · Selected Clip · Status bar · Caption Output list · Pause/Resume button.
+```text
+        [ small pill: v1.0 · Adobe Premiere + After Effects ]
 
-Remove (redundant with the left timeline/monitor):
+              Don't waste hours.
+        Create captions in seconds.          ← blue highlight on "seconds"
 
-- Standalone Audio Waveform panel (already shown on the left timeline)
-- Progress-steps 4-segment line (status text already communicates step)
-- Auto-looping dot indicator (source-language cycle already highlights current)
+           [one-line subhead, muted, max-w-xl]
 
-Merge: STT / AI / Output pills collapse into a single mono line under the status bar (`Deepgram · Groq Llama · Native`), one row, no wrap.
+        [ Buy Now — from ₹399 ]   [ See how it works ]
 
-Also:
-
-- Remove `overflow-y-auto` on the outer right-panel container; give the caption-log a fixed height that fits (~5 lines, no scroll — captions auto-cycle anyway).
-- Cap the entire demo height at `540px` on desktop so nothing spills.
-
-Left side stays as-is.
-
-## 3. "Pro only" badge is masked
-
-The AI Verification Pass card has `overflow-hidden` on its container, which clips the `-top-2` badge. Fix by removing `overflow-hidden` from feature cards (or moving the badge inside the padding with a small inline sticker instead of a floating tab). Going with **inline sticker** — a small blue pill inside the card next to the title — so it always renders regardless of card clipping.
-
-## 4. LanguageMarquee — Roman + native script pairs
-
-Currently chips show one Roman/English name per chip. Replace with dual-script chips:
-
-```
-Hindi हिन्दी    Telugu తెలుగు    Tamil தமிழ்    Kannada ಕನ್ನಡ
-Malayalam മലയാളം    Marathi मराठी    Bengali বাংলা
-Gujarati ગુજરાતી    Punjabi ਪੰਜਾਬੀ    Odia ଓଡ଼ିଆ
+            ·  one-time  ·  24 languages  ·  Win + Mac  ·
 ```
 
-Non-Indian languages (English, Spanish, French, German, Japanese, Korean, Arabic, etc.) also get their native form where meaningful (`Japanese 日本語`, `Korean 한국어`, `Arabic العربية`, `Russian Русский`, `Chinese 中文`). Latin-script European languages that already read the same either get their native spelling (`Français`, `Español`, `Português`, `Deutsch`) or stay single.
+- No demo in the hero. The demo moves to its own dedicated section below the fold with proper framing.
+- Trust items become a single thin inline row with `·` separators — not chips.
+- Vertical rhythm: `pt-32 pb-40`, generous whitespace.
 
-Chip layout: Roman on left in bold, native script on right in a lighter weight and slightly smaller — same chip, no extra space cost.
+## 5. Redesign the "live demo" section
+- Give it its own section titled "See it work inside Premiere Pro."
+- Replace the current 9-widget mock with a **still, high-fidelity Adobe panel screenshot mock** (dark panel, real-looking dropdown for language, one "Generate Captions" lime button, one clean caption preview line). Static > animated for calm.
+- Frame it inside a realistic browser/app chrome (three dots, title bar) with soft shadow. No rotation, no floating badges.
+- One subtle motion: caption line typewriters in once on scroll, then rests.
 
-## 5. Neo-brutalist button press feel
+## 6. Thin the home page (defer content down or into sub-pages)
+Current order = 12 sections stacked. New order, tightened:
 
-New `.cg-brut` utility applied to every meaningful button (Hero Buy Now, Hero secondary, Final CTA both buttons, Navbar Buy Now, Pricing plan cards' "View details" hover state, Pricing Buy Now inside detail view, Comparison CTA if any, plugin demo Pause/Resume).
+1. Hero (new, minimal)
+2. Logo/social proof strip (thinner, one line)
+3. Live demo section (new)
+4. How it works (3 steps, horizontal, icon+label only)
+5. Features (6 → 4 cards, one-line each, icon on left)
+6. Languages (marquee stays, but muted — no rotated chips)
+7. Pricing (kept, but cards flattened — see below)
+8. FAQ (accordion, tighter)
+9. Final CTA (single line + button, no giant panel)
 
-Behavior:
+Cut from home (move to standalone routes or delete):
+- `CaptionModesSection` → merge one line into Features.
+- `ComparisonSection` → move to `/captiongrit/compare` route or delete.
+- `TestimonialsSection` → keep only 1 quote inline above pricing, drop the section.
 
-- Rest: solid color, hard 6px offset shadow in a contrasting color
-- Hover: translate `-2px, -2px`, shadow grows to 8px offset (button "lifts")
-- Active: translate `+3px, +3px`, shadow collapses to 0 (button "clicks into" the shadow)
-- No transition on active — instant snap for tactile feel; smooth spring on hover release
+## 7. Pricing cards — flatten
+- Remove sticker shadow, rotated "Most Popular" tape, blue Pro badge.
+- Cards: hairline border, 1px, `bg-white/[0.02]`. Featured card gets a lime hairline + soft lime glow, nothing more.
+- "Pro only" AI Verification badge → small inline lime pill next to feature name, not a floating tab.
+- Buy button inside each card: flat lime on featured, ghost on others.
 
-This replaces `cg-squish` where a brutalist press is more appropriate. Non-button links (nav links, breadcrumbs) keep the subtle hover.
+## 8. Typography & spacing pass
+- Hero H1: drop from 4.5rem → `clamp(2.5rem, 5vw, 4rem)`, tighter tracking `-0.03em`, weight 700 not 900.
+- Section headers: 2.5rem, weight 600, one blue word max.
+- Body: `text-white/70`, `leading-[1.7]`.
+- Section padding: `py-28 sm:py-32` uniformly.
 
-## Files touched
+## Files to touch
+- `src/styles.css` — remove `.cg-brut`, `.cg-underline-coral`, sticker shadows, coral radial; add `.cg-hl`, aurora background, hairline utilities.
+- `src/components/captiongrit/components/product/HeroSection.jsx` — rebuild as centered single-column, remove demo, remove chips.
+- New `src/components/captiongrit/components/product/LiveDemoSection.jsx` — quiet Adobe-panel mock.
+- `src/components/captiongrit/components/product/CaptiongritPluginDemo.jsx` — replace with static mock (or delete + inline into LiveDemoSection).
+- `src/components/captiongrit/components/product/PricingSection.jsx` — flatten cards, fix Pro badge.
+- `src/components/captiongrit/components/product/FeaturesSection.jsx` — 4 cards, remove tape.
+- `src/components/captiongrit/components/product/LanguageMarquee.jsx` — remove rotation, quiet chips.
+- `src/components/captiongrit/components/product/FinalCtaSection.jsx` — one-line CTA.
+- `src/components/captiongrit/components/product/FaqSection.jsx` — remove blue open-state sticker.
+- `src/components/captiongrit/components/layout/CaptiongritNavbar.jsx` — remove blue dot + brut button.
+- `src/components/captiongrit/pages/products/CaptiongritPage.jsx` — new section order, drop CaptionModes/Comparison/Testimonials from home.
 
-- `src/styles.css` — swap coral tokens to blue, add `.cg-brut` utility, update `.cg-sticker-*` shadow color, radial color.
-- `src/components/captiongrit/components/product/CaptiongritPluginDemo.jsx` — trim right panel, remove inner scroll.
-- `src/components/captiongrit/components/product/FeaturesSection.jsx` — remove `overflow-hidden`, move "Pro only" badge inline.
-- `src/components/captiongrit/components/product/LanguageMarquee.jsx` — dual-script chip data.
-- `src/components/captiongrit/components/product/HeroSection.jsx` — apply `.cg-brut` to CTAs, swap coral shadow to blue.
-- `src/components/captiongrit/components/product/FinalCtaSection.jsx` — apply `.cg-brut` to both CTAs.
-- `src/components/captiongrit/components/product/PricingSection.jsx` — swap tape/shadow color; apply `.cg-brut` to Buy Now.
-- `src/components/captiongrit/components/product/FaqSection.jsx` — swap coral open-state color to blue.
-- `src/components/captiongrit/components/product/TestimonialsSection.jsx` — avatar ring blue.
-- `src/components/captiongrit/components/product/SocialProofBar.jsx` — alternating shadow color blue.
-- `src/components/captiongrit/components/layout/CaptiongritNavbar.jsx` — logo dot blue, Buy now button `.cg-brut`.
-
-## Out of scope
-
-- No content rewrites.
-- No layout restructuring beyond the plugin-demo trim.
-- No new sections.  
-  
-So I think we should keep the metadata also very clean so that we should get this website at the top if someone searches for "captiongrit". Make sure that is good if it is not products, all that stuff. If it is not fit for that, you can make it flowgrit/caption[grit.com](http://grid.com), whatever. Think about it 
+## Questions before I build
+1. **Live demo replacement** — OK with a static, screenshot-style Adobe panel mock (typewriter-in on scroll only)? Or do you want me to try one clean animation (e.g., language dropdown → click Generate → caption line appears, once, then stops)?
+2. **Sections to drop from home** — OK to remove CaptionModes, Comparison, and the full Testimonials section from the home page? (Comparison + Testimonials could live on `/captiongrit/compare` and inline as a single quote.)
+3. **Playful tone** — full removal (no rotations, no sticker shadows, no hand-drawn underline anywhere), correct?
