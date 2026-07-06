@@ -1,22 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, X, ShieldCheck, ArrowLeft, Sparkles, MessageSquare, ArrowRight } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { PRICING } from '../../config/pricing';
 
 export default function PricingSection({ onBuyNow }) {
-  const [region, setRegion] = useState(() => {
+  // Init to 'india' on BOTH server and client to avoid hydration mismatch,
+  // then detect region on the client only.
+  const [region, setRegion] = useState('india');
+  const [selectedPlanId, setSelectedPlanId] = useState(null);
+
+  useEffect(() => {
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       if (tz && !tz.toLowerCase().includes('calcutta') && !tz.toLowerCase().includes('kolkata')) {
-        return 'international';
+        setRegion('international');
       }
     } catch {
-      // Ignore timezone detection errors
+      // ignore
     }
-    return 'india';
-  });
-  const [selectedPlanId, setSelectedPlanId] = useState(null);
+  }, []);
 
   const pricingData = PRICING[region];
 
