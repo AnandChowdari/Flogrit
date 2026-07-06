@@ -169,7 +169,7 @@ export default function PricingSection({ onBuyNow }) {
                               ? 'bg-gradient-to-b from-accent-primary/[0.08] to-white/[0.02] border-2 border-accent-primary/50'
                               : 'bg-white/[0.02] border border-white/10 hover:border-accent-primary/30'
                           }`}
-                          style={isPro ? { boxShadow: '6px 6px 0 0 #FF5A3C' } : undefined}
+                          style={isPro ? { boxShadow: '6px 6px 0 0 #3B82F6' } : undefined}
                         >
                           {isPro && (
                             <div className="cg-tape">

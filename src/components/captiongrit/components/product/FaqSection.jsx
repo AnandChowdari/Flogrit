@@ -70,8 +70,8 @@ export default function FaqSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.03 }}
-                className={`overflow-hidden rounded-2xl bg-[#13131A] border-2 transition-all ${isOpen ? 'border-[#FF5A3C]/50' : 'border-white/10 hover:border-accent-primary/30'}`}
-                style={isOpen ? { boxShadow: '5px 5px 0 0 #FF5A3C' } : undefined}
+                className={`overflow-hidden rounded-2xl bg-[#13131A] border-2 transition-all ${isOpen ? 'border-[#3B82F6]/50' : 'border-white/10 hover:border-accent-primary/30'}`}
+                style={isOpen ? { boxShadow: '5px 5px 0 0 #3B82F6' } : undefined}
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
@@ -79,7 +79,7 @@ export default function FaqSection() {
                 >
                   <span className="font-black text-white pr-8 text-sm">{faq.q}</span>
                   <motion.div animate={{ rotate: isOpen ? 45 : 0 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className="shrink-0">
-                    <Plus className={`w-5 h-5 ${isOpen ? 'text-[#FF5A3C]' : 'text-text-secondary'}`} />
+                    <Plus className={`w-5 h-5 ${isOpen ? 'text-[#3B82F6]' : 'text-text-secondary'}`} />
                   </motion.div>
                 </button>
 

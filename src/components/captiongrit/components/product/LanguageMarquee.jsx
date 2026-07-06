@@ -20,7 +20,7 @@ export default function LanguageMarquee() {
           return (
             <div
               key={idx}
-              className={`inline-flex items-center justify-center px-6 py-2.5 mx-2 rounded-xl border-2 border-white/10 bg-[#13131A] text-white/80 font-black text-sm whitespace-nowrap hover:border-[#FF5A3C]/60 hover:text-white hover:rotate-0 transition-all transform ${rot}`}
+              className={`inline-flex items-center justify-center px-6 py-2.5 mx-2 rounded-xl border-2 border-white/10 bg-[#13131A] text-white/80 font-black text-sm whitespace-nowrap hover:border-[#3B82F6]/60 hover:text-white hover:rotate-0 transition-all transform ${rot}`}
             >
               {lang}
             </div>
