@@ -1,100 +1,87 @@
-# Captiongrit — Calm Linear-style Redesign
 
-## What's wrong right now
-- Home view is packed: hero text + big rotated demo + floating badge + trust chips + underline squiggle all fight for attention.
-- The neo-brutalist sticker vocabulary (blue offset shadows on Buy Now, rotated tape badges, hand-drawn coral/blue underline, rotated demo card) reads as immature next to a premium plugin.
-- Live demo mock is busy and doesn't feel like the real Adobe panel.
-- Blue is used as a *decoration* (shadows, tape) instead of as a *highlight* for meaning.
+# Plan — Pricing, Looping Reels, Testimonials, Live Feel
 
-## Direction
-Move from "playful sticker" → "calm engineered product page" (Linear / Mercury / Framer register). Lime + blue stay, but their **role** changes: lime is the primary product accent, blue is used sparingly as a semantic highlight on key words ("seconds", "one‑time", "24 languages"). Backgrounds carry a soft lime→blue gradient wash for the premium feel.
+Goal: each pillar page (Attention / Conversion / Automation) gets its own dynamic pricing system inline. Attention gets a looping video gallery showing edited work. Every page picks up testimonials, scroll/hover animations, and a richer dark texture so the site feels alive instead of static.
 
-## 1. Kill the sticker layer (global)
-- Remove `.cg-brut` hard offset shadows, rotated tape badges, `cg-underline-coral` squiggle SVG, `-rotate-*` transforms on chips/cards, and the "Live Demo" floating tab.
-- Replace with: flat rounded buttons, 1px hairline borders (`white/8`), soft shadows (`shadow-[0_1px_0_0_rgba(255,255,255,0.05)_inset,0_20px_60px_-30px_rgba(198,255,52,0.25)]`), and quiet hover states (subtle brightness/translate-y-[1px]).
-- Buttons: primary = solid lime on ink, no offset shadow; secondary = ghost with hairline border. Both get a gentle lime glow on hover, not a clunk.
+## 1. Pricing data (per pillar)
 
-## 2. Blue as a highlight token, not a shadow
-- Introduce `.cg-hl` utility: `color: #60A5FA; font-weight: inherit;` — used inline on 1–2 words per headline max.
-- Hero: "Don't waste hours. Create captions in <span class="cg-hl">seconds</span>."
-- Pricing header, Features header, FAQ header: same pattern — one blue word.
-- Remove blue from Buy Now shadow, Pro badge background, navbar dot, ambient radial. Those revert to lime or neutral.
+Extend `src/lib/data.ts` with a new `pillarPricing` record keyed by pillar. Each pillar has 2–3 "tiers" (cards), and each tier has multiple **selectable quantity options** powering the dynamic card.
 
-## 3. Premium gradient background
-- Body: base `#0B0B0F` ink.
-- Add a single soft radial: lime (top‑left, 15% opacity, 900px blur) blending into blue (bottom‑right, 10%, 900px blur) — one layer, page-wide, fixed. This is the Lovable/Linear "aurora" feel.
-- Kill per-section colored blobs.
+- **Attention**
+  - *Simple Edits* — toggles: 4 / 8 / 12 / 20 videos (₹4k → ₹3.2k per video)
+  - *Precise Edits* — toggles: 4 / 8 / 12 videos (cinematic, ₹7k → ₹6.2k per video)
+  - *Content Engine retainer* — toggles: 1 / 3 / 6 months (strategy + shoot direction + posting)
+- **Conversion**
+  - *Landing page* — toggles: 1 / 3 / 5 pages (₹35k → ₹28k per page)
+  - *Full site build* — toggles: 5 / 8 / 12 pages (from ₹1.2L)
+  - *Funnel + copy system* — toggles: 1 / 2 / 3 funnels (research-backed market rates ₹60k–₹1.8L)
+- **Automation**
+  - *AI Chatbot (web + WhatsApp)* — toggles: 1 / 2 / 3 channels (₹45k → ₹95k setup + retainer)
+  - *Voice AI agent* — toggles: 500 / 1500 / 3000 mins/mo (₹25k → ₹70k)
+  - *CRM + workflow system* — toggles: Starter / Growth / Engine (₹35k / ₹75k / ₹1.4L per month)
 
-## 4. Home view (above the fold) — breathe
-Restructure hero to a **single-column, centered, narrow** layout:
+Each tier card shows: tier name, tagline, the segmented toggle, the live computed price, per-unit price, included bullets, CTA.
 
-```text
-        [ small pill: v1.0 · Adobe Premiere + After Effects ]
+## 2. Component: `<PricingMatrix pillar="…" />`
 
-              Don't waste hours.
-        Create captions in seconds.          ← blue highlight on "seconds"
+New file `src/components/pricing/PricingMatrix.tsx`.
+- Renders the tier cards for a given pillar from `pillarPricing`.
+- Each card uses local `useState` for selected option index.
+- Segmented control (pill buttons) flips the option; price + per-unit animate (Framer Motion `AnimatePresence` + numeric tween).
+- Hover: lime glow + slight lift (`shadow-[0_0_0_1px_var(--lime)/40,0_30px_60px_-20px_var(--lime)/20]`).
+- Mount on `services.attention.tsx`, `services.conversion.tsx`, `services.automation.tsx` as a new "Pricing" section.
+- Update `/pricing` page to render all three matrices stacked under section headers so the global pricing page stays consistent.
 
-           [one-line subhead, muted, max-w-xl]
+## 3. Looping reel gallery (Attention page)
 
-        [ Buy Now — from ₹399 ]   [ See how it works ]
+New `src/components/attention/ReelGallery.tsx`.
+- 6–8 cards, each is a CSS-driven looping "edit" preview: a small SVG/Canvas mock of a video player (timeline scrubber animates, waveform pulses, cut-marks flash) — no real video files needed. Uses the existing `reels` data for titles/clients/views.
+- Auto-scrolling marquee row (uses existing `@keyframes marquee`) on top, static grid below; hover pauses marquee and shows a "play" lime ring with title overlay slide-up.
+- Sits between hero and pricing on `/services/attention`.
 
-            ·  one-time  ·  24 languages  ·  Win + Mac  ·
-```
+## 4. Testimonials
 
-- No demo in the hero. The demo moves to its own dedicated section below the fold with proper framing.
-- Trust items become a single thin inline row with `·` separators — not chips.
-- Vertical rhythm: `pt-32 pb-40`, generous whitespace.
+Add `testimonials` array to `src/lib/data.ts` (6 entries, one+ tied to each pillar, with name/role/company/quote/metric).
+New `src/components/site/Testimonials.tsx`:
+- Marquee row of quote cards (infinite horizontal scroll, pauses on hover) + a featured "spotlight" card with avatar initials and metric chip.
+- Cards have subtle lime border-glow on hover and a quote-mark watermark.
+- Mounted on: home (`index.tsx`) before FinalCTA, and at the bottom of each pillar page.
 
-## 5. Redesign the "live demo" section
-- Give it its own section titled "See it work inside Premiere Pro."
-- Replace the current 9-widget mock with a **still, high-fidelity Adobe panel screenshot mock** (dark panel, real-looking dropdown for language, one "Generate Captions" lime button, one clean caption preview line). Static > animated for calm.
-- Frame it inside a realistic browser/app chrome (three dots, title bar) with soft shadow. No rotation, no floating badges.
-- One subtle motion: caption line typewriters in once on scroll, then rests.
+## 5. Live feel — animations & dark texture
 
-## 6. Thin the home page (defer content down or into sub-pages)
-Current order = 12 sections stacked. New order, tightened:
+- **Global background texture:** layer the existing `grain` utility on `<body>` plus a new fixed `@utility noise-bg` (radial vignette + faint lime/purple aurora blobs that slowly drift via `@keyframes aurora-drift`). Implemented as a single fixed `<div aria-hidden>` inside `__root.tsx`.
+- **Nav:** keep glass pill; add a soft animated lime underglow that pulses on scroll-stuck state and a hairline scanline texture inside the pill.
+- **Section reveals:** wrap each pillar service card, pricing card, testimonial, reel card with Framer Motion `whileInView` (y:24 → 0, stagger 0.06s).
+- **Hover micro-interactions:**
+  - Buttons/cards → lime ring + scale 1.02 + cursor-tracking radial highlight (CSS `--mx/--my` vars updated on `onMouseMove`).
+  - Service titles → `story-link` underline reveal.
+  - Pricing numbers → swap with motion `key={option}` for a slot-machine feel.
+- **Scroll progress bar** in nav (1px lime line) tied to `useScroll` from motion.
+- **3D tilt** on the pricing tier cards and reel cards (lightweight: `rotateX/rotateY` from pointer position, no library).
 
-1. Hero (new, minimal)
-2. Logo/social proof strip (thinner, one line)
-3. Live demo section (new)
-4. How it works (3 steps, horizontal, icon+label only)
-5. Features (6 → 4 cards, one-line each, icon on left)
-6. Languages (marquee stays, but muted — no rotated chips)
-7. Pricing (kept, but cards flattened — see below)
-8. FAQ (accordion, tighter)
-9. Final CTA (single line + button, no giant panel)
+## 6. Files
 
-Cut from home (move to standalone routes or delete):
-- `CaptionModesSection` → merge one line into Features.
-- `ComparisonSection` → move to `/captiongrit/compare` route or delete.
-- `TestimonialsSection` → keep only 1 quote inline above pricing, drop the section.
+New:
+- `src/components/pricing/PricingMatrix.tsx`
+- `src/components/attention/ReelGallery.tsx`
+- `src/components/site/Testimonials.tsx`
+- `src/components/site/AmbientBackground.tsx` (fixed aurora + grain layer)
+- `src/components/ui/TiltCard.tsx` (shared pointer-tilt wrapper)
 
-## 7. Pricing cards — flatten
-- Remove sticker shadow, rotated "Most Popular" tape, blue Pro badge.
-- Cards: hairline border, 1px, `bg-white/[0.02]`. Featured card gets a lime hairline + soft lime glow, nothing more.
-- "Pro only" AI Verification badge → small inline lime pill next to feature name, not a floating tab.
-- Buy button inside each card: flat lime on featured, ghost on others.
+Modified:
+- `src/lib/data.ts` — add `pillarPricing`, `testimonials`.
+- `src/styles.css` — `noise-bg`, `aurora-drift`, `tilt-card`, hover-glow utilities, scrollbar-progress keyframes.
+- `src/routes/__root.tsx` — mount `<AmbientBackground />`, scroll progress bar.
+- `src/routes/services.attention.tsx` — add ReelGallery + PricingMatrix + Testimonials.
+- `src/routes/services.conversion.tsx` — add PricingMatrix + Testimonials.
+- `src/routes/services.automation.tsx` — add PricingMatrix + Testimonials.
+- `src/routes/pricing.tsx` — replace static tier blocks with three `<PricingMatrix>` instances.
+- `src/routes/index.tsx` — slot Testimonials before FinalCTA.
+- `src/components/site/Nav.tsx` — scroll progress + subtle inner scanline.
 
-## 8. Typography & spacing pass
-- Hero H1: drop from 4.5rem → `clamp(2.5rem, 5vw, 4rem)`, tighter tracking `-0.03em`, weight 700 not 900.
-- Section headers: 2.5rem, weight 600, one blue word max.
-- Body: `text-white/70`, `leading-[1.7]`.
-- Section padding: `py-28 sm:py-32` uniformly.
-
-## Files to touch
-- `src/styles.css` — remove `.cg-brut`, `.cg-underline-coral`, sticker shadows, coral radial; add `.cg-hl`, aurora background, hairline utilities.
-- `src/components/captiongrit/components/product/HeroSection.jsx` — rebuild as centered single-column, remove demo, remove chips.
-- New `src/components/captiongrit/components/product/LiveDemoSection.jsx` — quiet Adobe-panel mock.
-- `src/components/captiongrit/components/product/CaptiongritPluginDemo.jsx` — replace with static mock (or delete + inline into LiveDemoSection).
-- `src/components/captiongrit/components/product/PricingSection.jsx` — flatten cards, fix Pro badge.
-- `src/components/captiongrit/components/product/FeaturesSection.jsx` — 4 cards, remove tape.
-- `src/components/captiongrit/components/product/LanguageMarquee.jsx` — remove rotation, quiet chips.
-- `src/components/captiongrit/components/product/FinalCtaSection.jsx` — one-line CTA.
-- `src/components/captiongrit/components/product/FaqSection.jsx` — remove blue open-state sticker.
-- `src/components/captiongrit/components/layout/CaptiongritNavbar.jsx` — remove blue dot + brut button.
-- `src/components/captiongrit/pages/products/CaptiongritPage.jsx` — new section order, drop CaptionModes/Comparison/Testimonials from home.
-
-## Questions before I build
-1. **Live demo replacement** — OK with a static, screenshot-style Adobe panel mock (typewriter-in on scroll only)? Or do you want me to try one clean animation (e.g., language dropdown → click Generate → caption line appears, once, then stops)?
-2. **Sections to drop from home** — OK to remove CaptionModes, Comparison, and the full Testimonials section from the home page? (Comparison + Testimonials could live on `/captiongrit/compare` and inline as a single quote.)
-3. **Playful tone** — full removal (no rotations, no sticker shadows, no hand-drawn underline anywhere), correct?
+## Technical notes
+- No new dependencies; uses already-installed `motion` and Tailwind v4 utilities.
+- All prices live in `data.ts` so they stay editable in one place.
+- Tilt + cursor-glow use pure React state + CSS vars — no perf hit.
+- Aurora background is a single fixed element with `pointer-events:none` so it never blocks clicks.
+- Respects `prefers-reduced-motion` (disables aurora drift, marquee, tilt).

@@ -1,68 +1,98 @@
 import { motion } from 'motion/react';
+import { CheckCircle2 } from 'lucide-react';
+import { fadeUpVariant, slideRightVariant } from '../../lib/motionVariants';
+import CaptiongritPluginDemo from './CaptiongritPluginDemo';
 
 export default function HeroSection({ onBuyNow }) {
+  const trustItems = [
+    "One-time payment",
+    "No subscriptions",
+    "24 languages",
+    "Works inside Adobe"
+  ];
+
   return (
-    <section className="relative pt-36 sm:pt-44 pb-28 sm:pb-40 overflow-hidden">
-      <div className="max-w-3xl mx-auto px-5 sm:px-6 relative z-10 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.03] text-[11px] font-medium tracking-wide text-white/60 mb-8"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-accent-primary" />
-          v1.0 · Adobe Premiere Pro &amp; After Effects
-        </motion.div>
+    <section className="relative pt-28 sm:pt-32 pb-16 sm:pb-24 overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-primary/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="noise-overlay" />
+      </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.05 }}
-          className="font-display font-semibold text-white leading-[1.05] tracking-[-0.03em] mb-6"
-          style={{ fontSize: 'clamp(2.5rem, 6vw, 4.25rem)' }}
-        >
-          Don&rsquo;t waste hours.<br />
-          Create captions in <span className="cg-hl">seconds</span>.
-        </motion.h1>
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-10 lg:gap-14 items-center">
+          
+          {/* Left Text */}
+          <motion.div 
+            variants={fadeUpVariant}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-col items-start"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent-primary/30 bg-accent-primary/5 text-accent-primary text-sm font-semibold mb-8">
+              <span className="w-2 h-2 rounded-full bg-accent-primary animate-pulse" />
+              Now Available — Version 1.0
+            </div>
+            
+            <h1 className="font-display text-[2.6rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] font-extrabold leading-[1.05] mb-5 text-white tracking-tight">
+              Don't waste hours.<br />
+              <span className="font-accent glow-text text-accent-primary">Create captions in seconds.</span>
+            </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="text-base sm:text-lg font-body text-white/60 leading-[1.7] mb-10 max-w-xl mx-auto"
-        >
-          AI-powered captions in 24 languages. One click, one-time license,
-          right inside Premiere Pro and After Effects.
-        </motion.p>
+            <p className="text-base md:text-lg font-body text-text-secondary leading-relaxed mb-8 max-w-xl">
+              AI-powered captions in 24 languages — One Click, One-Time License. Works inside Adobe Premiere Pro & After Effects.
+            </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-          className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-10"
-        >
-          <button onClick={onBuyNow} className="cg-btn-primary text-sm sm:text-base">
-            Buy Now — from ₹399
-          </button>
-          <a href="#how-it-works" className="cg-btn-ghost text-sm sm:text-base">
-            See how it works
-          </a>
-        </motion.div>
+            <div className="flex flex-col sm:flex-row gap-3 mb-8 w-full sm:w-auto">
+              <button
+                onClick={onBuyNow}
+                className="bg-accent-primary hover:bg-accent-secondary text-black px-7 py-3.5 rounded-xl font-bold text-base font-display transition-all shadow-[0_0_20px_rgba(198,255,52,0.2)] hover:shadow-[0_0_30px_rgba(198,255,52,0.4)] hover:-translate-y-1"
+              >
+                Buy Now — Starting at ₹399
+              </button>
+              <a
+                href="#how-it-works"
+                className="flex items-center justify-center px-7 py-3.5 rounded-xl font-bold text-base border border-white/15 hover:bg-white/5 transition-all text-white"
+              >
+                See How It Works
+              </a>
+            </div>
+            
+            <div className="flex flex-wrap gap-x-6 gap-y-3">
+              {trustItems.map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2 text-sm text-text-secondary">
+                  <CheckCircle2 className="w-4 h-4 text-accent-primary" />
+                  {item}
+                </div>
+              ))}
+            </div>
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.35 }}
-          className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[12px] text-white/45 font-mono"
-        >
-          <span>one-time purchase</span>
-          <span className="text-white/20">·</span>
-          <span><span className="cg-hl">24</span> languages</span>
-          <span className="text-white/20">·</span>
-          <span>Windows + Mac</span>
-          <span className="text-white/20">·</span>
-          <span>no subscriptions</span>
-        </motion.div>
+          {/* Right Visual: Interactive Plugin Demo */}
+          <motion.div 
+            variants={slideRightVariant}
+            initial="hidden"
+            animate="visible"
+            className="w-full flex items-center justify-center lg:justify-end"
+          >
+            <div className="relative w-full max-w-4xl transform lg:rotate-y-[-5deg] lg:rotate-x-[2deg] hover:rotate-y-0 hover:rotate-x-0 transition-transform duration-700 perspective-1000">
+              {/* Glow behind demo */}
+              <div className="absolute -inset-4 bg-accent-primary/20 rounded-3xl blur-3xl pointer-events-none" />
+              
+              {/* Demo container */}
+              <div className="relative">
+                <CaptiongritPluginDemo />
+              </div>
+              
+              {/* Floating badge */}
+              <div className="absolute -bottom-3 -right-3 bg-[#111111] border border-accent-primary/30 rounded-xl px-4 py-2 flex items-center gap-2 shadow-lg z-10">
+                <span className="w-2 h-2 rounded-full bg-accent-primary animate-pulse" />
+                <span className="text-xs font-mono text-accent-primary">Live Interactive Demo</span>
+              </div>
+            </div>
+          </motion.div>
+          
+        </div>
       </div>
     </section>
   );
