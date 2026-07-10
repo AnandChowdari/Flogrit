@@ -167,9 +167,9 @@ function CasePage() {
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.1 }}
                     key={idx} 
-                    className="flex gap-4 p-5 rounded-2xl bg-secondary/20 border border-border/50 shadow-sm"
+                    className="flex items-start gap-4 p-5 rounded-2xl bg-secondary/20 border border-border/50 shadow-sm"
                   >
-                    <span className="text-primary mt-1 shrink-0">→</span>
+                    <span className="text-primary shrink-0 leading-relaxed text-sm">→</span>
                     <span className="text-muted-foreground text-sm leading-relaxed">{bullet}</span>
                   </motion.li>
                 ))}
