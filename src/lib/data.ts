@@ -181,6 +181,7 @@ export type CaseStudy = {
   links?: ClientLinks;
   portrait?: string;
   logo?: string;
+  company?: string;
   challenge: {
     description: string;
     bullets: string[];
@@ -272,6 +273,7 @@ export const cases: CaseStudy[] = [
     },
     portrait: "/__l5e/assets-v1/772feb51-a36c-4c29-b89b-160be63e24dd/hussain-basha-portrait.png",
     logo: "/__l5e/assets-v1/554799f4-1afc-4153-b936-88104e226fb1/husle-lifestyle-logo.png",
+    company: "Husle Lifestyle",
     context: "Husain Basha is the founder of Husle Lifestyle, a business generating approximately ₹10–20 lakh in monthly recurring revenue. Despite building a successful offline business, his digital presence lacked authority. His experience wasn't visible online.",
     challenge: {
       description: "When we entered the project, the content suffered from several structural issues. The audience couldn't instantly understand who he was or why they should follow him.",
