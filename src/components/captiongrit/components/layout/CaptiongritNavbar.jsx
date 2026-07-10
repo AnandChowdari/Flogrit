@@ -18,7 +18,7 @@ export default function Navbar({ onBuyNow }) {
   return (
     <header className="fixed inset-x-0 top-3 z-50 mx-3 lg:mx-6">
       <div
-        className="relative mx-auto flex h-16 max-w-6xl items-center justify-between overflow-hidden rounded-full border border-white/10 bg-[#0c0c0f]/55 px-3 pl-4 pr-3 backdrop-blur-xl backdrop-saturate-150 lg:px-5"
+        className="relative mx-auto flex h-14 sm:h-16 max-w-6xl items-center justify-between overflow-hidden rounded-2xl sm:rounded-full border border-white/10 bg-[#0c0c0f]/55 px-3 pl-4 pr-3 backdrop-blur-xl backdrop-saturate-150 lg:px-5"
         style={{
           boxShadow:
             '0 1px 0 0 rgba(255,255,255,0.06) inset, 0 0 40px -10px rgba(198,255,52,0.22), 0 20px 50px -20px rgba(0,0,0,0.7)',
