@@ -1,46 +1,27 @@
-## Goal
+## Hero triangle refinement
 
-Two changes, both on the homepage hero and the global background:
+**1. Kill the glow on vertex circles** (`src/components/home/HeroFlowAnimation.tsx`)
+- Remove the outer radial lime gradient behind each node.
+- Remove `shadowBlur`/`shadowColor` on the solid circle fill.
+- Replace the bright lime fill with a **premium dark disc**:
+  - Fill: near-black (`#0d0d0f`) with a subtle top-to-bottom inner gradient (`#1a1a1c` → `#0a0a0b`) for depth.
+  - Border: 1px hairline in `hex(limeStr, 0.35)` for a crisp lime edge (the only accent color on the circle).
+  - Small inner highlight arc at the top (1px, white 8%) for a glassy bevel.
+  - Label inside: lime text (`limeStr`), same JetBrains Mono, uppercase, tracked out slightly.
+- Keep particle glow on the edges (that's the "life"), but drop particle `shadowBlur` from 12 → 6 so it reads cleaner against dark discs.
 
-1. Reshape the Attention / Conversion / Automation hero animation from a cramped horizontal row of glowing discs into a clean **triangle**, with the labels sitting on the triangle's edges — no filled disc "chip" behind each label, just the natural glow.
-2. Add subtle **animated gradient movement** to the site background so the page feels alive (Lovable-style ambient blobs), using the existing lime + purple palette. Cursor behavior stays as-is.
+**2. Enlarge the container so circles have breathing room**
+- Current aspect `5/4.5` is too tight — bump to `aspect-[5/5.2]` (or `min-h-[560px] lg:min-h-[640px]`) so the triangle isn't cramped and the discs sit comfortably inside.
+- Reduce vertex R slightly (`0.11` → `0.1`) and pull nodes inward (`x: 0.22/0.78`, `y: 0.3/0.78`) to guarantee margin.
 
----
+**3. "Half-square from the right" container shape**
+Reshape the glass panel so it reads like a card sliced in half and pushed off the right edge of the hero column:
+- Rounded corners **only on the left side**: `rounded-l-3xl rounded-r-none`.
+- Extend it past the right edge of its grid cell using negative right margin: `-mr-8 lg:-mr-16` (or `mr-[calc(-1*var(--container-padding))]`) so it visually bleeds off-canvas.
+- Border only on top / left / bottom (drop right border): `border-y border-l border-r-0 border-white/10`.
+- Keep the glassmorphism: `bg-white/[0.03] backdrop-blur-xl` + inset top highlight. (Yes — glassmorphism is the right term: translucent fill + blur + hairline border.)
 
-## 1. Hero flow → triangle (`src/components/home/HeroFlowAnimation.tsx`)
+**4. Verify**
+- Playwright screenshot at 1280×1800 of `/` to confirm: no lime bloom, dark premium discs with lime labels, edges + particles still animated, container half-bleeds right with left-only rounding, no overflow clipping the triangle.
 
-- Re-layout the three nodes as a triangle inside the canvas:
-  - Attention → top-left, Conversion → top-right, Automation → bottom-center (apex down). This reads left-to-right at the top and resolves downward into Automation, matching the pillar order.
-- Replace the three horizontal connectors with **three triangle edges**. Keep the animated dashed gradient stroke and flowing particles along each edge (particles now cycle around the triangle instead of a straight line).
-- **Remove the dark disc + ring background** behind each label. Keep only:
-  - a soft radial glow (lime, low alpha, gently pulsing) as the "natural glow",
-  - the label text (`ATTENTION`, `CONVERSION`, `AUTOMATION`) rendered directly on the canvas at each vertex,
-  - the small sub-labels beneath each vertex.
-- Drop the orbiting purple sub-dots (they add to the "too busy / too close" feel). Sub-labels stay as quiet text.
-- Adjust vertex positions so labels have breathing room from the canvas edges and from each other (padding ~12–15% on each side; slightly taller aspect if needed, e.g. `aspect-[5/4]` → `aspect-[4/4]` or `[5/4.5]`) so nothing feels cramped.
-- Keep the top-left "the system · attention → conversion → automation" caption and the top-right `flogrit.live` pulse.
-- Respect `prefers-reduced-motion` (already handled — keep it).
-
-## 2. Ambient gradient background (global)
-
-- Add a new component `src/components/site/AmbientBackground.tsx`: a fixed, full-viewport, `pointer-events-none`, `z -10` layer sitting behind all content, with 2–3 large blurred radial "blobs" using the brand tokens (`--color-lime`, `--color-purple`, a hint of ink). Blobs drift slowly via CSS keyframes (translate + scale, 20–40s loops, staggered), very low opacity (~8–14%) so it reads as ambient life, not decoration. Include a faint film-grain / vignette mask so it stays premium and doesn't muddy typography.
-- Mount it once in `src/routes/__root.tsx` inside `RootComponent`, above `<Outlet />`, so every route inherits it.
-- Remove the local `BackgroundGrid` from `HeroSection` (or keep it but lower its opacity) so the hero doesn't double up on background texture. Recommended: keep the grid, since it defines the hero, and let the ambient gradient live behind everything else — the grid's radial mask will let the gradient show through subtly.
-- Honor `prefers-reduced-motion`: pause the drift animation.
-- No JS on scroll/pointer — pure CSS keyframes for performance.
-
-## 3. Verification
-
-- Playwright screenshot of `/` at 1280×1800 and 390×844 to confirm:
-  - triangle layout reads clearly, labels are legible, no dark discs, glow feels natural, nothing is cramped.
-  - ambient gradient is visible but subtle across home + one inner route.
-- Check console for errors.
-
-## Files touched
-
-- `src/components/home/HeroFlowAnimation.tsx` — rewrite layout + node rendering.
-- `src/components/site/AmbientBackground.tsx` — new.
-- `src/routes/__root.tsx` — mount `<AmbientBackground />`.
-- `src/styles.css` — add the two/three drift keyframes + utility classes for the blobs.
-
-No copy, routing, or data changes.
+Only `HeroFlowAnimation.tsx` changes.
