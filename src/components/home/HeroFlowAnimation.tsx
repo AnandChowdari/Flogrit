@@ -258,7 +258,7 @@ export function HeroFlowAnimation() {
   return (
     <div
       ref={wrapRef}
-      className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+      className="relative h-full w-full min-h-[280px] lg:min-h-0 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
     >
       {/* Ambient glow, CSS only — matches the rest of the page's background glow */}
       <div
