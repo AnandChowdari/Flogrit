@@ -6,21 +6,33 @@ type Node = {
   y: number;
   label: string;
   sub: string[];
+  subAlign: "left" | "center" | "right";
 };
 
+// Triangle: Attention top-left, Conversion top-right, Automation bottom-center.
 const NODES: Node[] = [
   {
-    x: 0.18, y: 0.5, label: "ATTENTION",
+    x: 0.2, y: 0.28, label: "ATTENTION",
     sub: ["Content strategy", "Video & motion", "Brand"],
+    subAlign: "left",
   },
   {
-    x: 0.5, y: 0.5, label: "CONVERSION",
+    x: 0.8, y: 0.28, label: "CONVERSION",
     sub: ["Websites", "Funnels", "Copy"],
+    subAlign: "right",
   },
   {
-    x: 0.82, y: 0.5, label: "AUTOMATION",
+    x: 0.5, y: 0.82, label: "AUTOMATION",
     sub: ["AI agents", "CRM workflows", "Reporting"],
+    subAlign: "center",
   },
+];
+
+// Triangle edges as (from,to) pairs — closed loop.
+const EDGES: Array<[number, number]> = [
+  [0, 1], // Attention → Conversion
+  [1, 2], // Conversion → Automation
+  [2, 0], // Automation → Attention
 ];
 
 export function HeroFlowAnimation() {
@@ -40,7 +52,6 @@ export function HeroFlowAnimation() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-
     let w = 0, h = 0, dpr = 1;
     const resize = () => {
       const rect = wrap.getBoundingClientRect();
@@ -58,22 +69,21 @@ export function HeroFlowAnimation() {
     const ro = new ResizeObserver(resize);
     ro.observe(wrap);
 
-    // Particles flowing between nodes
-    type P = { seg: number; t: number; speed: number; size: number; hue: "lime" | "purple" };
+    // Particles flowing around the triangle edges.
+    type P = { edge: number; t: number; speed: number; size: number; hue: "lime" | "purple" };
     const particles: P[] = [];
-    const SEG_COUNT = NODES.length - 1;
     const spawn = (n = 1) => {
       for (let i = 0; i < n; i++) {
         particles.push({
-          seg: Math.floor(Math.random() * SEG_COUNT),
+          edge: Math.floor(Math.random() * EDGES.length),
           t: Math.random(),
-          speed: 0.0025 + Math.random() * 0.004,
-          size: 0.8 + Math.random() * 2.2,
-          hue: Math.random() > 0.35 ? "lime" : "purple",
+          speed: 0.0022 + Math.random() * 0.0038,
+          size: 0.8 + Math.random() * 2.0,
+          hue: Math.random() > 0.4 ? "lime" : "purple",
         });
       }
     };
-    spawn(reduced ? 20 : 90);
+    spawn(reduced ? 24 : 110);
 
     let visible = true;
     const io = new IntersectionObserver((entries) => {
@@ -90,23 +100,23 @@ export function HeroFlowAnimation() {
     }
 
     function draw() {
-      tRef.current += reduced ? 0.002 : 0.01;
+      tRef.current += reduced ? 0.002 : 0.009;
       const t = tRef.current;
 
-      // bg wash
       ctx.clearRect(0, 0, w, h);
 
-      // connector lines
-      for (let i = 0; i < NODES.length - 1; i++) {
-        const a = pos(NODES[i]);
-        const b = pos(NODES[i + 1]);
+      // Triangle edges — animated dashed gradient.
+      for (let i = 0; i < EDGES.length; i++) {
+        const [ai, bi] = EDGES[i];
+        const a = pos(NODES[ai]);
+        const b = pos(NODES[bi]);
         const grad = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
-        grad.addColorStop(0, hex(limeStr, 0.45));
-        grad.addColorStop(1, hex(purpleStr, 0.35));
+        grad.addColorStop(0, hex(limeStr, 0.5));
+        grad.addColorStop(1, hex(purpleStr, 0.4));
         ctx.strokeStyle = grad;
-        ctx.lineWidth = 1.2;
+        ctx.lineWidth = 1.25;
         ctx.setLineDash([4, 6]);
-        ctx.lineDashOffset = -t * 30;
+        ctx.lineDashOffset = -t * 30 + i * 12;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
@@ -114,14 +124,22 @@ export function HeroFlowAnimation() {
         ctx.setLineDash([]);
       }
 
-      // particles
+      // Particles along edges.
       for (const p of particles) {
         p.t += p.speed;
-        if (p.t > 1) { p.t = 0; p.seg = (p.seg + 1) % SEG_COUNT; }
-        const a = pos(NODES[p.seg]);
-        const b = pos(NODES[p.seg + 1]);
-        const x = a.x + (b.x - a.x) * p.t;
-        const y = a.y + (b.y - a.y) * p.t + Math.sin(t * 2 + p.seg + p.t * 6) * 6;
+        if (p.t > 1) { p.t = 0; p.edge = (p.edge + 1) % EDGES.length; }
+        const [ai, bi] = EDGES[p.edge];
+        const a = pos(NODES[ai]);
+        const b = pos(NODES[bi]);
+        // Perpendicular jitter along the edge for organic feel.
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const len = Math.hypot(dx, dy) || 1;
+        const nx = -dy / len;
+        const ny = dx / len;
+        const wobble = Math.sin(t * 2 + p.edge + p.t * 6) * 4;
+        const x = a.x + dx * p.t + nx * wobble;
+        const y = a.y + dy * p.t + ny * wobble;
         const color = p.hue === "lime" ? limeStr : purpleStr;
         ctx.fillStyle = hex(color, 0.85);
         ctx.shadowColor = color;
@@ -132,70 +150,53 @@ export function HeroFlowAnimation() {
       }
       ctx.shadowBlur = 0;
 
-      // big nodes — glow + ring
+      // Vertex glow — no discs, just natural radial light.
       NODES.forEach((n, i) => {
         const p = pos(n);
-        const phase = (Math.sin(t * 1.3 + i * 1.7) + 1) / 2;
-        const r = 44 + phase * 6;
-
-        // outer glow
-        const g = ctx.createRadialGradient(p.x, p.y, r * 0.4, p.x, p.y, r * 2.4);
-        g.addColorStop(0, hex(limeStr, 0.35 * phase + 0.15));
+        const phase = (Math.sin(t * 1.1 + i * 1.7) + 1) / 2;
+        const r = 96 + phase * 14;
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+        g.addColorStop(0, hex(limeStr, 0.35 * phase + 0.18));
+        g.addColorStop(0.55, hex(limeStr, 0.06));
         g.addColorStop(1, hex(limeStr, 0));
         ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, r * 2.4, 0, Math.PI * 2);
-        ctx.fill();
-
-        // disc
-        ctx.fillStyle = hex("#121212", 0.95);
-        ctx.strokeStyle = hex(limeStr, 0.85);
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
         ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
         ctx.fill();
-        ctx.stroke();
 
-        // inner ring
-        ctx.strokeStyle = hex(limeStr, 0.25);
-        ctx.lineWidth = 1;
+        // tiny bright core dot to anchor the vertex on the triangle edge
+        ctx.fillStyle = hex(limeStr, 0.9);
+        ctx.shadowColor = limeStr;
+        ctx.shadowBlur = 10;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, r - 8, 0, Math.PI * 2);
-        ctx.stroke();
-
-        // orbiting subs
-        n.sub.forEach((_, j) => {
-          const ang = t * (0.4 + i * 0.1) + (j / n.sub.length) * Math.PI * 2;
-          const orbR = r + 22;
-          const sx = p.x + Math.cos(ang) * orbR;
-          const sy = p.y + Math.sin(ang) * orbR * 0.55;
-          ctx.fillStyle = hex(purpleStr, 0.75);
-          ctx.shadowColor = purpleStr;
-          ctx.shadowBlur = 6;
-          ctx.beginPath();
-          ctx.arc(sx, sy, 3, 0, Math.PI * 2);
-          ctx.fill();
-        });
+        ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+        ctx.fill();
         ctx.shadowBlur = 0;
       });
 
-      // labels on top of discs
-      ctx.textAlign = "center";
+      // Labels sitting on the edge (above vertex).
       ctx.textBaseline = "middle";
       NODES.forEach((n) => {
         const p = pos(n);
-        ctx.fillStyle = hex(cream, 0.95);
-        ctx.font = "600 11px 'JetBrains Mono Variable', monospace";
-        ctx.fillText(n.label, p.x, p.y);
+        ctx.textAlign = "center";
+        // label background clear text — no chip
+        ctx.fillStyle = hex(cream, 0.96);
+        ctx.font = "600 12px 'JetBrains Mono Variable', monospace";
+        const labelOffset = n.subAlign === "center" ? 22 : -20;
+        ctx.fillText(n.label, p.x, p.y + labelOffset);
       });
 
-      // sub labels below each node
+      // Sub-labels: aligned outward so they don't collide with triangle edges.
       ctx.font = "10px 'Inter Tight', sans-serif";
       ctx.fillStyle = hex(cream, 0.55);
       NODES.forEach((n) => {
         const p = pos(n);
+        ctx.textAlign = n.subAlign;
+        const baseY = n.subAlign === "center" ? p.y + 40 : p.y - 4;
+        const dir = n.subAlign === "center" ? 1 : 1;
+        const xOff = n.subAlign === "left" ? -14 : n.subAlign === "right" ? 14 : 0;
         n.sub.forEach((s, j) => {
-          ctx.fillText(s, p.x, p.y + 64 + j * 14);
+          ctx.fillText(s, p.x + xOff, baseY + (n.subAlign === "center" ? j * 14 : j * 14) * dir);
         });
       });
 
@@ -215,7 +216,7 @@ export function HeroFlowAnimation() {
   return (
     <div
       ref={wrapRef}
-      className="relative aspect-[5/4] w-full overflow-hidden rounded-2xl border border-border bg-card grain"
+      className="relative aspect-[5/4.5] w-full overflow-hidden rounded-2xl border border-border bg-card grain"
       aria-hidden="true"
     >
       <canvas ref={canvasRef} className="absolute inset-0" />
@@ -234,7 +235,6 @@ function getCss(name: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
-// rgba with alpha — accepts oklch() string by drawing through a temp canvas-friendly fallback
 function hex(c: string, a: number): string {
   if (!c) return `rgba(198, 255, 52, ${a})`;
   if (c.startsWith("#")) {
@@ -243,9 +243,6 @@ function hex(c: string, a: number): string {
       : [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)];
     return `rgba(${n[0]}, ${n[1]}, ${n[2]}, ${a})`;
   }
-  // oklch/oklab/etc — wrap in color-mix via canvas isn't possible; fall back to using the string directly
-  // browsers accept oklch() in fillStyle, so blend alpha through globalAlpha-style usage instead
-  // simplest: append slash alpha for oklch()
   if (c.startsWith("oklch(") || c.startsWith("oklab(")) {
     return c.replace(/\)$/, ` / ${a})`);
   }
