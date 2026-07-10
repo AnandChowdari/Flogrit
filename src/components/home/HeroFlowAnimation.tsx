@@ -213,7 +213,7 @@ export function HeroFlowAnimation() {
   return (
     <div
       ref={wrapRef}
-      className="relative aspect-[5/5.2] w-full overflow-hidden rounded-l-3xl rounded-r-none border border-r-0 border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] -mr-6 lg:-mr-16"
+      className="relative aspect-[5/5.2] w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
       aria-hidden="true"
     >
       <canvas ref={canvasRef} className="absolute inset-0" />
