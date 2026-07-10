@@ -179,6 +179,8 @@ export type CaseStudy = {
   oneLine: string;
   context: string;
   links?: ClientLinks;
+  portrait?: string;
+  logo?: string;
   challenge: {
     description: string;
     bullets: string[];
