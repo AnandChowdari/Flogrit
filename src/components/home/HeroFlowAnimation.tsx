@@ -12,17 +12,17 @@ type Node = {
 // Triangle: Attention top-left, Conversion top-right, Automation bottom-center.
 const NODES: Node[] = [
   {
-    x: 0.2, y: 0.28, label: "ATTENTION",
+    x: 0.22, y: 0.3, label: "ATTENTION",
     sub: ["Content strategy", "Video & motion", "Brand"],
     subAlign: "left",
   },
   {
-    x: 0.8, y: 0.28, label: "CONVERSION",
+    x: 0.78, y: 0.3, label: "CONVERSION",
     sub: ["Websites", "Funnels", "Copy"],
     subAlign: "right",
   },
   {
-    x: 0.5, y: 0.82, label: "AUTOMATION",
+    x: 0.5, y: 0.78, label: "AUTOMATION",
     sub: ["AI agents", "CRM workflows", "Reporting"],
     subAlign: "center",
   },
