@@ -232,11 +232,20 @@ function CasePage() {
                     <img 
                       src={`https://cdn.simpleicons.org/${tech.iconSlug}/white`} 
                       alt={tech.name} 
+                      loading="lazy"
                       className="w-5 h-5 opacity-70 group-hover:opacity-100 group-hover:[filter:drop-shadow(0_0_8px_var(--color-lime))] transition-all"
+                      onError={(e) => {
+                        const img = e.currentTarget as HTMLImageElement;
+                        img.style.display = 'none';
+                        const dot = img.nextElementSibling as HTMLElement | null;
+                        if (dot) dot.style.display = 'inline-block';
+                      }}
                     />
-                  ) : (
-                    <span className="w-2 h-2 rounded-full bg-primary opacity-50 group-hover:opacity-100"></span>
-                  )}
+                  ) : null}
+                  <span
+                    className="w-2 h-2 rounded-full bg-primary opacity-70 group-hover:opacity-100"
+                    style={{ display: tech.iconSlug ? 'none' : 'inline-block' }}
+                  />
                   <span className="font-medium text-sm text-foreground/80 group-hover:text-foreground">{tech.name}</span>
                   
                   {/* Tooltip */}
