@@ -288,7 +288,7 @@ function CasePage() {
               <h2 className="font-mono text-sm uppercase tracking-[0.2em] text-muted-foreground">The Results</h2>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className={`grid gap-6 ${c.metric.length >= 4 ? 'grid-cols-2 md:grid-cols-4' : c.metric.length === 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'}`}>
               {c.metric.map((m, idx) => (
                 <motion.div
                   key={idx}
