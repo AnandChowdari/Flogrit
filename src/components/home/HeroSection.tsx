@@ -1,12 +1,13 @@
 import { motion } from "motion/react";
 import { Link } from "@tanstack/react-router";
+import { HeroFlowAnimation } from "./HeroFlowAnimation";
 import { ArrowUpRight } from "lucide-react";
 
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden border-b border-border">
       <BackgroundGrid />
-      <div className="mx-auto max-w-3xl px-5 py-20 lg:px-8 lg:py-28">
+      <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:px-8 lg:py-28">
         <div className="relative z-10 flex flex-col justify-center">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -78,6 +79,14 @@ export function HeroSection() {
           </motion.dl>
         </div>
 
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.15 }}
+          className="relative z-10"
+        >
+          <HeroFlowAnimation />
+        </motion.div>
       </div>
     </section>
   );
