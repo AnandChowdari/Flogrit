@@ -49,22 +49,37 @@ function CasePage() {
           </Link>
           
           <div className="mt-12 flex flex-wrap items-center gap-4">
-            {/* Logo placeholder */}
-            <div className="w-12 h-12 rounded-xl bg-secondary/50 border border-border flex items-center justify-center shadow-sm">
-              <span className="font-display font-bold text-lg text-primary">{c.client.charAt(0)}</span>
-            </div>
-            <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground flex items-center gap-2">
-                {c.industry} <span className="w-1 h-1 rounded-full bg-border"></span> {p.label}
-              </p>
-              <div className="mt-2 flex items-center gap-3">
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-widest border ${
-                  c.status === "Real Client" 
-                    ? "bg-primary/10 text-primary border-primary/20" 
-                    : "bg-secondary/50 text-muted-foreground border-border"
-                }`}>
-                  {c.status}
-                </span>
+            {/* Company logo or initial-letter fallback */}
+            {c.logo ? (
+              <div className="w-14 h-14 rounded-xl bg-white/95 border border-border flex items-center justify-center shadow-sm p-1.5 overflow-hidden">
+                <img src={c.logo} alt={`${c.client} logo`} className="w-full h-full object-contain" />
+              </div>
+            ) : (
+              <div className="w-12 h-12 rounded-xl bg-secondary/50 border border-border flex items-center justify-center shadow-sm">
+                <span className="font-display font-bold text-lg text-primary">{c.client.charAt(0)}</span>
+              </div>
+            )}
+            <div className="flex items-center gap-3">
+              {c.portrait && (
+                <img
+                  src={c.portrait}
+                  alt={c.client}
+                  className="w-12 h-12 rounded-full object-cover border border-border shadow-sm"
+                />
+              )}
+              <div>
+                <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground flex items-center gap-2">
+                  {c.industry} <span className="w-1 h-1 rounded-full bg-border"></span> {p.label}
+                </p>
+                <div className="mt-2 flex items-center gap-3">
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-widest border ${
+                    c.status === "Real Client"
+                      ? "bg-primary/10 text-primary border-primary/20"
+                      : "bg-secondary/50 text-muted-foreground border-border"
+                  }`}>
+                    {c.status}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
