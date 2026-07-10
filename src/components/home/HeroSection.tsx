@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
 import { Link } from "@tanstack/react-router";
-import { HeroFlowAnimation } from "./HeroFlowAnimation";
 import { ArrowUpRight } from "lucide-react";
 
 export function HeroSection() {
