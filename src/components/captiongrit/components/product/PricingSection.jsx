@@ -1,22 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, X, ShieldCheck, ArrowLeft, Sparkles, MessageSquare, ArrowRight } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { PRICING } from '../../config/pricing';
 
 export default function PricingSection({ onBuyNow }) {
-  const [region, setRegion] = useState(() => {
+  // Deterministic SSR default; detect region only after mount to avoid hydration mismatch.
+  const [region, setRegion] = useState('international');
+  const [selectedPlanId, setSelectedPlanId] = useState(null);
+
+  useEffect(() => {
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      if (tz && !tz.toLowerCase().includes('calcutta') && !tz.toLowerCase().includes('kolkata')) {
-        return 'international';
+      if (tz && (tz.toLowerCase().includes('calcutta') || tz.toLowerCase().includes('kolkata'))) {
+        setRegion('india');
       }
     } catch {
       // Ignore timezone detection errors
     }
-    return 'india';
-  });
-  const [selectedPlanId, setSelectedPlanId] = useState(null);
+  }, []);
 
   const pricingData = PRICING[region];
 
