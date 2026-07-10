@@ -50,7 +50,7 @@ export default function Navbar({ onBuyNow }) {
             <img
               src="/captiongrit-logo.svg"
               alt="Captiongrit"
-              className="h-8 w-8 object-contain transition-transform group-hover:scale-110 md:h-9 md:w-9"
+              className="h-6 w-6 object-contain transition-transform group-hover:scale-110 sm:h-8 sm:w-8 md:h-9 md:w-9"
             />
             <span className="font-display text-[1.15rem] font-semibold leading-none tracking-[-0.03em] text-white sm:text-[1.3rem]">
               Captiongrit
