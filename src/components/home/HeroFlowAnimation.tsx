@@ -150,61 +150,44 @@ export function HeroFlowAnimation() {
       }
       ctx.shadowBlur = 0;
 
-      // Vertex glow — no discs, just natural radial light.
+      // Vertex solid circles with names inside.
+      const R = Math.min(w, h) * 0.11;
       NODES.forEach((n, i) => {
         const p = pos(n);
         const phase = (Math.sin(t * 1.1 + i * 1.7) + 1) / 2;
-        const r = 96 + phase * 14;
-        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
-        g.addColorStop(0, hex(limeStr, 0.35 * phase + 0.18));
-        g.addColorStop(0.55, hex(limeStr, 0.06));
+
+        // outer soft glow
+        const gr = R * 2.3;
+        const g = ctx.createRadialGradient(p.x, p.y, R * 0.6, p.x, p.y, gr);
+        g.addColorStop(0, hex(limeStr, 0.28 + phase * 0.15));
         g.addColorStop(1, hex(limeStr, 0));
         ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, gr, 0, Math.PI * 2);
         ctx.fill();
 
-        // tiny bright core dot to anchor the vertex on the triangle edge
-        ctx.fillStyle = hex(limeStr, 0.9);
-        ctx.shadowColor = limeStr;
-        ctx.shadowBlur = 10;
+        // solid circle
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, R, 0, Math.PI * 2);
+        ctx.fillStyle = hex(limeStr, 0.96);
+        ctx.shadowColor = limeStr;
+        ctx.shadowBlur = 28;
         ctx.fill();
         ctx.shadowBlur = 0;
-      });
 
-      // Labels sitting on the edge (above vertex).
-      ctx.textBaseline = "middle";
-      NODES.forEach((n) => {
-        const p = pos(n);
+        // subtle inner ring
+        ctx.strokeStyle = hex("#0b0b0b", 0.22);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, R - 4, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // label inside circle
+        ctx.fillStyle = "#0b0b0b";
+        ctx.font = `700 ${Math.max(9, Math.round(R * 0.2))}px 'JetBrains Mono Variable', monospace`;
         ctx.textAlign = "center";
-        // label background clear text — no chip
-        ctx.fillStyle = hex(cream, 0.96);
-        ctx.font = "600 12px 'JetBrains Mono Variable', monospace";
-        const labelOffset = n.subAlign === "center" ? 22 : -20;
-        ctx.fillText(n.label, p.x, p.y + labelOffset);
-      });
-
-      // Sub-labels: aligned outward so they don't collide with triangle edges.
-      // Top-left / top-right vertices stack UPWARD (away from triangle body).
-      // Bottom-center vertex stacks DOWNWARD.
-      ctx.font = "10px 'Inter Tight', sans-serif";
-      ctx.fillStyle = hex(cream, 0.6);
-      NODES.forEach((n) => {
-        const p = pos(n);
-        ctx.textAlign = n.subAlign;
-        const xOff = n.subAlign === "left" ? -18 : n.subAlign === "right" ? 18 : 0;
-        if (n.subAlign === "center") {
-          // Automation: stack below the label.
-          const baseY = p.y + 42;
-          n.sub.forEach((s, j) => ctx.fillText(s, p.x + xOff, baseY + j * 14));
-        } else {
-          // Attention / Conversion: stack upward, above the label.
-          // Label sits at p.y - 20, so start subs at p.y - 36 and go up.
-          const baseY = p.y - 38;
-          n.sub.forEach((s, j) => ctx.fillText(s, p.x + xOff, baseY - j * 14));
-        }
+        ctx.textBaseline = "middle";
+        ctx.fillText(n.label, p.x, p.y);
       });
 
       if (visible) rafRef.current = requestAnimationFrame(draw);
@@ -223,7 +206,7 @@ export function HeroFlowAnimation() {
   return (
     <div
       ref={wrapRef}
-      className="relative aspect-[5/4.5] w-full overflow-hidden rounded-2xl border border-border bg-card grain"
+      className="relative aspect-[5/4.5] w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
       aria-hidden="true"
     >
       <canvas ref={canvasRef} className="absolute inset-0" />
