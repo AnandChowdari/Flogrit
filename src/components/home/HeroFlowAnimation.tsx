@@ -187,17 +187,24 @@ export function HeroFlowAnimation() {
       });
 
       // Sub-labels: aligned outward so they don't collide with triangle edges.
+      // Top-left / top-right vertices stack UPWARD (away from triangle body).
+      // Bottom-center vertex stacks DOWNWARD.
       ctx.font = "10px 'Inter Tight', sans-serif";
-      ctx.fillStyle = hex(cream, 0.55);
+      ctx.fillStyle = hex(cream, 0.6);
       NODES.forEach((n) => {
         const p = pos(n);
         ctx.textAlign = n.subAlign;
-        const baseY = n.subAlign === "center" ? p.y + 40 : p.y - 4;
-        const dir = n.subAlign === "center" ? 1 : 1;
-        const xOff = n.subAlign === "left" ? -14 : n.subAlign === "right" ? 14 : 0;
-        n.sub.forEach((s, j) => {
-          ctx.fillText(s, p.x + xOff, baseY + (n.subAlign === "center" ? j * 14 : j * 14) * dir);
-        });
+        const xOff = n.subAlign === "left" ? -18 : n.subAlign === "right" ? 18 : 0;
+        if (n.subAlign === "center") {
+          // Automation: stack below the label.
+          const baseY = p.y + 42;
+          n.sub.forEach((s, j) => ctx.fillText(s, p.x + xOff, baseY + j * 14));
+        } else {
+          // Attention / Conversion: stack upward, above the label.
+          // Label sits at p.y - 20, so start subs at p.y - 36 and go up.
+          const baseY = p.y - 38;
+          n.sub.forEach((s, j) => ctx.fillText(s, p.x + xOff, baseY - j * 14));
+        }
       });
 
       if (visible) rafRef.current = requestAnimationFrame(draw);
