@@ -143,48 +143,55 @@ export function HeroFlowAnimation() {
         const color = p.hue === "lime" ? limeStr : purpleStr;
         ctx.fillStyle = hex(color, 0.85);
         ctx.shadowColor = color;
-        ctx.shadowBlur = 12;
+        ctx.shadowBlur = 6;
         ctx.beginPath();
         ctx.arc(x, y, p.size, 0, Math.PI * 2);
         ctx.fill();
       }
       ctx.shadowBlur = 0;
 
-      // Vertex solid circles with names inside.
-      const R = Math.min(w, h) * 0.11;
+      // Vertex premium dark discs with lime labels.
+      const R = Math.min(w, h) * 0.1;
       NODES.forEach((n, i) => {
         const p = pos(n);
-        const phase = (Math.sin(t * 1.1 + i * 1.7) + 1) / 2;
 
-        // outer soft glow
-        const gr = R * 2.3;
-        const g = ctx.createRadialGradient(p.x, p.y, R * 0.6, p.x, p.y, gr);
-        g.addColorStop(0, hex(limeStr, 0.28 + phase * 0.15));
-        g.addColorStop(1, hex(limeStr, 0));
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, gr, 0, Math.PI * 2);
-        ctx.fill();
-
-        // solid circle
+        // subtle drop shadow beneath disc
+        ctx.save();
+        ctx.shadowColor = "rgba(0,0,0,0.55)";
+        ctx.shadowBlur = 18;
+        ctx.shadowOffsetY = 6;
         ctx.beginPath();
         ctx.arc(p.x, p.y, R, 0, Math.PI * 2);
-        ctx.fillStyle = hex(limeStr, 0.96);
-        ctx.shadowColor = limeStr;
-        ctx.shadowBlur = 28;
+        ctx.fillStyle = "#0d0d0f";
         ctx.fill();
-        ctx.shadowBlur = 0;
+        ctx.restore();
 
-        // subtle inner ring
-        ctx.strokeStyle = hex("#0b0b0b", 0.22);
+        // inner top-down gradient for depth
+        const ig = ctx.createLinearGradient(p.x, p.y - R, p.x, p.y + R);
+        ig.addColorStop(0, "#1a1a1c");
+        ig.addColorStop(1, "#0a0a0b");
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, R - 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = ig;
+        ctx.fill();
+
+        // crisp lime hairline edge
+        ctx.strokeStyle = hex(limeStr, 0.35);
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, R - 4, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, R, 0, Math.PI * 2);
         ctx.stroke();
 
-        // label inside circle
-        ctx.fillStyle = "#0b0b0b";
-        ctx.font = `700 ${Math.max(9, Math.round(R * 0.2))}px 'JetBrains Mono Variable', monospace`;
+        // glassy top highlight arc
+        ctx.strokeStyle = "rgba(255,255,255,0.08)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, R - 2, Math.PI * 1.15, Math.PI * 1.85);
+        ctx.stroke();
+
+        // lime label inside
+        ctx.fillStyle = limeStr;
+        ctx.font = `600 ${Math.max(9, Math.round(R * 0.19))}px 'JetBrains Mono Variable', monospace`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(n.label, p.x, p.y);
