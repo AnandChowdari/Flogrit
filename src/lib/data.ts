@@ -162,6 +162,13 @@ export type SectionBlock = {
   quote?: string;
 };
 
+export type ClientLinks = {
+  website?: string;
+  instagram?: string;
+  youtube?: string;
+  linkedin?: string;
+};
+
 export type CaseStudy = {
   slug: string;
   client: string;
@@ -171,6 +178,7 @@ export type CaseStudy = {
   status: "Real Client" | "Implementation Framework";
   oneLine: string;
   context: string;
+  links?: ClientLinks;
   challenge: {
     description: string;
     bullets: string[];
@@ -192,6 +200,9 @@ export const cases: CaseStudy[] = [
     pillar: "conversion",
     status: "Real Client",
     oneLine: "Helping a Pilot Academy convert educational content into qualified admissions.",
+    links: {
+      instagram: "https://www.instagram.com/pilot.gurujyoth/",
+    },
     context: "Gurujyoth operates a Pilot Training Academy in Hyderabad. His expertise was never the problem—he already had years of experience helping aspiring pilots. The challenge was that his online content generated attention, but almost none of that attention turned into enquiries. The marketing funnel effectively stopped at 'views.'",
     challenge: {
       description: "After auditing the content ecosystem, we identified several bottlenecks.",
