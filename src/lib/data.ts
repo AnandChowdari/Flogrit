@@ -162,6 +162,13 @@ export type SectionBlock = {
   quote?: string;
 };
 
+export type ClientLinks = {
+  website?: string;
+  instagram?: string;
+  youtube?: string;
+  linkedin?: string;
+};
+
 export type CaseStudy = {
   slug: string;
   client: string;
@@ -171,6 +178,7 @@ export type CaseStudy = {
   status: "Real Client" | "Implementation Framework";
   oneLine: string;
   context: string;
+  links?: ClientLinks;
   challenge: {
     description: string;
     bullets: string[];
@@ -192,6 +200,9 @@ export const cases: CaseStudy[] = [
     pillar: "conversion",
     status: "Real Client",
     oneLine: "Helping a Pilot Academy convert educational content into qualified admissions.",
+    links: {
+      instagram: "https://www.instagram.com/pilot.gurujyoth/",
+    },
     context: "Gurujyoth operates a Pilot Training Academy in Hyderabad. His expertise was never the problem—he already had years of experience helping aspiring pilots. The challenge was that his online content generated attention, but almost none of that attention turned into enquiries. The marketing funnel effectively stopped at 'views.'",
     challenge: {
       description: "After auditing the content ecosystem, we identified several bottlenecks.",
@@ -252,7 +263,12 @@ export const cases: CaseStudy[] = [
     pillar: "attention",
     status: "Real Client",
     oneLine: "Transforming an offline entrepreneur into a recognizable digital business authority.",
-    context: "Husain Basha is the founder of Hazil Lifestyle, a business generating approximately ₹10–20 lakh in monthly recurring revenue. Despite building a successful offline business, his digital presence lacked authority. His experience wasn't visible online.",
+    links: {
+      website: "https://www.huslelifestyle.com/",
+      youtube: "https://www.youtube.com/@ThinkBigwithHussain",
+      instagram: "https://www.instagram.com/_hussain___basha/",
+    },
+    context: "Husain Basha is the founder of Husle Lifestyle, a business generating approximately ₹10–20 lakh in monthly recurring revenue. Despite building a successful offline business, his digital presence lacked authority. His experience wasn't visible online.",
     challenge: {
       description: "When we entered the project, the content suffered from several structural issues. The audience couldn't instantly understand who he was or why they should follow him.",
       bullets: [
@@ -603,8 +619,8 @@ export const testimonials: Testimonial[] = [
     id: "t1",
     name: "Husain Basha",
     role: "Founder",
-    company: "Hazil Lifestyle",
-    quote: "FloGrit turned my successful business into a recognized personal brand. Their strategy generated over 16 million views across Instagram and YouTube in just weeks.",
+    company: "Husle Lifestyle",
+    quote: "Flogrit turned my successful business into a recognized personal brand. Their strategy generated over 16 million views across Instagram and YouTube in just weeks.",
     metric: { label: "Total Views", value: "16M+" },
     pillar: "attention",
   },

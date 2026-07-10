@@ -184,6 +184,23 @@
   100% { transform: translate3d(8%, 6%, 0) scale(1.05); }
 }
 
+@keyframes mesh-drift-a {
+  0%   { transform: translate3d(-4%, -3%, 0) scale(1); }
+  100% { transform: translate3d(9%, 6%, 0) scale(1.12); }
+}
+@keyframes mesh-drift-b {
+  0%   { transform: translate3d(6%, -4%, 0) scale(1.08); }
+  100% { transform: translate3d(-8%, 8%, 0) scale(0.95); }
+}
+@keyframes mesh-drift-c {
+  0%   { transform: translate3d(-5%, 4%, 0) scale(0.98); }
+  100% { transform: translate3d(7%, -6%, 0) scale(1.1); }
+}
+@keyframes mesh-drift-d {
+  0%   { transform: translate3d(3%, -3%, 0) scale(1.05); }
+  100% { transform: translate3d(-6%, 5%, 0) scale(0.9); }
+}
+
 @keyframes scrubber {
   0%   { transform: translateX(0%); }
   100% { transform: translateX(100%); }
@@ -258,6 +275,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .marquee-track, .marquee-fast { animation: none !important; }
+  [style*="mesh-drift"] { animation: none !important; }
 }
 
 

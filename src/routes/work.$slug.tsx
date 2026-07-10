@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { cases, pillars } from "@/lib/data";
 import { motion } from "motion/react";
-import { Building2, AlertTriangle, Wrench, Boxes, BarChart3, Image as ImageIcon, MessageSquareQuote } from "lucide-react";
+import { Building2, AlertTriangle, Wrench, Boxes, BarChart3, Image as ImageIcon, MessageSquareQuote, Globe, Instagram, Youtube } from "lucide-react";
 
 export const Route = createFileRoute("/work/$slug")({
   loader: ({ params }) => {
@@ -85,6 +85,26 @@ function CasePage() {
           >
             {c.oneLine}
           </motion.p>
+
+          {c.links && (
+            <div className="mt-8 flex flex-wrap items-center gap-2">
+              {c.links.website && (
+                <a href={c.links.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-3.5 py-1.5 text-xs text-foreground/80 transition-colors hover:border-primary/50 hover:text-primary">
+                  <Globe className="h-3.5 w-3.5" /> Website
+                </a>
+              )}
+              {c.links.instagram && (
+                <a href={c.links.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-3.5 py-1.5 text-xs text-foreground/80 transition-colors hover:border-primary/50 hover:text-primary">
+                  <Instagram className="h-3.5 w-3.5" /> Instagram
+                </a>
+              )}
+              {c.links.youtube && (
+                <a href={c.links.youtube} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-3.5 py-1.5 text-xs text-foreground/80 transition-colors hover:border-primary/50 hover:text-primary">
+                  <Youtube className="h-3.5 w-3.5" /> YouTube
+                </a>
+              )}
+            </div>
+          )}
         </div>
       </header>
 
@@ -212,11 +232,20 @@ function CasePage() {
                     <img 
                       src={`https://cdn.simpleicons.org/${tech.iconSlug}/white`} 
                       alt={tech.name} 
+                      loading="lazy"
                       className="w-5 h-5 opacity-70 group-hover:opacity-100 group-hover:[filter:drop-shadow(0_0_8px_var(--color-lime))] transition-all"
+                      onError={(e) => {
+                        const img = e.currentTarget as HTMLImageElement;
+                        img.style.display = 'none';
+                        const dot = img.nextElementSibling as HTMLElement | null;
+                        if (dot) dot.style.display = 'inline-block';
+                      }}
                     />
-                  ) : (
-                    <span className="w-2 h-2 rounded-full bg-primary opacity-50 group-hover:opacity-100"></span>
-                  )}
+                  ) : null}
+                  <span
+                    className="w-2 h-2 rounded-full bg-primary opacity-70 group-hover:opacity-100"
+                    style={{ display: tech.iconSlug ? 'none' : 'inline-block' }}
+                  />
                   <span className="font-medium text-sm text-foreground/80 group-hover:text-foreground">{tech.name}</span>
                   
                   {/* Tooltip */}
