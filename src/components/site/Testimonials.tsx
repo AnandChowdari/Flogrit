@@ -18,7 +18,8 @@ export function Testimonials({ pillar, heading }: { pillar?: PillarKey; heading?
         ...testimonials.filter((t) => t.pillar !== pillar),
       ]
     : testimonials;
-  const row = [...items, ...items];
+  const marqueeItems = items.slice(1);
+  const row = [...marqueeItems, ...marqueeItems];
 
   return (
     <section className="relative overflow-hidden border-y border-border bg-background py-20 lg:py-28">
@@ -82,8 +83,8 @@ export function Testimonials({ pillar, heading }: { pillar?: PillarKey; heading?
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
-        <div className="marquee-fast flex w-max gap-5 pl-5">
-          {row.slice(1).map((t, i) => (
+        <div className="marquee-fast flex w-max gap-5 pr-5">
+          {row.map((t, i) => (
             <QuoteCard key={`${t.id}-${i}`} t={t} />
           ))}
         </div>

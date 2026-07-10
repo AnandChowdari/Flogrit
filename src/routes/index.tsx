@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Fragment } from "react";
 import { useFlow } from "@/lib/flow";
 import { pillarOrder, type PillarKey } from "@/lib/data";
 import { HeroSection } from "@/components/home/HeroSection";
@@ -10,6 +11,7 @@ import { FAQ } from "@/components/home/FAQ";
 import { FinalCTA } from "@/components/home/FinalCTA";
 import { Testimonials } from "@/components/site/Testimonials";
 import { CaptiongritPopup } from "@/components/home/CaptiongritPopup";
+import { ReelGallery } from "@/components/attention/ReelGallery";
 
 const BRIDGES: Record<PillarKey, string> = {
   attention: "Attention without conversion is noise. Here's what catches it.",
@@ -50,12 +52,14 @@ function Index() {
       <Gate />
 
       {ordered.map((key, i) => (
-        <PillarSection
-          key={key}
-          pillarKey={key}
-          position={i + 1}
-          bridge={i === 0 ? undefined : BRIDGES[key]}
-        />
+        <Fragment key={key}>
+          <PillarSection
+            pillarKey={key}
+            position={i + 1}
+            bridge={i === 0 ? undefined : BRIDGES[key]}
+          />
+          {key === "attention" && <ReelGallery />}
+        </Fragment>
       ))}
 
       <Proof />

@@ -4,38 +4,44 @@ import { motion } from 'motion/react';
 export default function TestimonialsSection() {
   const testimonials = [
     {
-      name: "Marcus Vella",
-      role: "YouTube Creator (1.2M Subs)",
+      name: "YouTube Creator",
+      role: "Tech & Tutorial Channel (1.2M Subs)",
+      avatar: "", // Add profile picture path here in the future
       quote: "The phonetic Romanization is a game changer for my Telugu channel. I can finally add accurate subtitles without manually typing everything out.",
       rating: 5
     },
     {
-      name: "Priya Iyer",
-      role: "Freelance Video Editor",
+      name: "Freelance Video Editor",
+      role: "Post-Production Specialist",
+      avatar: "",
       quote: "Captiongrit saves me about 2 hours per video. The fact that it works directly inside Premiere means I never have to break my workflow.",
       rating: 5
     },
     {
-      name: "David Chen",
-      role: "Agency Director",
+      name: "Agency Director",
+      role: "Digital Marketing Agency",
+      avatar: "",
       quote: "We were paying hundreds a month for cloud captioning services. A one-time payment for this level of accuracy is an absolute steal.",
       rating: 5
     },
     {
-      name: "Sarah Kim",
-      role: "Content Strategist",
+      name: "Content Strategist",
+      role: "Global Media Brand",
+      avatar: "",
       quote: "The multi-language support is incredible. We localize our content into 5 languages and Captiongrit handles it all without breaking a sweat.",
       rating: 5
     },
     {
-      name: "Raj Patel",
-      role: "Short-Form Creator",
+      name: "Short-Form Creator",
+      role: "TikTok & Reels (500k+ Followers)",
+      avatar: "",
       quote: "I've tried every captioning tool out there. Nothing comes close to the speed and accuracy of Captiongrit for TikTok and Reels content.",
       rating: 5
     },
     {
-      name: "Elena Torres",
-      role: "Podcast Producer",
+      name: "Podcast Producer",
+      role: "Top 100 Business Podcast",
+      avatar: "",
       quote: "Being able to generate captions directly inside the timeline without leaving Premiere Pro has completely changed our post-production pipeline.",
       rating: 5
     }

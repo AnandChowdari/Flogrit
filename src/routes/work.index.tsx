@@ -67,7 +67,7 @@ function WorkPage() {
                 </span>
               </div>
               <h2 className="mt-6 font-display text-2xl font-semibold leading-tight md:text-3xl">{c.title}</h2>
-              <p className="mt-3 text-muted-foreground">{c.summary}</p>
+              <p className="mt-3 text-muted-foreground">{c.oneLine}</p>
               <dl className="mt-6 grid grid-cols-3 gap-2 border-t border-border pt-5">
                 {c.metric.map((m) => (
                   <div key={m.label}>

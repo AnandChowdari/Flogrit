@@ -1,6 +1,16 @@
 import { reels } from "@/lib/data";
 import { motion } from "motion/react";
 import { Play } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
+
+const verticalVideos = [
+  "Nested Sequence 03.mp4", "Nested Sequence 04.mp4", "Nested Sequence 05.mp4",
+  "Nested Sequence 06.mp4", "Nested Sequence 07.mp4", "Nested Sequence 08.mp4",
+  "Nested Sequence 09.mp4", "Nested Sequence 10.mp4", "Nested Sequence 11.mp4",
+  "Nested Sequence 12 1.mp4", "Nested Sequence 14.mp4", "Nested Sequence 15.mp4",
+  "Nested Sequence 17.mp4", "Nested Sequence 18.mp4", "Nested Sequence 19.mp4",
+  "Nested Sequence 20.mp4", "Nested Sequence 21.mp4"
+];
 
 export function StudioStrip() {
   return (
@@ -45,35 +55,54 @@ export function StudioStrip() {
 
 function ReelCard({ reel, index }: { reel: typeof reels[number]; index: number }) {
   const tall = index % 3 === 0;
+  const videoSrc = `/portfolio/vertical/${verticalVideos[index % verticalVideos.length]}`;
+  const webmSrc = videoSrc.replace('.mp4', '.webm');
+
   return (
-    <motion.figure
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 0.5, delay: index * 0.05 }}
-      className={`group relative overflow-hidden rounded-xl border border-border bg-card ${tall ? "row-span-2 aspect-[9/20]" : "aspect-[9/14]"}`}
-    >
-      <div
-        className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
-        style={{
-          background: `radial-gradient(circle at 30% 20%, oklch(0.45 0.16 ${reel.hue} / 0.7), oklch(0.18 0.04 ${reel.hue} / 0.95))`,
-        }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+    <Dialog>
+      <DialogTrigger asChild>
+        <motion.figure
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.5, delay: index * 0.05 }}
+          className={`group relative overflow-hidden rounded-xl border border-border bg-card cursor-pointer ${tall ? "row-span-2 aspect-[9/20]" : "aspect-[9/14]"}`}
+        >
+          <video
+            src={webmSrc}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent pointer-events-none" />
 
-      <div className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-background/70 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground backdrop-blur">
-        <span className="size-1 rounded-full bg-primary" /> {reel.watch}
-      </div>
+          <div className="absolute right-2 top-2 z-10 flex items-center gap-1 rounded-full bg-background/70 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground backdrop-blur">
+            <span className="size-1 rounded-full bg-primary" /> {reel.watch}
+          </div>
 
-      <div className="absolute left-1/2 top-1/2 grid size-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-primary/90 text-primary-foreground opacity-0 backdrop-blur transition-opacity duration-300 group-hover:opacity-100">
-        <Play size={18} fill="currentColor" />
-      </div>
+          <div className="absolute left-1/2 top-1/2 z-10 grid size-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-primary/90 text-primary-foreground opacity-0 backdrop-blur transition-opacity duration-300 group-hover:opacity-100">
+            <Play size={18} fill="currentColor" />
+          </div>
 
-      <figcaption className="absolute inset-x-3 bottom-3 z-10">
-        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{reel.client}</div>
-        <div className="mt-1 text-sm font-medium text-foreground">{reel.title}</div>
-        <div className="mt-1 font-mono text-[10px] text-primary">{reel.views} views</div>
-      </figcaption>
-    </motion.figure>
+          <figcaption className="absolute inset-x-3 bottom-3 z-10">
+            <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{reel.client}</div>
+            <div className="mt-1 text-sm font-medium text-foreground">{reel.title}</div>
+            <div className="mt-1 font-mono text-[10px] text-primary">{reel.views} views</div>
+          </figcaption>
+        </motion.figure>
+      </DialogTrigger>
+      <DialogContent className="max-w-[400px] border-none bg-transparent p-0 shadow-none">
+        <DialogTitle className="sr-only">Video presentation</DialogTitle>
+        <video
+          src={videoSrc}
+          className="w-full h-auto rounded-2xl"
+          autoPlay
+          controls
+          playsInline
+        />
+      </DialogContent>
+    </Dialog>
   );
 }
