@@ -7,8 +7,17 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden border-b border-border">
       <BackgroundGrid />
-      <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:px-8 lg:py-28">
-        <div className="relative z-10 flex flex-col justify-center">
+
+      {/* Desktop panel — absolute right, bleeds to viewport edge */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[46%] lg:block">
+        <div className="pointer-events-auto h-full w-full">
+          <HeroFlowAnimation />
+        </div>
+      </div>
+
+      {/* Content wrapper — stays within max-w-7xl to align with nav */}
+      <div className="relative z-10 mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
+        <div className="lg:w-[54%] lg:pr-12">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -79,14 +88,12 @@ export function HeroSection() {
           </motion.dl>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.15 }}
-          className="relative z-10"
-        >
-          <HeroFlowAnimation />
-        </motion.div>
+        {/* Mobile panel */}
+        <div className="mt-12 lg:hidden">
+          <div className="min-h-[420px]">
+            <HeroFlowAnimation />
+          </div>
+        </div>
       </div>
     </section>
   );
