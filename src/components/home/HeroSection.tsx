@@ -78,14 +78,6 @@ export function HeroSection() {
           </motion.dl>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.15 }}
-          className="relative z-10"
-        >
-          <HeroFlowAnimation />
-        </motion.div>
       </div>
     </section>
   );
