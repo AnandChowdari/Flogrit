@@ -263,6 +263,11 @@ export const cases: CaseStudy[] = [
     pillar: "attention",
     status: "Real Client",
     oneLine: "Transforming an offline entrepreneur into a recognizable digital business authority.",
+    links: {
+      website: "https://www.huslelifestyle.com/",
+      youtube: "https://www.youtube.com/@ThinkBigwithHussain",
+      instagram: "https://www.instagram.com/_hussain___basha/",
+    },
     context: "Husain Basha is the founder of Husle Lifestyle, a business generating approximately ₹10–20 lakh in monthly recurring revenue. Despite building a successful offline business, his digital presence lacked authority. His experience wasn't visible online.",
     challenge: {
       description: "When we entered the project, the content suffered from several structural issues. The audience couldn't instantly understand who he was or why they should follow him.",
