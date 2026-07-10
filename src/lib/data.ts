@@ -181,6 +181,7 @@ export type CaseStudy = {
   links?: ClientLinks;
   portrait?: string;
   logo?: string;
+  company?: string;
   challenge: {
     description: string;
     bullets: string[];
