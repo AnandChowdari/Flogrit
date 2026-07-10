@@ -51,8 +51,8 @@ function CasePage() {
           <div className="mt-12 flex flex-wrap items-center gap-4">
             {/* Company logo or initial-letter fallback */}
             {c.logo ? (
-              <div className="w-14 h-14 rounded-xl bg-white/95 border border-border flex items-center justify-center shadow-sm p-1.5 overflow-hidden">
-                <img src={c.logo} alt={`${c.client} logo`} className="w-full h-full object-contain" />
+              <div className="w-14 h-14 rounded-xl bg-white border border-border flex items-center justify-center shadow-sm p-2 overflow-hidden">
+                <img src={c.logo} alt={`${c.company ?? c.client} logo`} className="w-full h-full object-contain" />
               </div>
             ) : (
               <div className="w-12 h-12 rounded-xl bg-secondary/50 border border-border flex items-center justify-center shadow-sm">
