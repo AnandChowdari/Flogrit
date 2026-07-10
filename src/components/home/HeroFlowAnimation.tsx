@@ -213,24 +213,9 @@ export function HeroFlowAnimation() {
   return (
     <div
       ref={wrapRef}
-      className="relative h-full w-full overflow-hidden rounded-l-3xl rounded-r-none border border-r-0 border-white/[0.12] bg-white/[0.04] backdrop-blur-2xl"
-      style={{
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 0 60px -16px rgba(198,255,52,0.07)",
-      }}
+      className="relative aspect-[5/5.2] w-full overflow-hidden rounded-l-3xl rounded-r-none border border-r-0 border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] -mr-6 lg:-mr-16"
       aria-hidden="true"
     >
-      {/* glass gradient overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 rounded-l-3xl"
-        style={{
-          background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 40%, transparent 60%, rgba(134,113,211,0.04) 100%)",
-        }}
-      />
-      {/* inner highlight top edge */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-px rounded-l-3xl"
-        style={{ background: "linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04) 60%, transparent)" }}
-      />
       <canvas ref={canvasRef} className="absolute inset-0" />
     </div>
   );
