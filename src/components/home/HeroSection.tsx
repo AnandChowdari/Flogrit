@@ -79,14 +79,16 @@ export function HeroSection() {
           </motion.dl>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.15 }}
-          className="relative z-10"
-        >
-          <HeroFlowAnimation />
-        </motion.div>
+        <div className="relative z-10 lg:static">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.15 }}
+            className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-[46%]"
+          >
+            <HeroFlowAnimation />
+          </motion.div>
+        </div>
       </div>
     </section>
   );
