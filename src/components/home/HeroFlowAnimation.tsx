@@ -27,7 +27,7 @@ function smooth(t: number) {
   return t * t * (3 - 2 * t);
 }
 
-export function HeroFlowPipeline() {
+export function HeroFlowAnimation() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const rafRef = useRef<number>(0);
