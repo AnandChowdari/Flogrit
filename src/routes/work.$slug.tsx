@@ -205,8 +205,8 @@ function CasePage() {
               {c.techStack.map((tech, idx) => (
                 <motion.div
                   key={idx}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  className="group flex items-center gap-3 px-5 py-3 rounded-full bg-card/40 border border-border/50 hover:border-primary/50 hover:bg-card hover:shadow-[0_4px_24px_-8px_var(--color-lime)] transition-all cursor-default"
+                  whileHover={{ scale: 1.05, y: -2, rotate: 2 }}
+                  className="group relative flex items-center gap-3 px-5 py-3 rounded-full bg-card/40 border border-border/50 hover:border-primary/50 hover:bg-card hover:shadow-[0_4px_24px_-8px_var(--color-lime)] transition-all cursor-default"
                 >
                   {tech.iconSlug ? (
                     <img 
@@ -218,6 +218,11 @@ function CasePage() {
                     <span className="w-2 h-2 rounded-full bg-primary opacity-50 group-hover:opacity-100"></span>
                   )}
                   <span className="font-medium text-sm text-foreground/80 group-hover:text-foreground">{tech.name}</span>
+                  
+                  {/* Tooltip */}
+                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-popover text-popover-foreground text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md border border-border">
+                    {tech.name}
+                  </span>
                 </motion.div>
               ))}
             </div>
@@ -250,8 +255,22 @@ function CasePage() {
                   className="relative p-6 rounded-[24px] bg-secondary/10 border border-border overflow-hidden group hover:border-primary/30 transition-colors"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  
+                  {/* Shine effect */}
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
+
                   <dt className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground relative z-10">{m.label}</dt>
-                  <dd className="mt-4 font-display text-4xl lg:text-5xl font-bold text-white relative z-10">{m.value}</dd>
+                  <dd className="mt-4 font-display text-4xl lg:text-5xl font-bold text-white relative z-10">
+                    {/* Fake count up visually by styling numbers, since pure string count-up requires parsing */}
+                    <motion.span
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.1 + 0.3, duration: 0.6, type: "spring" }}
+                      className="inline-block"
+                    >
+                      {m.value}
+                    </motion.span>
+                  </dd>
                 </motion.div>
               ))}
             </div>

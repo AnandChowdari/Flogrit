@@ -28,30 +28,32 @@ export function Proof() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-7 transition-colors hover:border-primary/40"
+              className="hover-glow group flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all duration-300 hover:border-primary/40 hover:-translate-y-1 hover:scale-[1.02]"
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                   {c.industry}
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-primary">
-                  {pillars[c.pillar].label}
+                <span className="rounded-full border border-border bg-secondary/30 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.2em] text-foreground">
+                  {c.status}
                 </span>
               </div>
 
               <h3 className="mt-6 font-display text-xl font-semibold leading-tight md:text-2xl">
-                {c.title}
+                {c.client}
               </h3>
               <p className="mt-3 text-sm text-muted-foreground">{c.oneLine}</p>
 
-              <dl className="mt-6 grid grid-cols-3 gap-2 border-t border-border pt-5">
-                {c.metric.map((m) => (
-                  <div key={m.label}>
-                    <dt className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">{m.label}</dt>
-                    <dd className="mt-1 font-mono text-lg text-foreground">{m.value}</dd>
+              {c.metric[0] && (
+                <div className="mt-6 border-t border-border pt-5">
+                  <div className="font-mono text-3xl font-semibold text-foreground">
+                    {c.metric[0].value}
                   </div>
-                ))}
-              </dl>
+                  <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                    {c.metric[0].label}
+                  </div>
+                </div>
+              )}
 
               <Link
                 to="/work/$slug"

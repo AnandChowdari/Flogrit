@@ -87,6 +87,15 @@ function ReelCard({ reel, large = false, index = 0 }: { reel: (typeof reels)[num
           {/* dark gradient overlay for text readability (optional, kept for hover play button) */}
           <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20 pointer-events-none" />
 
+          {/* Platform Icon */}
+          <div className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background/70 text-foreground backdrop-blur opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            {index % 2 === 0 ? (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+            )}
+          </div>
+
           {/* play badge */}
           <div className="absolute left-1/2 top-1/2 z-10 grid h-12 w-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/40 text-primary backdrop-blur-md transition-transform group-hover:scale-110 opacity-0 group-hover:opacity-100">
             <Play size={20} fill="currentColor" />

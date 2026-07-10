@@ -83,7 +83,7 @@ export function Testimonials({ pillar, heading }: { pillar?: PillarKey; heading?
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
-        <div className="marquee-fast flex w-max gap-5 pr-5">
+        <div className="marquee-fast flex w-max gap-5 pr-5 hover:[animation-play-state:paused]">
           {row.map((t, i) => (
             <QuoteCard key={`${t.id}-${i}`} t={t} />
           ))}
@@ -95,7 +95,7 @@ export function Testimonials({ pillar, heading }: { pillar?: PillarKey; heading?
 
 function QuoteCard({ t }: { t: Testimonial }) {
   return (
-    <div className="hover-glow relative w-[360px] shrink-0 rounded-2xl border border-border bg-card p-6">
+    <div className="hover-glow relative w-[360px] shrink-0 rounded-2xl border border-border bg-card p-6 transition-transform duration-300 hover:scale-[1.02]">
       <Quote className="absolute right-4 top-4 text-primary/10" size={48} />
       <p className="text-sm leading-relaxed text-foreground/90">"{t.quote}"</p>
       <div className="mt-5 flex items-center gap-2.5">

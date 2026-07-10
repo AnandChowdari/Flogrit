@@ -608,8 +608,20 @@ export const testimonials: Testimonial[] = [
     metric: { label: "Total Views", value: "16M+" },
     pillar: "attention",
   },
-
-
-
-
+  {
+    id: "t2",
+    name: "Nivas",
+    role: "Content Manager",
+    company: "Husain Basha Team",
+    quote: "Anand, I genuinely love working with you. Every project feels like you breathe a completely new life into the edit. Your creativity, fresh visual style, and ability to transform ideas into engaging content make a huge difference. You're technically very strong, incredibly reliable, and always bring something unique to the table. It's been an absolute pleasure collaborating with you, and I'm looking forward to many more projects together.",
+    pillar: "attention",
+  },
+  {
+    id: "t3",
+    name: "Charan",
+    role: "Content Strategist",
+    company: "Husain Basha Team",
+    quote: "Finding an editor who truly understands a content team's vision is incredibly rare. Anand doesn't just execute edits—he actively contributes creative ideas that elevate every video beyond expectations. His expertise in After Effects, motion design, sound design, pacing, and visual storytelling consistently improves the final product. Over the past six months, every discussion has felt collaborative rather than transactional. If you're looking for someone who combines technical excellence with genuine creative thinking, Anand is the kind of editor every content team wants.",
+    pillar: "attention",
+  }
 ];

@@ -56,26 +56,29 @@ function WorkPage() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: i * 0.06 }}
-              className="rounded-2xl border border-border bg-card p-8 transition-colors hover:border-primary/40"
+              className="hover-glow group rounded-2xl border border-border bg-card p-8 transition-all duration-300 hover:border-primary/40 hover:-translate-y-1 hover:scale-[1.02]"
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
                   {c.industry}
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-primary">
-                  {pillars[c.pillar].label}
+                <span className="rounded-full border border-border bg-secondary/30 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.2em] text-foreground">
+                  {c.status}
                 </span>
               </div>
-              <h2 className="mt-6 font-display text-2xl font-semibold leading-tight md:text-3xl">{c.title}</h2>
+              <h2 className="mt-6 font-display text-2xl font-semibold leading-tight md:text-3xl">{c.client}</h2>
               <p className="mt-3 text-muted-foreground">{c.oneLine}</p>
-              <dl className="mt-6 grid grid-cols-3 gap-2 border-t border-border pt-5">
-                {c.metric.map((m) => (
-                  <div key={m.label}>
-                    <dt className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">{m.label}</dt>
-                    <dd className="mt-1 font-mono text-xl text-foreground">{m.value}</dd>
+              
+              {c.metric[0] && (
+                <div className="mt-6 border-t border-border pt-5">
+                  <div className="font-mono text-3xl font-semibold text-foreground">
+                    {c.metric[0].value}
                   </div>
-                ))}
-              </dl>
+                  <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                    {c.metric[0].label}
+                  </div>
+                </div>
+              )}
               <Link
                 to="/work/$slug"
                 params={{ slug: c.slug }}
