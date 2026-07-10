@@ -227,12 +227,6 @@ export function HeroFlowAnimation() {
       aria-hidden="true"
     >
       <canvas ref={canvasRef} className="absolute inset-0" />
-      <div className="pointer-events-none absolute left-4 top-4 z-10 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-        the system · attention → conversion → automation
-      </div>
-      <div className="pointer-events-none absolute right-4 top-4 z-10 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-        <span className="size-1.5 animate-pulse rounded-full bg-primary" /> flogrit.live
-      </div>
     </div>
   );
 }
