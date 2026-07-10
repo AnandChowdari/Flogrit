@@ -114,7 +114,7 @@ export function HeroFlowAnimation() {
 
     function laneY(lane: number) {
       const step = 2 / (LANES + 1);
-      return -1 + step * (lane + 1);
+      return -2 + step * (lane + 1);
     }
 
     function draw() {
