@@ -149,59 +149,284 @@ export const precisePlans: Plan[] = [
   { label: "Scale", videos: 12, price: "₹78,000", per: "₹6,500 / video" },
 ];
 
+export type TechStackItem = {
+  name: string;
+  category: "Creative" | "AI & Automation" | "Development" | "Analytics & Marketing" | "CRM & Communication";
+  iconSlug?: string;
+};
+
+export type SectionBlock = {
+  title: string;
+  description?: string;
+  bullets?: string[];
+  quote?: string;
+};
+
+export type ClientLinks = {
+  website?: string;
+  instagram?: string;
+  youtube?: string;
+  linkedin?: string;
+};
+
 export type CaseStudy = {
   slug: string;
   client: string;
   title: string;
   industry: string;
   pillar: PillarKey;
-  metric: { label: string; value: string }[];
-  summary: string;
+  status: "Real Client" | "Implementation Framework";
+  oneLine: string;
+  context: string;
+  links?: ClientLinks;
+  portrait?: string;
+  logo?: string;
+  company?: string;
+  challenge: {
+    description: string;
+    bullets: string[];
+  };
+  sections: SectionBlock[];
+  techStack: TechStackItem[];
+  metric: {
+    value: string;
+    label: string;
+  }[];
 };
 
 export const cases: CaseStudy[] = [
   {
-    slug: "lumen-ai",
-    client: "Lumen",
-    title: "From a silent launch to 2.4M qualified views in a quarter",
-    industry: "B2B SaaS",
-    pillar: "attention",
-    metric: [
-      { label: "Organic views", value: "2.4M" },
-      { label: "Qualified demos", value: "318" },
-      { label: "Paid spend", value: "₹0" },
+    slug: "gurujyoth",
+    client: "Gurujyoth",
+    title: "Converting Social Attention into 50+ Qualified Student Leads",
+    industry: "Education / Aviation",
+    pillar: "conversion",
+    status: "Real Client",
+    oneLine: "Helping a Pilot Academy convert educational content into qualified admissions.",
+    links: {
+      instagram: "https://www.instagram.com/pilot.gurujyoth/",
+    },
+    context: "Gurujyoth operates a Pilot Training Academy in Hyderabad. His expertise was never the problem—he already had years of experience helping aspiring pilots. The challenge was that his online content generated attention, but almost none of that attention turned into enquiries. The marketing funnel effectively stopped at 'views.'",
+    challenge: {
+      description: "After auditing the content ecosystem, we identified several bottlenecks.",
+      bullets: [
+        "Videos educated people but didn't create curiosity.",
+        "There was no structured lead-generation funnel.",
+        "Every piece of content ended without a clear next action.",
+        "Visual presentation looked similar to hundreds of educational creators.",
+        "High-intent search traffic wasn't being captured.",
+        "Students had recurring questions that were never converted into reusable content."
+      ]
+    },
+    sections: [
+      {
+        title: "Our Strategy",
+        description: "Instead of producing more content, we redesigned the entire acquisition pipeline."
+      },
+      {
+        title: "Visual Identity Upgrade",
+        description: "We rebuilt the visual language using:",
+        bullets: ["AI-generated cinematic sequences", "High-end VFX", "Motion graphics", "Branded typography", "Consistent thumbnail system", "Educational graphics"]
+      },
+      {
+        title: "Hook Engineering",
+        description: "Every video was rebuilt around one principle:",
+        quote: "Answer the exact question a future student is already searching for.",
+        bullets: ["Salary breakdowns", "Pilot career myths", "CPL roadmap", "Medical eligibility", "Cost analysis", "Airline hiring insights"]
+      },
+      {
+        title: "Q&A Content Engine",
+        description: "We launched a dedicated series answering real student questions. Instead of producing random videos, each episode removed one objection preventing enrollment. This naturally built authority while creating evergreen content."
+      },
+      {
+        title: "Organic Search Layer",
+        description: "To extend reach beyond Instagram and YouTube, we published SEO-focused blogs around high-intent keywords such as: How to become a commercial pilot, Pilot course fees, DGCA requirements, CPL eligibility. This allowed the academy to attract students actively searching for solutions."
+      }
     ],
-    summary:
-      "We built a founder-led content engine — twelve reels in six weeks, a hook library, a publishing cadence — and replaced a paid pipeline that wasn't compounding.",
+    techStack: [
+      { name: "Premiere Pro", category: "Creative", iconSlug: "adobepremierepro" },
+      { name: "After Effects", category: "Creative", iconSlug: "adobeaftereffects" },
+      { name: "AI Video", category: "AI & Automation", iconSlug: "openai" },
+      { name: "CRM", category: "CRM & Communication", iconSlug: "salesforce" },
+      { name: "Blog", category: "Development", iconSlug: "wordpress" },
+      { name: "Instagram", category: "Analytics & Marketing", iconSlug: "instagram" },
+      { name: "YouTube", category: "Analytics & Marketing", iconSlug: "youtube" }
+    ],
+    metric: [
+      { value: "50+", label: "Qualified Leads" },
+      { value: "Higher", label: "Watch Time" },
+      { value: "Stronger", label: "Authority" }
+    ]
   },
   {
-    slug: "ridgeway",
-    client: "Ridgeway",
-    title: "Rebuilt the site around one decision. Conversion doubled.",
-    industry: "B2B services",
-    pillar: "conversion",
-    metric: [
-      { label: "Conversion rate", value: "+112%" },
-      { label: "Page LCP", value: "0.9s" },
-      { label: "Pipeline / mo", value: "₹38L" },
+    slug: "hazil-lifestyle",
+    client: "Husain Basha",
+    title: "Building a Business Guru Brand from Scratch to 16M+ Views",
+    industry: "Business & Lifestyle",
+    pillar: "attention",
+    status: "Real Client",
+    oneLine: "Transforming an offline entrepreneur into a recognizable digital business authority.",
+    links: {
+      website: "https://www.huslelifestyle.com/",
+      youtube: "https://www.youtube.com/@ThinkBigwithHussain",
+      instagram: "https://www.instagram.com/_hussain___basha/",
+    },
+    portrait: "/__l5e/assets-v1/772feb51-a36c-4c29-b89b-160be63e24dd/hussain-basha-portrait.png",
+    logo: "/__l5e/assets-v1/fcaac2d9-3dc8-4854-bc7f-ac605cd6ff45/husle-lifestyle-logo.png",
+    company: "Husle Lifestyle",
+    context: "Husain Basha is the founder of Husle Lifestyle, a business generating approximately ₹10–20 lakh in monthly recurring revenue. Despite building a successful offline business, his digital presence lacked authority. His experience wasn't visible online.",
+    challenge: {
+      description: "When we entered the project, the content suffered from several structural issues. The audience couldn't instantly understand who he was or why they should follow him.",
+      bullets: [
+        "No consistent visual identity",
+        "No recognizable brand language",
+        "Long-form videos with poor discoverability",
+        "Weak opening hooks",
+        "No clear positioning",
+        "Content that educated but failed to retain viewers"
+      ]
+    },
+    sections: [
+      {
+        title: "Brand Positioning",
+        description: "Before touching editing, we answered one question: Who should Husain become online? The answer:",
+        quote: "The Business Guru."
+      },
+      {
+        title: "Visual Brand System",
+        description: "We designed:",
+        bullets: ["Brand color palette", "Typography hierarchy", "Motion graphics language", "Thumbnail system", "Intro sequences", "Editing rhythm", "Visual consistency guidelines"]
+      },
+      {
+        title: "Content Strategy Pivot",
+        description: "Our first experiment focused on long-form educational videos. The quality was high. The growth wasn't. Instead of forcing the strategy, we analyzed performance and rebuilt the system around short-form distribution. We developed:",
+        bullets: ["High-retention hooks", "Business storytelling", "Trend-based execution", "Repeatable reel formats", "Faster pacing", "Platform-native editing"]
+      },
+      {
+        title: "Creative Production",
+        description: "Our team handled:",
+        bullets: ["Creative direction", "Video editing", "Motion graphics", "Brand execution", "Content optimization", "Publishing workflow"]
+      }
     ],
-    summary:
-      "Stripped the funnel pages to a single call-to-action, instrumented every event end-to-end, and rebuilt the pricing page around the question buyers were actually asking.",
+    techStack: [
+      { name: "Premiere Pro", category: "Creative", iconSlug: "adobepremierepro" },
+      { name: "After Effects", category: "Creative", iconSlug: "adobeaftereffects" },
+      { name: "Photoshop", category: "Creative", iconSlug: "adobephotoshop" },
+      { name: "Instagram", category: "Analytics & Marketing", iconSlug: "instagram" },
+      { name: "YouTube", category: "Analytics & Marketing", iconSlug: "youtube" }
+    ],
+    metric: [
+      { value: "10M+", label: "Instagram Views" },
+      { value: "10K+", label: "Followers in 2 mos" },
+      { value: "6M+", label: "YT Shorts Views" },
+      { value: "6K+", label: "Subscribers in 1 mo" }
+    ]
   },
   {
     slug: "atlas-fit",
     client: "Atlas Fit",
-    title: "An always-on system replaced a 6-person follow-up team",
-    industry: "D2C fitness",
+    title: "Replacing Manual Lead Follow-Up with an AI Operations Layer",
+    industry: "Service Businesses",
     pillar: "automation",
-    metric: [
-      { label: "Lead → call rate", value: "41%" },
-      { label: "Avg. response", value: "Under 1 min" },
-      { label: "Monthly cost saved", value: "₹4.2L" },
+    status: "Implementation Framework",
+    oneLine: "Introducing an AI-first operations layer to never miss an inbound enquiry.",
+    context: "Many gyms, clinics, coaching businesses, and service companies lose qualified leads for one simple reason: Nobody responds fast enough. Potential customers often enquire late at night, during weekends, or outside office hours. By the time a salesperson responds, the prospect has already contacted competitors.",
+    challenge: {
+      description: "A typical operational audit reveals severe inefficiencies in manual handling.",
+      bullets: [
+        "Slow response times",
+        "Missed calls",
+        "Manual lead qualification",
+        "Staff repeatedly answering identical questions",
+        "CRM updated manually",
+        "High payroll dedicated to repetitive follow-up"
+      ]
+    },
+    sections: [
+      {
+        title: "Proposed Solution",
+        description: "Instead of hiring more sales representatives, we introduce an AI-first operations layer."
+      },
+      {
+        title: "AI Voice Reception",
+        description: "Every inbound enquiry is answered instantly by an AI voice assistant. The assistant can:",
+        bullets: ["Answer FAQs", "Qualify prospects", "Collect contact details", "Book appointments", "Escalate urgent enquiries"]
+      },
+      {
+        title: "Workflow Automation",
+        description: "The voice agent connects to the business ecosystem. Every interaction automatically updates:",
+        bullets: ["CRM", "Calendar", "Sales pipeline", "Follow-up tasks"]
+      }
     ],
-    summary:
-      "Every ad lead lands in a qualification flow with a voice-agent fallback. Booked calls jumped 3.6×, and the team was redeployed to closing instead of chasing.",
+    techStack: [
+      { name: "OpenAI", category: "AI & Automation", iconSlug: "openai" },
+      { name: "n8n", category: "AI & Automation", iconSlug: "n8n" },
+      { name: "Make", category: "AI & Automation", iconSlug: "make" },
+      { name: "Twilio", category: "CRM & Communication", iconSlug: "twilio" },
+      { name: "GoHighLevel", category: "CRM & Communication", iconSlug: "gohighlevel" },
+      { name: "Google Calendar", category: "CRM & Communication", iconSlug: "googlecalendar" }
+    ],
+    metric: [
+      { value: "< 1m", label: "Response Time" },
+      { value: "Higher", label: "Booking Rates" },
+      { value: "Lower", label: "Overhead" }
+    ]
   },
+  {
+    slug: "ridgeway",
+    client: "Ridgeway",
+    title: "Rebuilding a Website Around One Conversion Goal",
+    industry: "B2B SaaS / Services",
+    pillar: "conversion",
+    status: "Implementation Framework",
+    oneLine: "Removing decision fatigue to double conversion rates.",
+    context: "Many websites receive healthy traffic but still struggle to generate customers. The problem usually isn't traffic. It's decision fatigue. Visitors land on pages filled with multiple CTAs, unnecessary sections, inconsistent messaging, and confusing navigation. Every extra decision reduces conversions.",
+    challenge: {
+      description: "A typical audit often reveals:",
+      bullets: [
+        "Multiple competing buttons",
+        "Weak hero messaging",
+        "No trust-building sequence",
+        "Pricing pages that create new objections",
+        "No analytics tracking",
+        "No visibility into user behaviour"
+      ]
+    },
+    sections: [
+      {
+        title: "Proposed Solution",
+        description: "We redesign the customer journey from first click to purchase. Every page is built around a single objective."
+      },
+      {
+        title: "UX Simplification",
+        description: "We strip the interface to focus entirely on the core action.",
+        bullets: ["Single CTA", "Simplified navigation", "Improved page hierarchy", "Better mobile experience", "Faster loading"]
+      },
+      {
+        title: "Conversion Optimization",
+        description: "We rebuild the content to systematically remove buying objections.",
+        bullets: ["Buyer-focused copywriting", "Objection handling", "Social proof placement", "Strong pricing explanation", "Event tracking"]
+      },
+      {
+        title: "Analytics Layer",
+        description: "Every important interaction becomes measurable.",
+        bullets: ["CTA clicks", "Scroll depth", "Form completion", "Drop-off points", "Funnel progression"]
+      }
+    ],
+    techStack: [
+      { name: "Figma", category: "Creative", iconSlug: "figma" },
+      { name: "React", category: "Development", iconSlug: "react" },
+      { name: "Next.js", category: "Development", iconSlug: "nextdotjs" },
+      { name: "Tailwind CSS", category: "Development", iconSlug: "tailwindcss" },
+      { name: "PostHog", category: "Analytics & Marketing", iconSlug: "posthog" },
+      { name: "Vercel", category: "Development", iconSlug: "vercel" }
+    ],
+    metric: [
+      { value: "+112%", label: "Conversion Rate" },
+      { value: "Lower", label: "Bounce Rates" },
+      { value: "Faster", label: "Acquisition" }
+    ]
+  }
 ];
 
 export const faqs = [
@@ -398,54 +623,27 @@ export type Testimonial = {
 export const testimonials: Testimonial[] = [
   {
     id: "t1",
-    name: "Aarav Mehta",
+    name: "Husain Basha",
     role: "Founder",
-    company: "Lumen AI",
-    quote: "Flogrit replaced a six-figure ad budget with a content engine that just… keeps shipping. We stopped paying for attention.",
-    metric: { label: "Organic views / qtr", value: "2.4M" },
+    company: "Husle Lifestyle",
+    quote: "Flogrit turned my successful business into a recognized personal brand. Their strategy generated over 16 million views across Instagram and YouTube in just weeks.",
+    metric: { label: "Total Views", value: "16M+" },
     pillar: "attention",
   },
   {
     id: "t2",
-    name: "Priya Nair",
-    role: "Head of Growth",
-    company: "Ridgeway",
-    quote: "They rebuilt our site around one question buyers were actually asking. Conversion more than doubled in five weeks.",
-    metric: { label: "Conversion", value: "+112%" },
-    pillar: "conversion",
-  },
-  {
-    id: "t3",
-    name: "Karan Shah",
-    role: "COO",
-    company: "Atlas Fit",
-    quote: "The voice agent picks up in under a second at 2am. Our follow-up team became a closing team overnight.",
-    metric: { label: "Lead → call", value: "41%" },
-    pillar: "automation",
-  },
-  {
-    id: "t4",
-    name: "Ishita Rao",
-    role: "Creative Director",
-    company: "Hearth & Co.",
-    quote: "Every reel feels like it belongs to the brand — not a trend. That's the bar nobody else cleared.",
+    name: "Nivas",
+    role: "Content Manager",
+    company: "Husain Basha Team",
+    quote: "Anand, I genuinely love working with you. Every project feels like you breathe a completely new life into the edit. Your creativity, fresh visual style, and ability to transform ideas into engaging content make a huge difference. You're technically very strong, incredibly reliable, and always bring something unique to the table. It's been an absolute pleasure collaborating with you, and I'm looking forward to many more projects together.",
     pillar: "attention",
   },
   {
-    id: "t5",
-    name: "Devansh Patel",
-    role: "CEO",
-    company: "Pebble Health",
-    quote: "Our funnel went from a leaky bucket to a measurable machine. We finally know what works.",
-    metric: { label: "CAC", value: "−38%" },
-    pillar: "conversion",
-  },
-  {
-    id: "t6",
-    name: "Meera Iyer",
-    role: "Operations Lead",
-    company: "Quay",
-    quote: "Half our internal tickets disappeared the week the automations went live. It feels like hiring three people.",
-    pillar: "automation",
-  },
+    id: "t3",
+    name: "Charan",
+    role: "Content Strategist",
+    company: "Husain Basha Team",
+    quote: "Finding an editor who truly understands a content team's vision is incredibly rare. Anand doesn't just execute edits—he actively contributes creative ideas that elevate every video beyond expectations. His expertise in After Effects, motion design, sound design, pacing, and visual storytelling consistently improves the final product. Over the past six months, every discussion has felt collaborative rather than transactional. If you're looking for someone who combines technical excellence with genuine creative thinking, Anand is the kind of editor every content team wants.",
+    pillar: "attention",
+  }
 ];

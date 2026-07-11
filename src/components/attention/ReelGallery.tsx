@@ -1,11 +1,21 @@
 import { motion } from "motion/react";
 import { Play } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import { reels } from "@/lib/data";
 
 /**
  * Looping reel "preview" gallery. Each card is a CSS/SVG mock of a video player —
- * scrubber animates, waveform pulses — no real video assets needed.
+ * scrubber animates, waveform pulses — now using real video assets.
  */
+const verticalVideos = [
+  "Nested Sequence 03.mp4", "Nested Sequence 04.mp4", "Nested Sequence 05.mp4",
+  "Nested Sequence 06.mp4", "Nested Sequence 07.mp4", "Nested Sequence 08.mp4",
+  "Nested Sequence 09.mp4", "Nested Sequence 10.mp4", "Nested Sequence 11.mp4",
+  "Nested Sequence 12 1.mp4", "Nested Sequence 14.mp4", "Nested Sequence 15.mp4",
+  "Nested Sequence 17.mp4", "Nested Sequence 18.mp4", "Nested Sequence 19.mp4",
+  "Nested Sequence 20.mp4", "Nested Sequence 21.mp4"
+];
+
 export function ReelGallery() {
   const row1 = [...reels, ...reels];
   return (
@@ -26,9 +36,9 @@ export function ReelGallery() {
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
-        <div className="marquee-track flex w-max gap-5 pl-5">
+        <div className="marquee-track flex w-max gap-5 pr-5">
           {row1.map((r, i) => (
-            <ReelCard key={`${r.id}-${i}`} reel={r} />
+            <ReelCard key={`${r.id}-${i}`} reel={r} index={i} />
           ))}
         </div>
       </div>
@@ -43,7 +53,7 @@ export function ReelGallery() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.06 }}
           >
-            <ReelCard reel={r} large />
+            <ReelCard reel={r} large index={i + row1.length} />
           </motion.div>
         ))}
       </div>
@@ -51,72 +61,57 @@ export function ReelGallery() {
   );
 }
 
-function ReelCard({ reel, large = false }: { reel: (typeof reels)[number]; large?: boolean }) {
+function ReelCard({ reel, large = false, index = 0 }: { reel: (typeof reels)[number]; large?: boolean; index?: number }) {
   const w = large ? "w-full" : "w-[260px]";
   const h = large ? "aspect-[9/14]" : "h-[360px] w-[260px]";
+  
+  const videoSrc = `/portfolio/vertical/${verticalVideos[index % verticalVideos.length]}`;
+  const webmSrc = videoSrc.replace('.mp4', '.webm');
+
   return (
-    <div
-      className={`hover-glow group relative ${w} ${h} shrink-0 overflow-hidden rounded-2xl border border-border bg-card`}
-      style={{
-        background: `linear-gradient(160deg, oklch(0.25 0.06 ${reel.hue}) 0%, oklch(0.16 0.04 ${reel.hue}) 60%, var(--ink) 100%)`,
-      }}
-    >
-      {/* fake film grain */}
-      <div
-        className="absolute inset-0 opacity-20 mix-blend-overlay"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-        }}
-      />
-
-      {/* abstract subject */}
-      <div className="absolute inset-0 flex items-center justify-center">
+    <Dialog>
+      <DialogTrigger asChild>
         <div
-          className="h-40 w-40 rounded-full blur-3xl"
-          style={{
-            background: `oklch(0.7 0.2 ${reel.hue} / 0.55)`,
-            animation: "pulse-glow 3.6s ease-in-out infinite",
-          }}
-        />
-      </div>
-
-      {/* play badge */}
-      <div className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/40 text-primary backdrop-blur-md transition-transform group-hover:scale-110">
-        <Play size={14} fill="currentColor" />
-      </div>
-
-      {/* meta */}
-      <div className="absolute inset-x-0 bottom-0 p-4">
-        <div className="mb-3 flex items-end gap-1 h-8">
-          {Array.from({ length: 28 }).map((_, i) => (
-            <span
-              key={i}
-              className="block w-[3px] origin-bottom rounded-sm bg-primary/70"
-              style={{
-                height: `${20 + ((i * 31) % 80)}%`,
-                animation: `wave-bar ${1.2 + (i % 5) * 0.18}s ease-in-out infinite`,
-                animationDelay: `${(i % 7) * 0.07}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* scrubber */}
-        <div className="relative h-[3px] overflow-hidden rounded-full bg-white/15">
-          <span
-            className="absolute inset-y-0 left-0 w-1/3 rounded-full bg-primary"
-            style={{ animation: "scrubber 6s linear infinite" }}
+          className={`hover-glow group relative ${w} ${h} shrink-0 overflow-hidden rounded-2xl border border-border bg-card cursor-pointer`}
+        >
+          {/* background video (fast loading webm) */}
+          <video
+            src={webmSrc}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            autoPlay
+            muted
+            loop
+            playsInline
           />
-        </div>
 
-        <div className="mt-3 flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-white/70">
-          <span>{reel.client}</span>
-          <span>{reel.watch}</span>
+          {/* dark gradient overlay for text readability (optional, kept for hover play button) */}
+          <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20 pointer-events-none" />
+
+          {/* Platform Icon */}
+          <div className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background/70 text-foreground backdrop-blur opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            {index % 2 === 0 ? (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+            )}
+          </div>
+
+          {/* play badge */}
+          <div className="absolute left-1/2 top-1/2 z-10 grid h-12 w-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/40 text-primary backdrop-blur-md transition-transform group-hover:scale-110 opacity-0 group-hover:opacity-100">
+            <Play size={20} fill="currentColor" />
+          </div>
         </div>
-        <p className="mt-1 font-display text-sm font-semibold text-white">{reel.title}</p>
-        <p className="font-mono text-[10px] text-white/60">{reel.views} views</p>
-      </div>
-    </div>
+      </DialogTrigger>
+      <DialogContent className="max-w-[400px] border-none bg-transparent p-0 shadow-none">
+        <DialogTitle className="sr-only">Video presentation</DialogTitle>
+        <video
+          src={videoSrc}
+          className="w-full h-auto rounded-2xl"
+          autoPlay
+          controls
+          playsInline
+        />
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -18,10 +18,11 @@ export function Testimonials({ pillar, heading }: { pillar?: PillarKey; heading?
         ...testimonials.filter((t) => t.pillar !== pillar),
       ]
     : testimonials;
-  const row = [...items, ...items];
+  const marqueeItems = items.slice(1);
+  const row = [...marqueeItems, ...marqueeItems];
 
   return (
-    <section className="relative overflow-hidden border-y border-border bg-background py-20 lg:py-28">
+    <section className="relative overflow-hidden bg-background py-20 lg:py-28">
       <div className="mx-auto mb-12 max-w-7xl px-5 lg:px-8">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           Said about us
@@ -82,8 +83,8 @@ export function Testimonials({ pillar, heading }: { pillar?: PillarKey; heading?
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
-        <div className="marquee-fast flex w-max gap-5 pl-5">
-          {row.slice(1).map((t, i) => (
+        <div className="marquee-fast flex w-max gap-5 pr-5 hover:[animation-play-state:paused]">
+          {row.map((t, i) => (
             <QuoteCard key={`${t.id}-${i}`} t={t} />
           ))}
         </div>
@@ -94,15 +95,17 @@ export function Testimonials({ pillar, heading }: { pillar?: PillarKey; heading?
 
 function QuoteCard({ t }: { t: Testimonial }) {
   return (
-    <div className="hover-glow relative w-[360px] shrink-0 rounded-2xl border border-border bg-card p-6">
+    <div className="hover-glow relative flex h-full w-[360px] shrink-0 flex-col rounded-2xl border border-border/60 bg-card p-6 transition-transform duration-300 hover:scale-[1.02]">
       <Quote className="absolute right-4 top-4 text-primary/10" size={48} />
       <p className="text-sm leading-relaxed text-foreground/90">"{t.quote}"</p>
-      <div className="mt-5 flex items-center gap-2.5">
+      <div className="mt-auto flex items-center gap-2.5 pt-5">
         <div className="grid h-8 w-8 place-items-center rounded-full bg-secondary font-mono text-[11px] font-semibold text-foreground">
           {initials(t.name)}
         </div>
         <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-          {t.name} · <span className="text-foreground/70">{t.company}</span>
+          <span className="text-foreground/90">{t.name}</span>
+          <span className="mx-1 text-foreground/30">·</span>
+          <span className="text-foreground/60">{t.company}</span>
         </div>
       </div>
     </div>

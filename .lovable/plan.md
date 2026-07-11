@@ -1,100 +1,158 @@
-# Captiongrit — Calm Linear-style Redesign
 
-## What's wrong right now
-- Home view is packed: hero text + big rotated demo + floating badge + trust chips + underline squiggle all fight for attention.
-- The neo-brutalist sticker vocabulary (blue offset shadows on Buy Now, rotated tape badges, hand-drawn coral/blue underline, rotated demo card) reads as immature next to a premium plugin.
-- Live demo mock is busy and doesn't feel like the real Adobe panel.
-- Blue is used as a *decoration* (shadows, tape) instead of as a *highlight* for meaning.
+# Flogrit restructure — corrected implementation plan
 
-## Direction
-Move from "playful sticker" → "calm engineered product page" (Linear / Mercury / Framer register). Lime + blue stay, but their **role** changes: lime is the primary product accent, blue is used sparingly as a semantic highlight on key words ("seconds", "one‑time", "24 languages"). Backgrounds carry a soft lime→blue gradient wash for the premium feel.
+## Confirmations (all seven decisions applied)
+- **Dynamic in-journey `PricingMatrix` reveal** — each journey renders its own `<PricingMatrix pillar=... />`, toggled open/closed by the journey's CTA. No pricing data duplication; reuses `pillarPricing`.
+- **No journey pricing deep-links** — no `/pricing#<pillar>` from any journey CTA. The standalone `/pricing` route stays untouched for direct navigation only.
+- **No SOCIAL footer column** — three columns only: SERVICES, COMPANY, LEGAL.
+- **No `#` social placeholders** — nothing ships in the DOM at all; no disabled items, no founder personal links. Optional `socials?: { instagram?: string; linkedin?: string }` may exist in the footer data type for future use, but no column is rendered.
+- **No public draft labels** — legal pages ship conservative copy with zero user-visible review status. Any internal notes are `// TODO(founder)` code comments only.
+- **No scroll-direction indicator logic** — sticky `SystemIndicator` is always visible while inside the journey (`position: sticky; top: navHeight`). No scroll listeners, no hide-on-scroll-down.
+- **Structured `systemJourneys` data model** — new typed module (e.g. `src/lib/systemJourneys.ts`) owns all journey content; journey components only render and handle interaction.
 
-## 1. Kill the sticker layer (global)
-- Remove `.cg-brut` hard offset shadows, rotated tape badges, `cg-underline-coral` squiggle SVG, `-rotate-*` transforms on chips/cards, and the "Live Demo" floating tab.
-- Replace with: flat rounded buttons, 1px hairline borders (`white/8`), soft shadows (`shadow-[0_1px_0_0_rgba(255,255,255,0.05)_inset,0_20px_60px_-30px_rgba(198,255,52,0.25)]`), and quiet hover states (subtle brightness/translate-y-[1px]).
-- Buttons: primary = solid lime on ink, no offset shadow; secondary = ghost with hairline border. Both get a gentle lime glow on hover, not a clunk.
+---
 
-## 2. Blue as a highlight token, not a shadow
-- Introduce `.cg-hl` utility: `color: #60A5FA; font-weight: inherit;` — used inline on 1–2 words per headline max.
-- Hero: "Don't waste hours. Create captions in <span class="cg-hl">seconds</span>."
-- Pricing header, Features header, FAQ header: same pattern — one blue word.
-- Remove blue from Buy Now shadow, Pro badge background, navbar dot, ambient radial. Those revert to lime or neutral.
+## Phase 1 — Audit (unchanged)
+Homepage stacks all three pillars after `Gate`, plus Proof/Testimonials/FAQ/FinalCTA — this is the "unlimited buffet" root cause. `FlowProvider` already exists (uses `?flow=` + localStorage). `pillarPricing`, `cases`, `testimonials`, `PricingMatrix` are all reusable as-is. No Calendly, no legal routes, no `?system=` URL support.
 
-## 3. Premium gradient background
-- Body: base `#0B0B0F` ink.
-- Add a single soft radial: lime (top‑left, 15% opacity, 900px blur) blending into blue (bottom‑right, 10%, 900px blur) — one layer, page-wide, fixed. This is the Lovable/Linear "aurora" feel.
-- Kill per-section colored blobs.
+---
 
-## 4. Home view (above the fold) — breathe
-Restructure hero to a **single-column, centered, narrow** layout:
+## Phase 2 — Implementation
 
-```text
-        [ small pill: v1.0 · Adobe Premiere + After Effects ]
+### 1. State + URL
+- Extend `FlowProvider`: read `?system=` (primary) + `?flow=` (back-compat); add `clearSystem()`; `setSystem()` updates URL via router-scoped `navigate({ to: ".", search: (s) => ({ ...s, system: key }) })`.
+- Add `validateSearch` on `/` (Zod `fallback`) for `system: "attention" | "conversion" | "automation" | undefined` so `/?system=attention` works first paint.
 
-              Don't waste hours.
-        Create captions in seconds.          ← blue highlight on "seconds"
+### 2. Homepage (`src/routes/index.tsx`)
+```
+<HeroSection />          ← CTA rewired to Calendly popup + "or explore where you're stuck ↓"
+<StudioStrip />          ← kept, heading reframed as capability teaser
+<SystemSelector />       ← NEW (replaces Gate)
+{system && <SystemJourney key={system} system={system} />}
+<CaptiongritPopup />
+```
+Removed from default homepage: stacked `PillarSection` loop, `Proof`, `Testimonials`, `FAQ`, `FinalCTA` (each moves inside the relevant journey where appropriate).
 
-           [one-line subhead, muted, max-w-xl]
+### 3. New components
 
-        [ Buy Now — from ₹399 ]   [ See how it works ]
+- **`SystemSelector`** (`src/components/home/SystemSelector.tsx`) — heading + three semantic `<button>` gateway cards, keyboard-accessible, lime hover border, subtle lift. Copy from `systemJourneys[key].problem` (below).
 
-            ·  one-time  ·  24 languages  ·  Win + Mac  ·
+- **`SystemIndicator`** — sticky compact pill:
+  ```
+  EXPLORING   ATTENTION   SWITCH ↕
+  ```
+  `position: sticky; top: var(--nav-h)`; always visible while inside the journey; no scroll-direction logic. "SWITCH" re-expands the three doors (either in place or via `AnimatePresence` toggle back to `SystemSelector`).
+
+- **`SystemJourney`** (`src/components/home/SystemJourney.tsx`) — swaps between the three journey components via `AnimatePresence mode="wait"`; scrolls into view on selection (respects `prefers-reduced-motion`).
+
+- **`AttentionJourney` / `ConversionJourney` / `AutomationJourney`** (`src/components/home/journeys/*.tsx`) — thin render layers over `systemJourneys[key]`. Each journey ends with:
+  1. `EXPLORE <PILLAR> PLANS ↓` (or `ENGAGEMENTS ↓` for Automation) — toggles an in-journey `<PricingMatrix pillar=... compact />` reveal (`AnimatePresence` + `layout`, restrained motion, `prefers-reduced-motion` respected).
+  2. Primary CTA `DISCUSS YOUR BRAND` / `BUILD YOUR CONVERSION PATH` / `DISCUSS YOUR WORKFLOW` → Calendly popup.
+  3. Next directions rendered from `systemJourneys[key].nextDirections` (two links that swap `setSystem(...)`).
+
+  Journey-specific content:
+  - **Attention**: capability groups + process + Proof (`50M+ views` stat + evidence slot rendered only when assets exist) + Attention-tagged cases + `<Testimonials pillar="attention" />` (add optional `pillar` filter prop to existing component).
+  - **Conversion**: leak-vs-path visual reusing the `HeroFlowAnimation` grid aesthetic (no new library) + capability groups (no SEO ranking guarantees) + process + case study rendered from the existing `gurujyoth` case, presented in narrative as **"Gurujyoth × Horizon Pilot Academy"** (slug and data identifier unchanged) + conditional WhatsApp/customer-message artifacts block (renders only when real assets exist under `src/assets/proof/whatsapp/` — no placeholder, no fake UI, no "coming soon").
+  - **Automation**: five **Implementation Framework** cards (never "case study") from `systemJourneys.automation.frameworks`, each with pain scenario + inline flow diagram reusing the tech-grid aesthetic + capabilities list + custom automation positioning + implementation process.
+
+### 4. `systemJourneys` data model (`src/lib/systemJourneys.ts`)
+Typed structured content module. Journey components read from it; they do not embed the copy inline. Rough shape:
+
+```ts
+type CapabilityGroup = { label: string; blurb: string; items: string[] };
+type NextDirection   = { toSystem: SystemKey; label: string };
+type ProcessStep     = { n: string; title: string; body: string };
+
+type AutomationFramework = {
+  id: string;                // stable slug
+  n: string;                 // "01".."05"
+  title: string;
+  painScenario: string;
+  systemFlow: string[];      // node labels for the inline flow diagram
+};
+
+type AttentionJourney = {
+  problem: { headline: string; body: string };
+  capabilityGroups: CapabilityGroup[];
+  process: ProcessStep[];
+  proof: { headlineStat: string; body: string };
+  nextDirections: [NextDirection, NextDirection];
+};
+
+type ConversionJourney = {
+  problem: { headline: string; body: string };
+  capabilityGroups: CapabilityGroup[];
+  process: ProcessStep[];
+  caseStudy: { caseSlug: "gurujyoth"; academyName: "Horizon Pilot Academy" };
+  nextDirections: [NextDirection, NextDirection];
+};
+
+type AutomationJourney = {
+  problem: { headline: string; body: string };
+  frameworks: AutomationFramework[];        // exactly 5
+  capabilities: string[];
+  process: ProcessStep[];
+  nextDirections: [NextDirection, NextDirection];
+};
+
+export const systemJourneys: {
+  attention: AttentionJourney;
+  conversion: ConversionJourney;
+  automation: AutomationJourney;
+};
 ```
 
-- No demo in the hero. The demo moves to its own dedicated section below the fold with proper framing.
-- Trust items become a single thin inline row with `·` separators — not chips.
-- Vertical rhythm: `pt-32 pb-40`, generous whitespace.
+Does not touch `pillars`, `pillarPricing`, `cases`, or `testimonials` in `data.ts`.
 
-## 5. Redesign the "live demo" section
-- Give it its own section titled "See it work inside Premiere Pro."
-- Replace the current 9-widget mock with a **still, high-fidelity Adobe panel screenshot mock** (dark panel, real-looking dropdown for language, one "Generate Captions" lime button, one clean caption preview line). Static > animated for calm.
-- Frame it inside a realistic browser/app chrome (three dots, title bar) with soft shadow. No rotation, no floating badges.
-- One subtle motion: caption line typewriters in once on scroll, then rests.
+### 5. Calendly
+- `bun add react-calendly`. Use `PopupModal` only.
+- `src/components/site/CalendlyButton.tsx` wraps existing button styles, manages `isOpen`, renders `<PopupModal url="https://calendly.com/astrophileanand/30min" />`.
+- Rewire hero + every journey primary CTA. `/contact` remains reachable via nav.
 
-## 6. Thin the home page (defer content down or into sub-pages)
-Current order = 12 sections stacked. New order, tightened:
+### 6. Nav / Logo
+- Keep `Nav`. Verify `LogoMark` and `Footer` both import `src/assets/flogrit-logo.svg.asset.json` with explicit `w-*/h-*` + `shrink-0`. Remove any accidental founder-area text logo recreation.
 
-1. Hero (new, minimal)
-2. Logo/social proof strip (thinner, one line)
-3. Live demo section (new)
-4. How it works (3 steps, horizontal, icon+label only)
-5. Features (6 → 4 cards, one-line each, icon on left)
-6. Languages (marquee stays, but muted — no rotated chips)
-7. Pricing (kept, but cards flattened — see below)
-8. FAQ (accordion, tighter)
-9. Final CTA (single line + button, no giant panel)
+### 7. Footer rewrite (`src/components/site/Footer.tsx`)
+Three columns only:
+- **SERVICES** — Attention / Conversion / Automation → `<Link to="/" search={{ system: <key> }}>` (selects the system + scrolls to the journey).
+- **COMPANY** — Work / About / Contact.
+- **LEGAL** — Privacy Policy / Terms of Service / Refund Policy.
+- Bottom: `© 2026 Flogrit. All rights reserved.` Domain: `https://flogrit.com`.
+- No SOCIAL column, no `#` placeholders, no disabled items.
 
-Cut from home (move to standalone routes or delete):
-- `CaptionModesSection` → merge one line into Features.
-- `ComparisonSection` → move to `/captiongrit/compare` route or delete.
-- `TestimonialsSection` → keep only 1 quote inline above pricing, drop the section.
+### 8. Legal pages
+- New routes `src/routes/privacy.tsx`, `src/routes/terms.tsx`, `src/routes/refund-policy.tsx`.
+- Conservative first-person copy for a service agency (Guntur, AP + Hyderabad operations). No CIN/GST/registered-office fabrication.
+- Refund policy: baseline no-refunds, service-based, scope agreed pre-engagement, per-pillar delivery notes; explicitly separate from CaptionGrit.
+- **Zero user-visible review status.** Any internal reminders live as `// TODO(founder)` code comments only.
+- Each page has its own `head()` meta.
 
-## 7. Pricing cards — flatten
-- Remove sticker shadow, rotated "Most Popular" tape, blue Pro badge.
-- Cards: hairline border, 1px, `bg-white/[0.02]`. Featured card gets a lime hairline + soft lime glow, nothing more.
-- "Pro only" AI Verification badge → small inline lime pill next to feature name, not a floating tab.
-- Buy button inside each card: flat lime on featured, ghost on others.
+### 9. Motion + responsive
+- Selector cards: stacked mobile, three-col `md+`.
+- Journey swap: `AnimatePresence mode="wait"`. Selector ↔ indicator: `layout` transition. In-journey pricing reveal: `AnimatePresence` height/opacity, restrained.
+- All new motion respects `prefers-reduced-motion` (mirror `HeroFlowAnimation`).
+- Calendly modal validated at mobile widths.
 
-## 8. Typography & spacing pass
-- Hero H1: drop from 4.5rem → `clamp(2.5rem, 5vw, 4rem)`, tighter tracking `-0.03em`, weight 700 not 900.
-- Section headers: 2.5rem, weight 600, one blue word max.
-- Body: `text-white/70`, `leading-[1.7]`.
-- Section padding: `py-28 sm:py-32` uniformly.
+### 10. Order of work
+1. `?system=` search validation on `/` + `FlowProvider` extension (with `?flow=` back-compat).
+2. Author `src/lib/systemJourneys.ts` typed data module.
+3. Add optional `pillar` filter prop to `<Testimonials />`.
+4. `SystemSelector` + `SystemIndicator` (leave `Gate.tsx` in tree until swap is verified).
+5. Install `react-calendly`; add `CalendlyButton`; swap hero CTA first, verify.
+6. `AttentionJourney` (fastest — most existing assets), wire it, replace stacked pillars on `/`.
+7. `ConversionJourney` (with in-journey `PricingMatrix` reveal + conditional WhatsApp block).
+8. `AutomationJourney` (five Implementation Framework cards + in-journey pricing reveal).
+9. Footer rewrite + legal routes.
+10. Logo consistency pass.
+11. Cleanup: remove `Gate.tsx` once no importers remain.
 
-## Files to touch
-- `src/styles.css` — remove `.cg-brut`, `.cg-underline-coral`, sticker shadows, coral radial; add `.cg-hl`, aurora background, hairline utilities.
-- `src/components/captiongrit/components/product/HeroSection.jsx` — rebuild as centered single-column, remove demo, remove chips.
-- New `src/components/captiongrit/components/product/LiveDemoSection.jsx` — quiet Adobe-panel mock.
-- `src/components/captiongrit/components/product/CaptiongritPluginDemo.jsx` — replace with static mock (or delete + inline into LiveDemoSection).
-- `src/components/captiongrit/components/product/PricingSection.jsx` — flatten cards, fix Pro badge.
-- `src/components/captiongrit/components/product/FeaturesSection.jsx` — 4 cards, remove tape.
-- `src/components/captiongrit/components/product/LanguageMarquee.jsx` — remove rotation, quiet chips.
-- `src/components/captiongrit/components/product/FinalCtaSection.jsx` — one-line CTA.
-- `src/components/captiongrit/components/product/FaqSection.jsx` — remove blue open-state sticker.
-- `src/components/captiongrit/components/layout/CaptiongritNavbar.jsx` — remove blue dot + brut button.
-- `src/components/captiongrit/pages/products/CaptiongritPage.jsx` — new section order, drop CaptionModes/Comparison/Testimonials from home.
+---
 
-## Questions before I build
-1. **Live demo replacement** — OK with a static, screenshot-style Adobe panel mock (typewriter-in on scroll only)? Or do you want me to try one clean animation (e.g., language dropdown → click Generate → caption line appears, once, then stops)?
-2. **Sections to drop from home** — OK to remove CaptionModes, Comparison, and the full Testimonials section from the home page? (Comparison + Testimonials could live on `/captiongrit/compare` and inline as a single quote.)
-3. **Playful tone** — full removal (no rotations, no sticker shadows, no hand-drawn underline anywhere), correct?
+## Content Integrity Guardrails (corrected)
+- No fabricated metrics, logos, testimonials, dashboards, or WhatsApp screenshots. Real data flows from `data.ts` only.
+- Automation scenarios are always labeled **"Implementation framework"**, never "case study."
+- Conversion uses only the existing `gurujyoth` case data, presented as **"Gurujyoth × Horizon Pilot Academy"** in narrative; slug and data identifier are unchanged.
+- **Pricing is revealed contextually inside the currently selected journey via `<PricingMatrix pillar=... />`.** Journey CTAs do NOT navigate to `/pricing`. `pillarPricing` remains the single source of truth. The standalone `/pricing` route stays for direct navigation only.
+- No SEO ranking guarantees anywhere in Conversion copy.
+- Footer has no SOCIAL column and no `#` placeholder links — Flogrit has no official Instagram or LinkedIn accounts today.
+- Legal pages ship with zero user-visible review status; conservative draft copy only, reviewed by founder before deploy.

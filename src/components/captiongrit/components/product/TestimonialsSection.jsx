@@ -4,38 +4,44 @@ import { motion } from 'motion/react';
 export default function TestimonialsSection() {
   const testimonials = [
     {
-      name: "Marcus Vella",
-      role: "YouTube Creator (1.2M Subs)",
+      name: "YouTube Creator",
+      role: "Tech & Tutorial Channel (1.2M Subs)",
+      avatar: "", // Add profile picture path here in the future
       quote: "The phonetic Romanization is a game changer for my Telugu channel. I can finally add accurate subtitles without manually typing everything out.",
       rating: 5
     },
     {
-      name: "Priya Iyer",
-      role: "Freelance Video Editor",
+      name: "Freelance Video Editor",
+      role: "Post-Production Specialist",
+      avatar: "",
       quote: "Captiongrit saves me about 2 hours per video. The fact that it works directly inside Premiere means I never have to break my workflow.",
       rating: 5
     },
     {
-      name: "David Chen",
-      role: "Agency Director",
+      name: "Agency Director",
+      role: "Digital Marketing Agency",
+      avatar: "",
       quote: "We were paying hundreds a month for cloud captioning services. A one-time payment for this level of accuracy is an absolute steal.",
       rating: 5
     },
     {
-      name: "Sarah Kim",
-      role: "Content Strategist",
+      name: "Content Strategist",
+      role: "Global Media Brand",
+      avatar: "",
       quote: "The multi-language support is incredible. We localize our content into 5 languages and Captiongrit handles it all without breaking a sweat.",
       rating: 5
     },
     {
-      name: "Raj Patel",
-      role: "Short-Form Creator",
+      name: "Short-Form Creator",
+      role: "TikTok & Reels (500k+ Followers)",
+      avatar: "",
       quote: "I've tried every captioning tool out there. Nothing comes close to the speed and accuracy of Captiongrit for TikTok and Reels content.",
       rating: 5
     },
     {
-      name: "Elena Torres",
-      role: "Podcast Producer",
+      name: "Podcast Producer",
+      role: "Top 100 Business Podcast",
+      avatar: "",
       quote: "Being able to generate captions directly inside the timeline without leaving Premiere Pro has completely changed our post-production pipeline.",
       rating: 5
     }
@@ -63,36 +69,31 @@ export default function TestimonialsSection() {
       {/* Marquee container */}
       <div className="relative">
 
-        <div className="flex w-max animate-marquee-testimonials hover:[animation-play-state:paused] py-6">
-          {marqueeItems.map((test, idx) => {
-            const rot = idx % 2 === 0 ? '-rotate-1' : 'rotate-1';
-            const shadow = idx % 3 === 0 ? '#3B82F6' : '#C6FF34';
-            return (
-              <div
-                key={idx}
-                className={`bg-[#13131A] border border-white/10 rounded-2xl p-6 flex flex-col justify-between w-[320px] shrink-0 mx-4 transform ${rot} hover:rotate-0 transition-transform`}
-                style={{ boxShadow: `5px 5px 0 0 ${shadow}` }}
-              >
-                <div>
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(test.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-accent-primary text-accent-primary" />
-                    ))}
-                  </div>
-                  <p className="text-white/90 text-sm leading-relaxed mb-6">"{test.quote}"</p>
+        <div className="flex w-max animate-marquee-testimonials hover:[animation-play-state:paused]">
+          {marqueeItems.map((test, idx) => (
+            <div
+              key={idx}
+              className="glass-card p-6 flex flex-col justify-between w-[320px] shrink-0 mx-4"
+            >
+              <div>
+                <div className="flex gap-1 mb-4">
+                  {[...Array(test.rating)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-accent-primary text-accent-primary" />
+                  ))}
                 </div>
-                <div className="flex items-center gap-3 border-t border-white/5 pt-4">
-                  <div className="w-9 h-9 rounded-full bg-accent-primary flex items-center justify-center font-black text-black text-sm ring-2 ring-[#3B82F6]/50">
-                    {test.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-white text-xs">{test.name}</h4>
-                    <p className="text-text-secondary text-xs">{test.role}</p>
-                  </div>
+                <p className="text-white/90 text-sm leading-relaxed mb-6">"{test.quote}"</p>
+              </div>
+              <div className="flex items-center gap-3 border-t border-white/5 pt-4">
+                <div className="w-8 h-8 rounded-full bg-accent-primary/20 flex items-center justify-center font-bold text-accent-primary text-sm">
+                  {test.name.charAt(0)}
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-xs">{test.name}</h4>
+                  <p className="text-text-secondary text-xs">{test.role}</p>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>
