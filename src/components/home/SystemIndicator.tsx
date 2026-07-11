@@ -17,10 +17,12 @@ export function SystemIndicator() {
 
   return (
     <div className="sticky top-24 z-30 mx-auto max-w-7xl px-5 lg:px-8">
-      <div className="relative flex flex-wrap items-center justify-between gap-3 rounded-full border border-border bg-background/70 px-4 py-2 backdrop-blur-xl">
-        <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+      <div
+        className="relative flex flex-wrap items-center justify-between gap-3 rounded-full border border-secondary/60 bg-gradient-to-r from-secondary/70 via-secondary/50 to-secondary/70 px-4 py-2 shadow-[0_8px_30px_-12px_rgba(139,92,246,0.55)] backdrop-blur-xl ring-1 ring-inset ring-secondary/40"
+      >
+        <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-secondary-foreground/80">
           <span>Exploring</span>
-          <span className="rounded-full bg-primary/15 px-2.5 py-1 text-primary">
+          <span className="rounded-full bg-primary/20 px-2.5 py-1 text-primary shadow-[inset_0_0_0_1px_hsl(var(--primary)/0.35)]">
             0{active.index} · {active.label}
           </span>
         </div>
@@ -29,7 +31,7 @@ export function SystemIndicator() {
           <button
             type="button"
             onClick={() => setOpenSwitch((o) => !o)}
-            className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/80 transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1.5 rounded-full border border-secondary-foreground/25 bg-background/40 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.2em] text-secondary-foreground transition-colors hover:border-primary/50 hover:text-primary"
           >
             Switch
             <ArrowLeftRight size={12} />
@@ -38,7 +40,7 @@ export function SystemIndicator() {
             type="button"
             onClick={() => { setOpenSwitch(false); clearSystem(); }}
             aria-label="Close journey"
-            className="grid size-7 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:text-foreground"
+            className="grid size-7 place-items-center rounded-full border border-secondary-foreground/25 bg-background/40 text-secondary-foreground/80 transition-colors hover:border-primary/50 hover:text-primary"
           >
             <X size={12} />
           </button>
