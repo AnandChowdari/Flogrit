@@ -32,7 +32,7 @@ export function AttentionJourney() {
       <ProcessCadence steps={c.process} />
 
       {/* Proof */}
-      <section className="border-b border-border bg-background">
+      <section className="bg-background">
         <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
             Proof

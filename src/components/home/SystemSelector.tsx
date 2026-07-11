@@ -39,26 +39,37 @@ export function SystemSelector() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-10%" }}
                 transition={{ duration: 0.45, delay: i * 0.06 }}
-                whileHover={{ y: -3 }}
-                className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 text-left transition-colors hover:border-primary/50 md:p-8"
+                whileHover={{ y: -4 }}
+                className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 text-left transition-colors duration-300 hover:border-primary/60 md:p-8"
               >
-                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                {/* Light-sweep */}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-primary/10 to-transparent opacity-0 transition-all duration-700 ease-out group-hover:translate-x-full group-hover:opacity-100"
+                />
+                {/* Corner glow */}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-primary/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+                />
+
+                <div className="relative font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
                   0{p.index} · {p.label}
                 </div>
 
-                <p className="mt-8 font-display text-xl font-medium leading-snug text-foreground md:text-2xl">
+                <p className="relative mt-8 font-display text-xl font-medium leading-snug text-foreground md:text-2xl">
                   &ldquo;{p.problem}&rdquo;
                 </p>
 
-                <p className="mt-4 text-sm text-muted-foreground">
+                <p className="relative mt-4 text-sm text-muted-foreground">
                   {j.problem.body}
                 </p>
 
-                <div className="mt-8 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-primary">
+                <div className="relative mt-8 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-primary">
                   Enter this system
                   <ArrowRight
                     size={14}
-                    className="transition-transform group-hover:translate-x-1"
+                    className="transition-transform duration-300 group-hover:translate-x-1.5"
                   />
                 </div>
               </motion.button>
