@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
-import { Link } from "@tanstack/react-router";
 import { HeroFlowAnimation } from "./HeroFlowAnimation";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
+import { CalendlyButton } from "@/components/site/CalendlyButton";
 
 export function HeroSection() {
   return (
@@ -45,19 +45,14 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.25 }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
-            <Link
-              to="/contact"
-              className="group inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-transform hover:scale-[1.02]"
+            <CalendlyButton>Book a call</CalendlyButton>
+            <a
+              href="#system-selector"
+              className="group inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
             >
-              Talk to us
-              <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-            <Link
-              to="/work"
-              className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
-            >
-              See the work
-            </Link>
+              Or explore where you're stuck
+              <ArrowDown size={14} className="transition-transform group-hover:translate-y-0.5" />
+            </a>
           </motion.div>
 
           <motion.dl

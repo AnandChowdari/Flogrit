@@ -9,6 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CaptiongritRouteImport } from './routes/captiongrit'
@@ -20,6 +23,21 @@ import { Route as ServicesConversionRouteImport } from './routes/services.conver
 import { Route as ServicesAutomationRouteImport } from './routes/services.automation'
 import { Route as ServicesAttentionRouteImport } from './routes/services.attention'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -77,6 +95,9 @@ export interface FileRoutesByFullPath {
   '/captiongrit': typeof CaptiongritRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/terms': typeof TermsRoute
   '/services/attention': typeof ServicesAttentionRoute
   '/services/automation': typeof ServicesAutomationRoute
   '/services/conversion': typeof ServicesConversionRoute
@@ -89,6 +110,9 @@ export interface FileRoutesByTo {
   '/captiongrit': typeof CaptiongritRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/terms': typeof TermsRoute
   '/services/attention': typeof ServicesAttentionRoute
   '/services/automation': typeof ServicesAutomationRoute
   '/services/conversion': typeof ServicesConversionRoute
@@ -102,6 +126,9 @@ export interface FileRoutesById {
   '/captiongrit': typeof CaptiongritRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/terms': typeof TermsRoute
   '/services/attention': typeof ServicesAttentionRoute
   '/services/automation': typeof ServicesAutomationRoute
   '/services/conversion': typeof ServicesConversionRoute
@@ -116,6 +143,9 @@ export interface FileRouteTypes {
     | '/captiongrit'
     | '/contact'
     | '/pricing'
+    | '/privacy'
+    | '/refund-policy'
+    | '/terms'
     | '/services/attention'
     | '/services/automation'
     | '/services/conversion'
@@ -128,6 +158,9 @@ export interface FileRouteTypes {
     | '/captiongrit'
     | '/contact'
     | '/pricing'
+    | '/privacy'
+    | '/refund-policy'
+    | '/terms'
     | '/services/attention'
     | '/services/automation'
     | '/services/conversion'
@@ -140,6 +173,9 @@ export interface FileRouteTypes {
     | '/captiongrit'
     | '/contact'
     | '/pricing'
+    | '/privacy'
+    | '/refund-policy'
+    | '/terms'
     | '/services/attention'
     | '/services/automation'
     | '/services/conversion'
@@ -153,6 +189,9 @@ export interface RootRouteChildren {
   CaptiongritRoute: typeof CaptiongritRoute
   ContactRoute: typeof ContactRoute
   PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
+  RefundPolicyRoute: typeof RefundPolicyRoute
+  TermsRoute: typeof TermsRoute
   ServicesAttentionRoute: typeof ServicesAttentionRoute
   ServicesAutomationRoute: typeof ServicesAutomationRoute
   ServicesConversionRoute: typeof ServicesConversionRoute
@@ -162,6 +201,27 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -241,6 +301,9 @@ const rootRouteChildren: RootRouteChildren = {
   CaptiongritRoute: CaptiongritRoute,
   ContactRoute: ContactRoute,
   PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
+  RefundPolicyRoute: RefundPolicyRoute,
+  TermsRoute: TermsRoute,
   ServicesAttentionRoute: ServicesAttentionRoute,
   ServicesAutomationRoute: ServicesAutomationRoute,
   ServicesConversionRoute: ServicesConversionRoute,

@@ -1,38 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Fragment } from "react";
+import { fallback, zodValidator } from "@tanstack/zod-adapter";
+import { z } from "zod";
 import { useFlow } from "@/lib/flow";
-import { pillarOrder, type PillarKey } from "@/lib/data";
 import { HeroSection } from "@/components/home/HeroSection";
 import { StudioStrip } from "@/components/home/StudioStrip";
-import { Gate } from "@/components/home/Gate";
-import { PillarSection } from "@/components/home/PillarSection";
-import { Proof } from "@/components/home/Proof";
-import { FAQ } from "@/components/home/FAQ";
-import { FinalCTA } from "@/components/home/FinalCTA";
-import { Testimonials } from "@/components/site/Testimonials";
+import { SystemSelector } from "@/components/home/SystemSelector";
+import { SystemJourney } from "@/components/home/SystemJourney";
 import { CaptiongritPopup } from "@/components/home/CaptiongritPopup";
-import { ReelGallery } from "@/components/attention/ReelGallery";
 
-const BRIDGES: Record<PillarKey, string> = {
-  attention: "Attention without conversion is noise. Here's what catches it.",
-  conversion: "A funnel only works if there's traffic in it. Here's how we keep filling the top.",
-  automation: "Once the pieces convert, the system has to run without you. Here's the operating layer.",
-};
+const searchSchema = z.object({
+  // ?system= is primary. ?flow= is kept back-compat (also read by FlowProvider).
+  system: fallback(z.string().optional(), undefined).optional(),
+  flow: fallback(z.string().optional(), undefined).optional(),
+});
 
 export const Route = createFileRoute("/")({
+  validateSearch: zodValidator(searchSchema),
   head: () => ({
     meta: [
       { title: "Flogrit — turn attention into customers" },
       {
         name: "description",
         content:
-          "Flogrit is a Growth Systems Company. We design and build connected systems for Attention, Conversion and Automation — so the parts of your business work together.",
+          "Flogrit is a Growth Systems Company. Choose the system that's breaking — Attention, Conversion or Automation — and the homepage becomes about that one thing.",
       },
       { property: "og:title", content: "Flogrit — turn attention into customers" },
       {
         property: "og:description",
         content:
-          "A Growth Systems Company. Connected systems for Attention, Conversion and Automation.",
+          "Choose where the system is breaking. Flogrit designs Attention, Conversion and Automation as one connected growth system.",
       },
     ],
   }),
@@ -40,32 +36,14 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { flow, hasChosen } = useFlow();
-
-  const lead: PillarKey = hasChosen ? flow : "attention";
-  const ordered: PillarKey[] = [lead, ...pillarOrder.filter((p) => p !== lead)];
+  const { system } = useFlow();
 
   return (
     <>
       <HeroSection />
       <StudioStrip />
-      <Gate />
-
-      {ordered.map((key, i) => (
-        <Fragment key={key}>
-          <PillarSection
-            pillarKey={key}
-            position={i + 1}
-            bridge={i === 0 ? undefined : BRIDGES[key]}
-          />
-          {key === "attention" && <ReelGallery />}
-        </Fragment>
-      ))}
-
-      <Proof />
-      <Testimonials />
-      <FAQ />
-      <FinalCTA />
+      <SystemSelector />
+      {system && <SystemJourney key={system} system={system} />}
       <CaptiongritPopup />
     </>
   );
