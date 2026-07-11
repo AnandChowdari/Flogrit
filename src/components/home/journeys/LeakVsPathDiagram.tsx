@@ -60,45 +60,55 @@ function Panel({
 function FunnelLeak({ reduce }: { reduce: boolean }) {
   const stages = ["Views", "Clicks", "Enquiries", "Calls"];
   const widths = [100, 78, 42, 12];
+  const visualWidths = [180, 140, 105, 75];
   return (
-    <svg viewBox="0 0 220 200" className="h-56 w-full">
+    <svg viewBox="0 0 240 200" className="h-56 w-full">
       {stages.map((s, i) => {
-        const y = 20 + i * 42;
-        const w = widths[i];
-        const x = (220 - w * 1.8) / 2;
+        const y = 20 + i * 44;
+        const wTrue = widths[i];
+        const wVis = visualWidths[i];
+        const x = (240 - wVis) / 2;
         return (
           <g key={s}>
-            <rect
+            <motion.rect
               x={x}
               y={y}
-              width={w * 1.8}
-              height={18}
-              rx={4}
-              fill="transparent"
-              stroke="oklch(0.85 0.02 90 / 0.35)"
-              strokeWidth={1}
+              width={wVis}
+              height={22}
+              rx={6}
+              fill="oklch(0.85 0.02 90 / 0.15)"
+              stroke="none"
+              initial={{ scaleX: 0, opacity: 0 }}
+              whileInView={{ scaleX: 1, opacity: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: i * 0.15, ease: "easeOut" }}
+              style={{ originX: "50%" }}
             />
-            <text
-              x={110}
-              y={y + 12}
-              fontSize={9}
+            <motion.text
+              x={120}
+              y={y + 14.5}
+              fontSize={10}
               textAnchor="middle"
               fontFamily="JetBrains Mono, monospace"
-              fill="oklch(0.85 0.02 90 / 0.75)"
+              fill="oklch(0.85 0.02 90 / 0.9)"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.4, delay: i * 0.15 + 0.3 }}
             >
-              {s} · {w}%
-            </text>
-            {i < stages.length - 1 && !reduce && (
+              {s} · {wTrue}%
+            </motion.text>
+            {!reduce && i < stages.length - 1 && (
               <motion.circle
                 r={1.5}
-                cx={x + w * 1.8 + 2}
+                cx={x + wVis + 2}
                 fill="var(--color-lime)"
-                initial={{ cy: y + 18, opacity: 0.9 }}
-                animate={{ cy: y + 40, opacity: 0 }}
+                initial={{ cy: y + 22, opacity: 0 }}
+                whileInView={{ cy: [y + 22, y + 42], opacity: [0.9, 0] }}
+                viewport={{ once: true, margin: "-40px" }}
                 transition={{
                   duration: 1.6,
-                  repeat: Infinity,
-                  delay: i * 0.4,
+                  delay: i * 0.4 + 0.8,
                   ease: "easeIn",
                 }}
               />
@@ -111,44 +121,62 @@ function FunnelLeak({ reduce }: { reduce: boolean }) {
 }
 
 function FunnelPath({ reduce }: { reduce: boolean }) {
-  const stages = ["Views", "One decision", "Booked call"];
+  const stages = [
+    { s: "First click", cx: 30, cy: 30, ty: 18 },
+    { s: "Clear offer", cx: 190, cy: 100, ty: 118 },
+    { s: "Booked call", cx: 30, cy: 170, ty: 188 },
+  ];
   return (
-    <svg viewBox="0 0 220 200" className="h-56 w-full">
-      <path
-        d="M 30 30 L 190 30 L 190 100 L 30 100 L 30 170 L 190 170"
+    <svg viewBox="0 0 240 200" className="h-56 w-full">
+      <motion.path
+        d="M 30 30 L 190 30 L 190 100 L 30 100 L 30 170"
         stroke="var(--color-lime)"
         strokeOpacity="0.6"
         strokeWidth={1.2}
         fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        whileInView={{ pathLength: 1, opacity: 1 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 1.5, ease: "easeInOut" }}
       />
-      {stages.map((s, i) => {
-        const cy = 30 + i * 70;
-        const cx = i % 2 === 0 ? 30 : 190;
-        return (
-          <g key={s}>
-            <circle cx={cx} cy={cy} r={6} fill="oklch(0.18 0.01 90)" stroke="var(--color-lime)" strokeWidth={1.2} />
-            <text
-              x={i % 2 === 0 ? cx + 12 : cx - 12}
-              y={cy + 3}
-              fontSize={9}
-              textAnchor={i % 2 === 0 ? "start" : "end"}
-              fontFamily="JetBrains Mono, monospace"
-              fill="oklch(0.95 0 0 / 0.9)"
-            >
-              {s}
-            </text>
-          </g>
-        );
-      })}
+      {stages.map(({ s, cx, cy, ty }, i) => (
+        <g key={s}>
+          <motion.circle 
+            cx={cx} cy={cy} r={6} 
+            fill="oklch(0.18 0.01 90)" 
+            stroke="var(--color-lime)" 
+            strokeWidth={1.2} 
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.4, delay: i * 0.5 }}
+          />
+          <motion.text
+            x={cx}
+            y={ty}
+            fontSize={10}
+            textAnchor="middle"
+            fontFamily="JetBrains Mono, monospace"
+            fill="oklch(0.95 0 0 / 0.9)"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.4, delay: i * 0.5 + 0.2 }}
+          >
+            {s}
+          </motion.text>
+        </g>
+      ))}
       {!reduce && (
         <motion.circle
           r={2.5}
           fill="var(--color-lime)"
-          initial={{ offsetDistance: "0%" }}
-          animate={{ offsetDistance: "100%" }}
-          transition={{ duration: 3.2, repeat: Infinity, ease: "linear" }}
+          initial={{ offsetDistance: "0%", opacity: 0 }}
+          whileInView={{ offsetDistance: "100%", opacity: 1 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 2.5, delay: 1.2, ease: "linear" }}
           style={{
-            offsetPath: "path('M 30 30 L 190 30 L 190 100 L 30 100 L 30 170 L 190 170')",
+            offsetPath: "path('M 30 30 L 190 30 L 190 100 L 30 100 L 30 170')",
             filter: "drop-shadow(0 0 6px var(--color-lime))",
           }}
         />
