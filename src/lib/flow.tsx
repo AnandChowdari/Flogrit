@@ -59,7 +59,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       if (pathname === "/") {
         router.navigate({
           to: "/",
-          search: (prev) => ({ ...(prev ?? {}), system: f, flow: undefined }),
+          search: (prev: Record<string, unknown>) => ({ ...(prev ?? {}), system: f, flow: undefined }),
           replace: false,
         });
       }
