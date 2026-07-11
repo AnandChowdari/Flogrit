@@ -86,6 +86,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
             delete next.flow;
             return next;
           },
+          resetScroll: false,
         });
       }
     } catch {
