@@ -60,7 +60,8 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         router.navigate({
           to: "/",
           search: (prev: Record<string, unknown>) => ({ ...(prev ?? {}), system: f, flow: undefined }),
-          replace: false,
+          replace: true,
+          resetScroll: false,
         });
       }
     } catch {
