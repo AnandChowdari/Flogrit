@@ -14,6 +14,9 @@ import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CaptiongritTermsRouteImport } from './routes/captiongrit-terms'
+import { Route as CaptiongritRefundRouteImport } from './routes/captiongrit-refund'
+import { Route as CaptiongritPrivacyRouteImport } from './routes/captiongrit-privacy'
 import { Route as CaptiongritRouteImport } from './routes/captiongrit'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -46,6 +49,21 @@ const PricingRoute = PricingRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaptiongritTermsRoute = CaptiongritTermsRouteImport.update({
+  id: '/captiongrit-terms',
+  path: '/captiongrit-terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaptiongritRefundRoute = CaptiongritRefundRouteImport.update({
+  id: '/captiongrit-refund',
+  path: '/captiongrit-refund',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaptiongritPrivacyRoute = CaptiongritPrivacyRouteImport.update({
+  id: '/captiongrit-privacy',
+  path: '/captiongrit-privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CaptiongritRoute = CaptiongritRouteImport.update({
@@ -93,6 +111,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/captiongrit': typeof CaptiongritRoute
+  '/captiongrit-privacy': typeof CaptiongritPrivacyRoute
+  '/captiongrit-refund': typeof CaptiongritRefundRoute
+  '/captiongrit-terms': typeof CaptiongritTermsRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -108,6 +129,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/captiongrit': typeof CaptiongritRoute
+  '/captiongrit-privacy': typeof CaptiongritPrivacyRoute
+  '/captiongrit-refund': typeof CaptiongritRefundRoute
+  '/captiongrit-terms': typeof CaptiongritTermsRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -124,6 +148,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/captiongrit': typeof CaptiongritRoute
+  '/captiongrit-privacy': typeof CaptiongritPrivacyRoute
+  '/captiongrit-refund': typeof CaptiongritRefundRoute
+  '/captiongrit-terms': typeof CaptiongritTermsRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -141,6 +168,9 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/captiongrit'
+    | '/captiongrit-privacy'
+    | '/captiongrit-refund'
+    | '/captiongrit-terms'
     | '/contact'
     | '/pricing'
     | '/privacy'
@@ -156,6 +186,9 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/captiongrit'
+    | '/captiongrit-privacy'
+    | '/captiongrit-refund'
+    | '/captiongrit-terms'
     | '/contact'
     | '/pricing'
     | '/privacy'
@@ -171,6 +204,9 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/captiongrit'
+    | '/captiongrit-privacy'
+    | '/captiongrit-refund'
+    | '/captiongrit-terms'
     | '/contact'
     | '/pricing'
     | '/privacy'
@@ -187,6 +223,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CaptiongritRoute: typeof CaptiongritRoute
+  CaptiongritPrivacyRoute: typeof CaptiongritPrivacyRoute
+  CaptiongritRefundRoute: typeof CaptiongritRefundRoute
+  CaptiongritTermsRoute: typeof CaptiongritTermsRoute
   ContactRoute: typeof ContactRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -234,6 +273,27 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/captiongrit-terms': {
+      id: '/captiongrit-terms'
+      path: '/captiongrit-terms'
+      fullPath: '/captiongrit-terms'
+      preLoaderRoute: typeof CaptiongritTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/captiongrit-refund': {
+      id: '/captiongrit-refund'
+      path: '/captiongrit-refund'
+      fullPath: '/captiongrit-refund'
+      preLoaderRoute: typeof CaptiongritRefundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/captiongrit-privacy': {
+      id: '/captiongrit-privacy'
+      path: '/captiongrit-privacy'
+      fullPath: '/captiongrit-privacy'
+      preLoaderRoute: typeof CaptiongritPrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/captiongrit': {
@@ -299,6 +359,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CaptiongritRoute: CaptiongritRoute,
+  CaptiongritPrivacyRoute: CaptiongritPrivacyRoute,
+  CaptiongritRefundRoute: CaptiongritRefundRoute,
+  CaptiongritTermsRoute: CaptiongritTermsRoute,
   ContactRoute: ContactRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,

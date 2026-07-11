@@ -73,8 +73,10 @@ export default function PricingSection({ onBuyNow }) {
       description: 'Designed for production agencies needing top-tier speed and custom support.',
       accuracy: '99% Accuracy',
       duration: 'Advanced Batch processing',
-      buttonText: 'Get Extreme',
+      buttonText: 'Coming Soon',
       isPopular: false,
+      isComingSoon: true,
+      isRetainer: true,
       features: [
         { name: 'Everything in Pro', included: true },
         { name: 'Advanced Batch processing', included: true },
@@ -163,11 +165,10 @@ export default function PricingSection({ onBuyNow }) {
                         <button
                           key={plan.id}
                           onClick={() => setSelectedPlanId(plan.id)}
-                          className={`group relative text-left rounded-2xl p-6 flex flex-col gap-5 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/40 hover:-translate-y-1 ${
-                            isPro
+                          className={`group relative text-left rounded-2xl p-6 flex flex-col gap-5 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/40 hover:-translate-y-1 ${isPro
                               ? 'bg-gradient-to-b from-accent-primary/[0.08] to-white/[0.02] border border-accent-primary/40 shadow-[0_0_30px_rgba(198,255,52,0.10)]'
                               : 'bg-white/[0.02] border border-white/10 hover:border-accent-primary/30'
-                          }`}
+                            }`}
                         >
                           {isPro && (
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-primary text-black px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow-md whitespace-nowrap">
@@ -176,17 +177,24 @@ export default function PricingSection({ onBuyNow }) {
                           )}
 
                           <div className="flex items-center justify-between">
-                            <span className="text-lg font-display font-bold text-white tracking-tight">
-                              {plan.name}
-                            </span>
+                            <div className="flex items-center gap-2">
+                              <span className="text-lg font-display font-bold text-white tracking-tight">
+                                {plan.name}
+                              </span>
+                              {plan.isComingSoon && (
+                                <span className="bg-white/10 text-white px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                  Soon
+                                </span>
+                              )}
+                            </div>
                             <span className="text-[10px] text-text-secondary uppercase tracking-widest font-mono">
-                              One-Time
+                              {plan.isRetainer ? 'Monthly Retainer' : 'One-Time'}
                             </span>
                           </div>
 
                           <div className="flex items-baseline gap-1">
-                            <span className="text-4xl font-display font-extrabold text-white">
-                              {pricingData.currency}{plan.data.price}
+                            <span className={`text-4xl font-display font-extrabold text-white ${plan.isComingSoon ? 'blur-sm select-none opacity-70' : ''}`}>
+                              {pricingData.currency}{plan.isComingSoon ? '9,999' : plan.data.price}
                             </span>
                           </div>
 
@@ -202,7 +210,7 @@ export default function PricingSection({ onBuyNow }) {
                           </ul>
 
                           <div className="mt-auto pt-3 flex justify-between items-center text-xs font-bold text-accent-primary">
-                            <span>View details</span>
+                            <span>{plan.isComingSoon ? 'Coming Soon' : 'View details'}</span>
                             <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
                           </div>
                         </button>
@@ -251,11 +259,11 @@ export default function PricingSection({ onBuyNow }) {
                       {/* Large Price Display */}
                       <div className="py-4 border-y border-white/5">
                         <div className="flex items-baseline gap-2">
-                          <span className="text-5xl font-display font-extrabold text-white">
-                            {pricingData.currency}{selectedPlan.data.price}
+                          <span className={`text-5xl font-display font-extrabold text-white ${selectedPlan.isComingSoon ? 'blur-md select-none opacity-70' : ''}`}>
+                            {pricingData.currency}{selectedPlan.isComingSoon ? '9,999' : selectedPlan.data.price}
                           </span>
                           <span className="text-xs text-text-secondary uppercase tracking-widest font-mono">
-                            One-Time Purchase
+                            {selectedPlan.isRetainer ? 'Monthly Retainer' : 'One-Time Purchase'}
                           </span>
                         </div>
                       </div>
@@ -263,10 +271,15 @@ export default function PricingSection({ onBuyNow }) {
                       {/* Actions */}
                       <div className="space-y-3">
                         <button
-                          onClick={() => onBuyNow(selectedPlan)}
-                          className="w-full bg-accent-primary hover:bg-accent-secondary text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(198,255,52,0.2)] hover:-translate-y-1"
+                          onClick={() => !selectedPlan.isComingSoon && onBuyNow(selectedPlan)}
+                          disabled={selectedPlan.isComingSoon}
+                          className={`w-full font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all ${selectedPlan.isComingSoon
+                              ? 'bg-white/10 text-white/50 cursor-not-allowed'
+                              : 'bg-accent-primary hover:bg-accent-secondary text-black shadow-[0_0_15px_rgba(198,255,52,0.2)] hover:-translate-y-1'
+                            }`}
                         >
-                          Buy Now <ArrowRight className="w-4 h-4" />
+                          {selectedPlan.isComingSoon ? 'Coming Soon' : 'Buy Now'}
+                          {!selectedPlan.isComingSoon && <ArrowRight className="w-4 h-4" />}
                         </button>
                       </div>
                     </div>

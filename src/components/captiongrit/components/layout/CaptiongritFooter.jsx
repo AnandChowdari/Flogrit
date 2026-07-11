@@ -33,9 +33,9 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-white mb-6">Legal</h4>
             <ul className="space-y-4 text-sm text-text-secondary">
-              <li><a href="#" className="hover:text-accent-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-accent-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-accent-primary transition-colors">Refund Policy</a></li>
+              <li><Link to="/captiongrit-privacy" className="hover:text-accent-primary transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/captiongrit-terms" className="hover:text-accent-primary transition-colors">Terms of Service</Link></li>
+              <li><Link to="/captiongrit-refund" className="hover:text-accent-primary transition-colors">Refund Policy</Link></li>
             </ul>
           </div>
           
