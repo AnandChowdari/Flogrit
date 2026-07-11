@@ -108,39 +108,51 @@ export function PricingReveal({
   return (
     <section className="bg-background">
       <div className="mx-auto max-w-7xl px-5 pt-16 lg:px-8 lg:pt-20">
-        <button
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          aria-expanded={open}
-          className="group inline-flex items-center gap-3 rounded-full border border-border bg-secondary/40 px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-secondary"
-        >
-          {label}
-          <motion.span
-            animate={reduce ? undefined : { rotate: open ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="grid size-6 place-items-center rounded-full bg-primary/15 text-primary"
-          >
-            <ChevronDown size={14} />
-          </motion.span>
-        </button>
-        <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          {open ? "Live pricing · tap a quantity to update" : "Contextual pricing · expands in place"}
+        <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+          {open ? "Live pricing · tap a quantity to update" : "Transparent Pricing"}
         </p>
-      </div>
-      <AnimatePresence initial={false}>
-        {open && (
+        
+        <div className="relative">
           <motion.div
-            key="reveal"
-            initial={reduce ? false : { height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={reduce ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}
+            initial={false}
+            animate={{ height: open ? "auto" : 350 }}
+            transition={{ duration: 0.5, ease: [0.2, 0.7, 0.2, 1] }}
             className="overflow-hidden"
           >
-            <PricingMatrix pillar={pillarKey} compact />
+            <div 
+              className={
+                !open 
+                  ? "pointer-events-none select-none blur-[4px] opacity-50 transition-all duration-500" 
+                  : "transition-all duration-500"
+              }
+            >
+              <PricingMatrix pillar={pillarKey} compact />
+            </div>
           </motion.div>
-        )}
-      </AnimatePresence>
+
+          <AnimatePresence>
+            {!open && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-gradient-to-t from-background via-background/40 to-transparent"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpen(true)}
+                  className="group inline-flex items-center gap-3 rounded-full border border-primary/40 bg-background/80 px-8 py-4 text-base font-semibold text-foreground shadow-[0_0_50px_-12px_rgba(139,92,246,0.4)] backdrop-blur-xl transition-all hover:scale-105 hover:border-primary/80 hover:bg-secondary"
+                >
+                  {label}
+                  <span className="grid size-7 place-items-center rounded-full bg-primary/20 text-primary transition-transform group-hover:translate-y-0.5">
+                    <ChevronDown size={16} />
+                  </span>
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
     </section>
   );
 }
