@@ -22,7 +22,7 @@ export function Testimonials({ pillar, heading }: { pillar?: PillarKey; heading?
   const row = [...marqueeItems, ...marqueeItems];
 
   return (
-    <section className="relative overflow-hidden border-y border-border bg-background py-20 lg:py-28">
+    <section className="relative overflow-hidden bg-background py-20 lg:py-28">
       <div className="mx-auto mb-12 max-w-7xl px-5 lg:px-8">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           Said about us

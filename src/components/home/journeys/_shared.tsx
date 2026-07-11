@@ -18,7 +18,7 @@ export function JourneyHeader({
 }) {
   const p = pillars[pillarKey];
   return (
-    <section className="border-b border-border bg-background">
+    <section className="bg-background">
       <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           0{p.index} · {p.label} system
@@ -34,7 +34,7 @@ export function JourneyHeader({
 
 export function CapabilityGroups({ groups }: { groups: CapabilityGroup[] }) {
   return (
-    <section className="border-b border-border bg-secondary/15">
+    <section className="bg-secondary/15">
       <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           What Flogrit builds
@@ -71,7 +71,7 @@ export function CapabilityGroups({ groups }: { groups: CapabilityGroup[] }) {
 
 export function ProcessCadence({ steps }: { steps: ProcessStep[] }) {
   return (
-    <section className="border-b border-border bg-background">
+    <section className="bg-background">
       <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           How the system is built
@@ -106,7 +106,7 @@ export function PricingReveal({
   const reduce = useReducedMotion();
 
   return (
-    <section className="border-b border-border bg-background">
+    <section className="bg-background">
       <div className="mx-auto max-w-7xl px-5 pt-16 lg:px-8 lg:pt-20">
         <button
           type="button"
@@ -154,7 +154,7 @@ export function JourneyPrimaryCTA({
 }) {
   const p = pillars[pillarKey];
   return (
-    <section className="border-b border-border bg-secondary/15">
+    <section className="bg-secondary/15">
       <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
         <div className="flex flex-col items-start justify-between gap-6 rounded-3xl border border-border bg-card p-8 md:flex-row md:items-center md:p-10">
           <div>
