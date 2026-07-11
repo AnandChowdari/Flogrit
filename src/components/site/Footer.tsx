@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logo from "@/assets/flogrit-logo.svg.asset.json";
+import { LogoMark } from "./LogoMark";
 
 // Footer columns: SERVICES / COMPANY / LEGAL only.
 // Flogrit has no official Instagram or LinkedIn accounts today — no SOCIAL
@@ -34,7 +34,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
             <Link to="/" className="flex items-center gap-2 font-display text-xl font-semibold">
-              <img src={logo.url} alt="Flogrit" width={28} height={28} className="h-7 w-7 shrink-0" />
+              <LogoMark className="h-7 w-7 shrink-0 text-foreground" />
               Flogrit
             </Link>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
