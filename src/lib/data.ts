@@ -645,5 +645,22 @@ export const testimonials: Testimonial[] = [
     company: "Husain Basha Team",
     quote: "Finding an editor who truly understands a content team's vision is incredibly rare. Anand doesn't just execute edits—he actively contributes creative ideas that elevate every video beyond expectations. His expertise in After Effects, motion design, sound design, pacing, and visual storytelling consistently improves the final product. Over the past six months, every discussion has felt collaborative rather than transactional. If you're looking for someone who combines technical excellence with genuine creative thinking, Anand is the kind of editor every content team wants.",
     pillar: "attention",
+  },
+  {
+    id: "t4",
+    name: "Gurujyoth",
+    role: "Founder",
+    company: "Pilot Academy",
+    quote: "I worked with Anand for roughly 8 months. Now i have worked with editors before, the experience was plain good, the aesthetics were on point, the outcome is good. Then i came across anand and suddenly i realised there was so much more to editing than plain aesthetics. He understood concepts, took his time and always went an extra mile to produce the best outcome possible. Maybe that separates him from regular editors. I remember getting compliments like “editor ate”. In a room full of work, you spot the difference between his work and others. He is very versatile as well. He knows how to meet at the common ground with the client and still not compromise when it comes to the quality. I personally personally loved him on board. I can assure you that he brings more than just some good cuts, Brolls and aesthetics.",
+    pillar: "attention",
+  },
+  {
+    id: "t5",
+    name: "Gurujyoth",
+    role: "Founder",
+    company: "Pilot Academy",
+    quote: "On the results side, over his time of working with us(aviation academy) we were able to have good conversion rate, we had about 50+ students enrolled. In the space of aviation, it is a huge number. The quality of overall page has also improved. He delivered on time. Results were not surprising. I personally loved working with him. 10/10 recommended.",
+    metric: { label: "Students Enrolled", value: "50+" },
+    pillar: "conversion",
   }
 ];
