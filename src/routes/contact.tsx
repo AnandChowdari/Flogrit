@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowUpRight, Mail, Calendar, MapPin } from "lucide-react";
+import { ArrowUpRight, Mail, Calendar, MapPin, X } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
-  const [sent, setSent] = useState(false);
+  const [calendlyUrl, setCalendlyUrl] = useState<string | null>(null);
 
   return (
     <section className="bg-background">
@@ -30,28 +30,58 @@ function ContactPage() {
           </p>
 
           <ul className="mt-12 space-y-5">
-            <ContactRow Icon={Mail} label="Email" value="hello@flogrit.com" href="mailto:hello@flogrit.com" />
+            <ContactRow Icon={Mail} label="Email" value="flogrit.com@gmail.com" href="mailto:flogrit.com@gmail.com" />
             <ContactRow Icon={Calendar} label="Direct calendar" value="cal.com/flogrit" href="#" />
             <ContactRow Icon={MapPin} label="Based in" value="Hyderabad · IN" />
           </ul>
         </div>
 
-        <form
-          onSubmit={(e) => { e.preventDefault(); setSent(true); }}
-          className="rounded-2xl border border-border bg-card p-7 md:p-9"
-        >
-          {sent ? (
-            <div className="flex h-full min-h-72 flex-col items-center justify-center text-center">
-              <div className="grid size-14 place-items-center rounded-full bg-primary text-primary-foreground">
-                <ArrowUpRight size={22} />
+        <div className="rounded-2xl border border-border bg-card p-7 md:p-9">
+          {calendlyUrl ? (
+            <div className="flex h-[650px] w-full flex-col">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="font-display text-xl font-bold">Pick a time</h3>
+                <button
+                  type="button"
+                  onClick={() => setCalendlyUrl(null)}
+                  className="flex size-10 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                  aria-label="Cancel booking"
+                >
+                  <X size={20} />
+                </button>
               </div>
-              <h3 className="mt-5 font-display text-2xl font-bold">In the inbox.</h3>
-              <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-                We reply within 24 hours, usually faster. Check your spam if it ghosts.
-              </p>
+              <iframe
+                src={calendlyUrl}
+                width="100%"
+                height="100%"
+                className="flex-1 rounded-xl"
+                frameBorder="0"
+                title="Calendly Scheduling Page"
+              />
             </div>
           ) : (
-            <>
+            <form
+              onSubmit={(e) => { 
+                e.preventDefault(); 
+                const formData = new FormData(e.currentTarget);
+                const name = formData.get("name") as string;
+                const contact = formData.get("contact") as string;
+                const problem = formData.get("problem") as string;
+                
+                const url = new URL("https://calendly.com/astrophileanand/30min");
+                url.searchParams.set("hide_event_type_details", "1");
+                url.searchParams.set("hide_gdpr_banner", "1");
+                url.searchParams.set("background_color", "121212");
+                url.searchParams.set("text_color", "f0f2c0");
+                url.searchParams.set("primary_color", "c6ff34");
+                
+                if (name) url.searchParams.set("name", name);
+                if (contact) url.searchParams.set("email", contact);
+                if (problem) url.searchParams.set("a1", problem);
+                
+                setCalendlyUrl(url.toString());
+              }}
+            >
               <h2 className="font-display text-2xl font-bold">Start the conversation</h2>
               <p className="mt-1 text-sm text-muted-foreground">Three fields. No marketing automation traps.</p>
 
@@ -64,6 +94,7 @@ function ContactPage() {
                   </label>
                   <textarea
                     required
+                    name="problem"
                     rows={5}
                     placeholder="e.g. ad spend is up 3× but qualified calls are flat — feels like the funnel leaks at the DM stage"
                     className="mt-2 w-full resize-none rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
@@ -77,12 +108,12 @@ function ContactPage() {
                   <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
                 <p className="text-center text-[11px] text-muted-foreground">
-                  We reply in under 24 hours. No mailing list. No drip.
+                  Pick a time on our calendar next.
                 </p>
               </div>
-            </>
+            </form>
           )}
-        </form>
+        </div>
       </div>
     </section>
   );
