@@ -81,14 +81,14 @@ function PrivacyPage() {
       <H2>Your choices</H2>
       <p>
         You can ask us to access, correct or delete information we hold about
-        you by writing to <a href="mailto:hello@flogrit.com">hello@flogrit.com</a>.
+        you by writing to <a href="mailto:flogrit.com@gmail.com">flogrit.com@gmail.com</a>.
         You can also opt out of any non-essential communications at any time.
       </p>
 
       <H2>Contact</H2>
       <p>
         Questions about this policy can be sent to{" "}
-        <a href="mailto:hello@flogrit.com">hello@flogrit.com</a>.
+        <a href="mailto:flogrit.com@gmail.com">flogrit.com@gmail.com</a>.
       </p>
     </LegalShell>
   );

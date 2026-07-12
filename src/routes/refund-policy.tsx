@@ -89,7 +89,7 @@ function RefundPage() {
       <H2>How to request a refund</H2>
       <p>
         Send a written request to{" "}
-        <a href="mailto:hello@flogrit.com">hello@flogrit.com</a> that includes
+        <a href="mailto:flogrit.com@gmail.com">flogrit.com@gmail.com</a> that includes
         the engagement name, the invoice reference and a short description of
         what is being requested. Approved refunds are processed within 14
         business days to the original payment method, subject to any charges

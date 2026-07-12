@@ -20,6 +20,7 @@ import FaqSection from '../../components/product/FaqSection';
 import FinalCtaSection from '../../components/product/FinalCtaSection';
 import CheckoutModal from '../../components/product/CheckoutModal';
 import SectionDivider from '../../components/ui/SectionDivider';
+import BetaTesterModal from '../../components/product/BetaTesterModal';
 
 // Hidden Sections
 // import CaseStudiesSection from '../../components/product/CaseStudiesSection';
@@ -28,20 +29,20 @@ import SectionDivider from '../../components/ui/SectionDivider';
 export default function LandingPage() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [isBetaModalOpen, setIsBetaModalOpen] = useState(false);
 
-  // When clicking generic 'Buy Now' buttons, we can just scroll to pricing or open modal with a default plan
+  // When clicking generic 'Buy Now' buttons, we can open the beta modal instead
   const handleGenericBuyNow = () => {
-    document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+    setIsBetaModalOpen(true);
   };
 
   const handleSelectPlan = (plan) => {
-    setSelectedPlan(plan);
-    setIsCheckoutOpen(true);
+    setIsBetaModalOpen(true);
   };
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
-    if (isCheckoutOpen) {
+    if (isCheckoutOpen || isBetaModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
@@ -49,7 +50,7 @@ export default function LandingPage() {
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [isCheckoutOpen]);
+  }, [isCheckoutOpen, isBetaModalOpen]);
 
   return (
     <div className="min-h-screen flex flex-col bg-bg-primary font-body text-text-primary selection:bg-accent-primary/30 selection:text-white">
@@ -89,6 +90,24 @@ export default function LandingPage() {
           />
         )}
       </AnimatePresence>
+
+      <BetaTesterModal 
+        isOpen={isBetaModalOpen} 
+        onClose={() => setIsBetaModalOpen(false)} 
+      />
+
+      {/* Premium Floating Notification Button */}
+      <button 
+        onClick={() => setIsBetaModalOpen(true)}
+        className="fixed bottom-8 right-8 z-[90] bg-[#111111] text-white px-6 py-4 rounded-full shadow-[0_0_30px_rgba(198,255,52,0.15)] hover:shadow-[0_0_50px_rgba(198,255,52,0.3)] hover:-translate-y-1 transition-all duration-300 font-semibold flex items-center gap-3 border border-accent-primary/30 group"
+      >
+        <div className="absolute inset-0 bg-accent-primary/5 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <span className="relative flex h-3 w-3 z-10">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-primary opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-accent-primary shadow-[0_0_10px_rgba(198,255,52,0.8)]"></span>
+        </span>
+        <span className="relative z-10 tracking-wide text-sm group-hover:text-accent-primary transition-colors">Join Beta Program</span>
+      </button>
     </div>
   );
 }
