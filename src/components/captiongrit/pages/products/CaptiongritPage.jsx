@@ -37,7 +37,11 @@ export default function LandingPage() {
   };
 
   const handleSelectPlan = (plan) => {
+    setSelectedPlan(plan);
+    // HIDING RAZORPAY FOR NOW: Open Beta Modal instead of Checkout
     setIsBetaModalOpen(true);
+    // To restore Razorpay, comment out the line above and uncomment the line below:
+    // setIsCheckoutOpen(true);
   };
 
   // Prevent background scrolling when modal is open

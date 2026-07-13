@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Loader2, CheckCircle, AlertCircle, X } from 'lucide-react';
 
 export default function BetaTesterModal({ isOpen, onClose }) {
-  const [formData, setFormData] = useState({ name: '', email: '', info: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', info: '' });
   const [status, setStatus] = useState('idle');
 
   const handleSubmit = async (e) => {
@@ -21,6 +21,7 @@ export default function BetaTesterModal({ isOpen, onClose }) {
       const data = new URLSearchParams();
       data.append('name', formData.name);
       data.append('email', formData.email);
+      data.append('phone', formData.phone);
       data.append('info', formData.info);
 
       const response = await fetch(googleSheetsUrl, {
@@ -72,11 +73,11 @@ export default function BetaTesterModal({ isOpen, onClose }) {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-primary opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-primary"></span>
                 </span>
-                Beta Program
+                Beta Program • 21/25 Spots Filled
               </div>
               <h2 className="text-2xl font-bold font-display mb-2">Join Our Beta Test</h2>
               <p className="text-text-secondary text-sm">
-                Get early access to Captiongrit's newest features.
+                Only 4 spots remaining. Get early access to Captiongrit's newest features.
               </p>
             </div>
 
@@ -110,7 +111,7 @@ export default function BetaTesterModal({ isOpen, onClose }) {
                       value={formData.name}
                       onChange={handleChange}
                       className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-all text-white placeholder-white/30"
-                      placeholder="John Doe"
+                      placeholder="Your full name"
                     />
                   </div>
                   
@@ -126,9 +127,25 @@ export default function BetaTesterModal({ isOpen, onClose }) {
                       value={formData.email}
                       onChange={handleChange}
                       className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-all text-white placeholder-white/30"
-                      placeholder="john@example.com"
+                      placeholder="you@email.com"
                     />
                   </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="phone" className="text-xs font-medium text-text-secondary pl-1">
+                    Phone Number (WhatsApp)
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-all text-white placeholder-white/30"
+                    placeholder="Your phone number"
+                  />
                 </div>
 
                 <div className="space-y-1.5">
@@ -157,7 +174,7 @@ export default function BetaTesterModal({ isOpen, onClose }) {
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="w-full bg-accent-primary hover:bg-accent-primary/90 text-white font-medium py-3 px-6 rounded-xl transition-all shadow-[0_0_15px_rgba(var(--color-accent-primary-rgb),0.3)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+                  className="w-full bg-accent-primary hover:bg-accent-primary/90 text-black font-bold py-3 px-4 text-sm sm:text-base rounded-xl transition-all shadow-[0_0_15px_rgba(var(--color-accent-primary-rgb),0.3)] flex items-center justify-center gap-1 sm:gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-2 whitespace-nowrap"
                 >
                   {status === 'loading' ? (
                     <>

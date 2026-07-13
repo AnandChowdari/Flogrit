@@ -137,7 +137,9 @@ function RootComponent() {
   if (standalone) {
     return (
       <QueryClientProvider client={queryClient}>
-        <Outlet />
+        <FlowProvider>
+          <Outlet />
+        </FlowProvider>
       </QueryClientProvider>
     );
   }

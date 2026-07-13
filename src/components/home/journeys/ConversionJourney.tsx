@@ -78,7 +78,7 @@ export function ConversionJourney() {
                   Read the full case →
                 </Link>
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {caseData.metric.map((m) => (
                   <div key={m.label} className="rounded-2xl border border-border bg-background p-5">
                     <div className="font-display text-2xl font-semibold text-primary md:text-3xl">

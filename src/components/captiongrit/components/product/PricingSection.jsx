@@ -271,7 +271,12 @@ export default function PricingSection({ onBuyNow }) {
                       {/* Actions */}
                       <div className="space-y-3">
                         <button
-                          onClick={() => !selectedPlan.isComingSoon && onBuyNow(selectedPlan)}
+                          onClick={() => !selectedPlan.isComingSoon && onBuyNow({
+                            ...selectedPlan,
+                            region,
+                            currencySymbol: pricingData.currency,
+                            currencyCode: pricingData.symbol
+                          })}
                           disabled={selectedPlan.isComingSoon}
                           className={`w-full font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all ${selectedPlan.isComingSoon
                               ? 'bg-white/10 text-white/50 cursor-not-allowed'
