@@ -1,25 +1,102 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { X, ShieldCheck, ArrowRight } from 'lucide-react';
+import { X, ShieldCheck, ArrowRight, Loader2 } from 'lucide-react';
+import { createOrderFn, verifyPaymentFn } from '../../../../lib/payment';
 
 export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
   const [formData, setFormData] = useState({ name: '', email: '' });
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    // Load Razorpay checkout script
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   if (!isOpen || !selectedPlan) return null;
 
-  // Since we don't know the exact region from just the plan prop easily here, 
-  // we can look it up or pass it down. Assuming selectedPlan has the data.
-  // Actually, we passed `plan` from PricingSection which has: { id, data: {price, label, paymentLink}, features, ... }
-  // Wait, let's look up the currency from the pricing.js. Since pricing config separates by region,
-  // we'll just assume the PricingSection passes down everything we need.
-  
-  const handleCheckout = (e) => {
+  const handleCheckout = async (e) => {
     e.preventDefault();
-    // Redirect to the configured payment link
-    if (selectedPlan.data.paymentLink && selectedPlan.data.paymentLink !== '#') {
-      window.location.href = selectedPlan.data.paymentLink;
-    } else {
-      alert(`Proceeding to payment for ${selectedPlan.data.label} plan... (Placeholder)`);
+    setLoading(true);
+    setErrorMsg(null);
+
+    try {
+      const amount = selectedPlan.data.price * 100; // convert to paise / cents
+      const currency = selectedPlan.currencyCode || 'INR';
+
+      // 1. Create Order
+      const order = await createOrderFn({
+        data: {
+          amount,
+          currency,
+          receipt: `rcpt_${Date.now()}`
+        }
+      });
+
+      console.log('Order created:', order);
+
+      const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_TCxillawqes03z';
+
+      if (!order?.order_id) {
+        throw new Error('Failed to retrieve order ID from server.');
+      }
+
+      // 2. Open Razorpay Checkout
+      const options = {
+        key: razorpayKey,
+        amount: order.amount,
+        currency: order.currency,
+        name: 'Flogrit',
+        description: `${selectedPlan.data.label} Plan`,
+        order_id: order.order_id,
+        handler: async function (response) {
+          try {
+            // 3. Verify Signature
+            const verifyResult = await verifyPaymentFn({
+              data: {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              }
+            });
+
+            if (verifyResult.success) {
+              alert('Payment Successful! Welcome to Flogrit.');
+              onClose();
+            }
+          } catch (verifyError) {
+            console.error('Verification failed', verifyError);
+            setErrorMsg('Payment verification failed. Please contact support.');
+          }
+        },
+        prefill: {
+          name: formData.name,
+          email: formData.email,
+        },
+        theme: {
+          color: '#C6FF34'
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      
+      rzp.on('payment.failed', function (response){
+        console.error('Payment failed', response.error);
+        setErrorMsg(`Payment failed: ${response.error.description}`);
+      });
+      
+      rzp.open();
+    } catch (err) {
+      console.error('Checkout error:', err);
+      setErrorMsg('Failed to initialize checkout. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,16 +129,15 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
           <h3 className="font-display text-2xl font-bold text-white mb-2">Complete your purchase</h3>
           <p className="text-text-secondary text-sm mb-8">You're getting the <strong className="text-white">{selectedPlan.data.label}</strong> license.</p>
 
-          <div className="glass p-6 mb-8 border-accent-primary/20 bg-accent-primary/5">
+          <div className="glass p-6 mb-6 border-accent-primary/20 bg-accent-primary/5 rounded-xl">
             <div className="flex justify-between items-center mb-4">
               <span className="font-bold text-white text-lg">{selectedPlan.data.label} Plan</span>
               <span className="font-display font-bold text-2xl text-accent-primary">
-                {/* Assuming PricingSection passes currency symbol as part of selectedPlan or we just show price */}
-                {selectedPlan.data.price}
+                {selectedPlan.currencySymbol || ''}{selectedPlan.data.price}
               </span>
             </div>
             <ul className="space-y-2 text-sm text-text-secondary">
-              {selectedPlan.features.filter(f => f.included).slice(0, 4).map((f, i) => (
+              {selectedPlan.features?.filter(f => f.included).slice(0, 4).map((f, i) => (
                 <li key={i} className="flex items-center gap-2">
                   <div className="w-1 h-1 rounded-full bg-accent-primary" />
                   {f.name}
@@ -71,6 +147,12 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
             </ul>
           </div>
 
+          {errorMsg && (
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-sm">
+              {errorMsg}
+            </div>
+          )}
+
           <form onSubmit={handleCheckout} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">Full Name</label>
@@ -78,9 +160,10 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
                 type="text" 
                 required
                 className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-colors"
-                placeholder="John Doe"
+                placeholder="Your full name"
                 value={formData.name}
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
+                disabled={loading}
               />
             </div>
             
@@ -90,17 +173,23 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
                 type="email" 
                 required
                 className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-colors"
-                placeholder="john@example.com"
+                placeholder="you@email.com"
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
+                disabled={loading}
               />
             </div>
 
             <button 
               type="submit"
-              className="w-full bg-accent-primary hover:bg-accent-secondary text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(198,255,52,0.2)] hover:shadow-[0_0_25px_rgba(198,255,52,0.4)]"
+              disabled={loading}
+              className="w-full bg-accent-primary hover:bg-accent-secondary text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(198,255,52,0.2)] hover:shadow-[0_0_25px_rgba(198,255,52,0.4)] disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Proceed to Payment <ArrowRight className="w-5 h-5" />
+              {loading ? (
+                <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
+              ) : (
+                <>Proceed to Payment <ArrowRight className="w-5 h-5" /></>
+              )}
             </button>
           </form>
 
