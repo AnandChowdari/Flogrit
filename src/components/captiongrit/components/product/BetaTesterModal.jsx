@@ -3,35 +3,43 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Loader2, CheckCircle, AlertCircle, X } from 'lucide-react';
 
 export default function BetaTesterModal({ isOpen, onClose }) {
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', info: '' });
+  const [formData, setFormData] = useState({ name: '', email: '' });
   const [status, setStatus] = useState('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('loading');
+    setErrorMessage('');
 
-    const googleSheetsUrl = import.meta.env.VITE_GOOGLE_SHEETS_URL || 'YOUR_GOOGLE_SHEETS_WEB_APP_URL';
+    const gasUrl = import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL || 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
 
     try {
-      if (googleSheetsUrl === 'YOUR_GOOGLE_SHEETS_WEB_APP_URL') {
+      if (gasUrl === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE' && !import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL) {
+        // Fallback for demo purposes if URL is not set
         setTimeout(() => setStatus('success'), 1500);
         return;
       }
-      
-      const data = new URLSearchParams();
-      data.append('name', formData.name);
-      data.append('email', formData.email);
-      data.append('phone', formData.phone);
-      data.append('info', formData.info);
 
-      const response = await fetch(googleSheetsUrl, {
+      const response = await fetch(gasUrl, {
         method: 'POST',
-        body: data,
-        mode: 'no-cors'
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: "beta_signup",
+          name: formData.name,
+          email: formData.email
+        })
       });
-      setStatus('success');
+      const data = await response.json();
+      if (data.success) {
+        setStatus('success');
+      } else {
+        setErrorMessage(data.reason === "already_registered" ? "Email already registered." : "Error. Try again.");
+        setStatus('error');
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
+      setErrorMessage("Network error. Please try again.");
       setStatus('error');
     }
   };
@@ -73,11 +81,11 @@ export default function BetaTesterModal({ isOpen, onClose }) {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-primary opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-primary"></span>
                 </span>
-                Beta Program • 21/25 Spots Filled
+                Beta Program • Early Access
               </div>
-              <h2 className="text-2xl font-bold font-display mb-2">Join Our Beta Test</h2>
+              <h2 className="text-2xl font-bold font-display mb-2">Get Beta Access</h2>
               <p className="text-text-secondary text-sm">
-                Only 4 spots remaining. Get early access to Captiongrit's newest features.
+                Join our beta test and get your license key automatically.
               </p>
             </div>
 
@@ -91,14 +99,14 @@ export default function BetaTesterModal({ isOpen, onClose }) {
                 >
                   <CheckCircle className="w-8 h-8" />
                 </motion.div>
-                <h3 className="text-xl font-bold font-display mb-2">You're on the list!</h3>
+                <h3 className="text-xl font-bold font-display mb-2">Success!</h3>
                 <p className="text-text-secondary text-sm">
-                  We'll be in touch soon with more details.
+                  Check your email for your Beta Key.
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="relative z-10 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-4">
                   <div className="space-y-1.5">
                     <label htmlFor="name" className="text-xs font-medium text-text-secondary pl-1">
                       Your Name
@@ -111,7 +119,7 @@ export default function BetaTesterModal({ isOpen, onClose }) {
                       value={formData.name}
                       onChange={handleChange}
                       className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-all text-white placeholder-white/30"
-                      placeholder="Your full name"
+                      placeholder="Your Name"
                     />
                   </div>
                   
@@ -127,62 +135,30 @@ export default function BetaTesterModal({ isOpen, onClose }) {
                       value={formData.email}
                       onChange={handleChange}
                       className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-all text-white placeholder-white/30"
-                      placeholder="you@email.com"
+                      placeholder="you@example.com"
                     />
                   </div>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label htmlFor="phone" className="text-xs font-medium text-text-secondary pl-1">
-                    Phone Number (WhatsApp)
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    required
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-all text-white placeholder-white/30"
-                    placeholder="Your phone number"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label htmlFor="info" className="text-xs font-medium text-text-secondary pl-1">
-                    How do you use captions?
-                  </label>
-                  <textarea
-                    id="info"
-                    name="info"
-                    required
-                    rows={3}
-                    value={formData.info}
-                    onChange={handleChange}
-                    className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-all text-white placeholder-white/30 resize-none"
-                    placeholder="Tell us about your workflow..."
-                  />
                 </div>
 
                 {status === 'error' && (
                   <div className="flex items-center gap-2 text-red-400 bg-red-400/10 p-3 rounded-xl border border-red-400/20">
                     <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                    <p className="text-xs">Something went wrong. Please try again.</p>
+                    <p className="text-xs">{errorMessage}</p>
                   </div>
                 )}
 
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="w-full bg-accent-primary hover:bg-accent-primary/90 text-black font-bold py-3 px-4 text-sm sm:text-base rounded-xl transition-all shadow-[0_0_15px_rgba(var(--color-accent-primary-rgb),0.3)] flex items-center justify-center gap-1 sm:gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-2 whitespace-nowrap"
+                  className="w-full bg-accent-primary hover:bg-accent-primary/90 text-black font-bold py-3 px-4 text-sm sm:text-base rounded-xl transition-all shadow-[0_0_15px_rgba(var(--color-accent-primary-rgb),0.3)] flex items-center justify-center gap-1 sm:gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-4 whitespace-nowrap"
                 >
                   {status === 'loading' ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Submitting...
+                      Sending...
                     </>
                   ) : (
-                    'Join Beta Program'
+                    'Get Beta Access'
                   )}
                 </button>
               </form>
