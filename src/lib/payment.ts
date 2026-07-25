@@ -96,8 +96,8 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
     }
 
     // Call GAS Webhook
-    const gasUrl = process.env.VITE_GOOGLE_APPS_SCRIPT_URL;
-    const gasSecret = process.env.GAS_WEBHOOK_SECRET || 'default_secret'; // Ensure you set this in .env
+    const gasUrl = process.env.VITE_GOOGLE_APPS_SCRIPT_URL || import.meta.env?.VITE_GOOGLE_APPS_SCRIPT_URL;
+    const gasSecret = process.env.GAS_WEBHOOK_SECRET || import.meta.env?.GAS_WEBHOOK_SECRET || 'default_secret';
 
     if (gasUrl) {
       try {
@@ -105,7 +105,7 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
           secret: gasSecret,
           action: "paid_signup",
           data: {
-            transactionId: razorpay_payment_id,
+            paymentId: razorpay_payment_id,
             orderId: razorpay_order_id,
             email: customer_email,
             name: customer_name,
@@ -120,14 +120,26 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
           body: JSON.stringify(payload),
         });
 
-        if (!response.ok) {
-          console.error("GAS Webhook returned an error:", await response.text());
+        const responseText = await response.text();
+        console.log("GAS Webhook Raw Response:", responseText);
+        
+        let responseJson;
+        try {
+          responseJson = JSON.parse(responseText);
+        } catch (e) {
+          console.error("GAS Webhook did not return JSON. Raw:", responseText);
+        }
+
+        if (responseJson && responseJson.status === "error") {
+          console.error("GAS Webhook processed but returned an error:", responseJson);
+          // We still return success to the user because their money was deducted,
+          // but you (the admin) should check the server logs!
         }
       } catch (err) {
         console.error("Failed to call GAS Webhook:", err);
       }
     } else {
-      console.warn("VITE_GOOGLE_APPS_SCRIPT_URL is not set. Webhook skipped.");
+      console.error("CRITICAL: VITE_GOOGLE_APPS_SCRIPT_URL is not set. Webhook completely skipped.");
     }
 
     return { success: true, licenseKey };
