@@ -10,22 +10,24 @@ export const createOrderFn = createServerFn({ method: "POST" })
     const { amount, currency, receipt } = data;
 
     if (amount < 100) {
-      throw new Error("Amount must be at least 100 paise");
+      return { error: "Amount must be at least 100 paise" };
     }
 
-    const key_id = process.env.RAZORPAY_KEY_ID;
+    // Try to get from process.env, or fallback to import.meta.env if in Vite
+    const key_id = process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || import.meta.env?.VITE_RAZORPAY_KEY_ID;
     const key_secret = process.env.RAZORPAY_KEY_SECRET;
 
     if (!key_id || !key_secret) {
-      throw new Error("Razorpay credentials are not configured");
+      console.error("Razorpay keys missing:", { key_id: !!key_id, key_secret: !!key_secret });
+      return { error: "Razorpay credentials are not configured on the server." };
     }
 
-    const razorpay = new Razorpay({
-      key_id,
-      key_secret,
-    });
-
     try {
+      const razorpay = new Razorpay({
+        key_id,
+        key_secret,
+      });
+
       const order = await razorpay.orders.create({
         amount,
         currency,
@@ -37,9 +39,10 @@ export const createOrderFn = createServerFn({ method: "POST" })
         amount: order.amount,
         currency: order.currency,
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error("Razorpay API Error:", error);
-      throw new Error("Failed to create order");
+      const errorMessage = error?.error?.description || error.message || "Failed to create order via Razorpay";
+      return { error: errorMessage };
     }
   });
 
@@ -49,10 +52,20 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
       razorpay_order_id: string;
       razorpay_payment_id: string;
       razorpay_signature: string;
+      customer_email?: string;
+      customer_name?: string;
+      plan_name?: string;
     }) => data
   )
   .handler(async ({ data }) => {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = data;
+    const { 
+      razorpay_order_id, 
+      razorpay_payment_id, 
+      razorpay_signature,
+      customer_email,
+      customer_name,
+      plan_name
+    } = data;
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       throw new Error("Missing payment verification fields");
@@ -72,5 +85,50 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
       throw new Error("Invalid signature");
     }
 
-    return { success: true };
+    // Generate License Key
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let licenseKey = 'CG-';
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 4; j++) {
+        licenseKey += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      if (i < 2) licenseKey += '-';
+    }
+
+    // Call GAS Webhook
+    const gasUrl = process.env.VITE_GOOGLE_APPS_SCRIPT_URL;
+    const gasSecret = process.env.GAS_WEBHOOK_SECRET || 'default_secret'; // Ensure you set this in .env
+
+    if (gasUrl) {
+      try {
+        const payload = {
+          secret: gasSecret,
+          action: "paid_signup",
+          data: {
+            transactionId: razorpay_payment_id,
+            orderId: razorpay_order_id,
+            email: customer_email,
+            name: customer_name,
+            plan: plan_name,
+            licenseKey: licenseKey,
+          }
+        };
+
+        const response = await fetch(gasUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          console.error("GAS Webhook returned an error:", await response.text());
+        }
+      } catch (err) {
+        console.error("Failed to call GAS Webhook:", err);
+      }
+    } else {
+      console.warn("VITE_GOOGLE_APPS_SCRIPT_URL is not set. Webhook skipped.");
+    }
+
+    return { success: true, licenseKey };
   });
