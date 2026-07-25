@@ -69,7 +69,9 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
                 razorpay_signature: response.razorpay_signature,
                 customer_email: formData.email,
                 customer_name: formData.name,
-                plan_name: selectedPlan.data.label
+                plan_name: selectedPlan.data.label,
+                amount: order.amount / 100, // Convert back to standard currency unit
+                currency: order.currency
               }
             });
 

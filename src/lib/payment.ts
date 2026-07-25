@@ -55,6 +55,8 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
       customer_email?: string;
       customer_name?: string;
       plan_name?: string;
+      amount?: number;
+      currency?: string;
     }) => data
   )
   .handler(async ({ data }) => {
@@ -64,7 +66,9 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
       razorpay_signature,
       customer_email,
       customer_name,
-      plan_name
+      plan_name,
+      amount,
+      currency
     } = data;
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -111,6 +115,10 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
             name: customer_name,
             plan: plan_name,
             licenseKey: licenseKey,
+            amount: amount,
+            currency: currency,
+            timestamp: new Date().toISOString(),
+            status: "success"
           }
         };
 
