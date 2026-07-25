@@ -43,6 +43,10 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
 
       const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_TCxillawqes03z';
 
+      if (order?.error) {
+        throw new Error(order.error);
+      }
+
       if (!order?.order_id) {
         throw new Error('Failed to retrieve order ID from server.');
       }
@@ -62,17 +66,22 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
               data: {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature
+                razorpay_signature: response.razorpay_signature,
+                customer_email: formData.email,
+                customer_name: formData.name,
+                plan_name: selectedPlan.data.label
               }
             });
 
-            if (verifyResult.success) {
+            if (verifyResult.error) {
+              setErrorMsg(verifyResult.error);
+            } else if (verifyResult.success) {
               alert('Payment Successful! Welcome to Flogrit.');
               onClose();
             }
           } catch (verifyError) {
             console.error('Verification failed', verifyError);
-            setErrorMsg('Payment verification failed. Please contact support.');
+            setErrorMsg(verifyError.message || 'Payment verification failed. Please contact support.');
           }
         },
         prefill: {
@@ -94,7 +103,7 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
       rzp.open();
     } catch (err) {
       console.error('Checkout error:', err);
-      setErrorMsg('Failed to initialize checkout. Please try again.');
+      setErrorMsg(err.message || 'Failed to initialize checkout. Please try again.');
     } finally {
       setLoading(false);
     }

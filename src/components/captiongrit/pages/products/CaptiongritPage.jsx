@@ -31,17 +31,18 @@ export default function LandingPage() {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [isBetaModalOpen, setIsBetaModalOpen] = useState(false);
 
-  // When clicking generic 'Buy Now' buttons, we can open the beta modal instead
+  // When clicking generic 'Buy Now' buttons, we scroll to the pricing section with an offset
   const handleGenericBuyNow = () => {
-    setIsBetaModalOpen(true);
+    const pricingSection = document.getElementById('pricing');
+    if (pricingSection) {
+      const top = pricingSection.getBoundingClientRect().top + window.scrollY - 80; // 80px offset for navbar
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
   };
 
   const handleSelectPlan = (plan) => {
     setSelectedPlan(plan);
-    // HIDING RAZORPAY FOR NOW: Open Beta Modal instead of Checkout
-    setIsBetaModalOpen(true);
-    // To restore Razorpay, comment out the line above and uncomment the line below:
-    // setIsCheckoutOpen(true);
+    setIsCheckoutOpen(true);
   };
 
   // Prevent background scrolling when modal is open
