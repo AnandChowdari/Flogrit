@@ -132,6 +132,19 @@ export default function PricingSection({ onBuyNow }) {
               International
             </button>
           </div>
+
+          {/* OS Availability Banner */}
+          <div className="mt-8 inline-flex items-center gap-3 p-3 rounded-lg bg-[#111] border border-white/10 text-sm">
+            <div className="flex items-center gap-1.5 text-white">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2 2h9v9H2V2zm11 0h9v9h-9V2zm0 11h9v9h-9v-9zM2 13h9v9H2v-9z"/></svg>
+              <span className="font-semibold text-white/90">Windows Supported</span>
+            </div>
+            <div className="w-px h-4 bg-white/20"></div>
+            <div className="flex items-center gap-1.5 text-text-secondary">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              <span>Mac Coming Soon</span>
+            </div>
+          </div>
         </motion.div>
 
         {/* Unified Premium Pricing Container */}

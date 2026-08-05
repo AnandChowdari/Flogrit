@@ -56,18 +56,8 @@ export default function HowItWorksSection() {
     switch (idx) {
       case 0:
         return (
-          <div className="absolute inset-0 flex flex-col justify-between p-6 bg-[#0B0B0C]">
-            <div className="flex items-center justify-between border-b border-white/5 pb-3">
-              <div className="flex items-center gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-              </div>
-              <span className="text-[10px] text-text-secondary font-mono">import_media.prproj</span>
-              <div className="w-6" />
-            </div>
-
-            <div className="flex-1 my-4 bg-black/40 rounded-lg border border-white/5 relative overflow-hidden flex items-center justify-center">
+          <div className="absolute inset-0 flex flex-col p-6 bg-[#0B0B0C]">
+            <div className="flex-1 mb-4 bg-black/40 rounded-lg border border-accent-primary/20 relative overflow-hidden flex items-center justify-center shadow-[0_0_20px_rgba(198,255,52,0.05)]">
               <div className="absolute inset-0 bg-gradient-to-tr from-accent-primary/5 to-transparent opacity-50" />
               <div className="text-center z-10 p-4">
                 <svg className="w-10 h-10 text-accent-primary/40 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -384,18 +374,9 @@ export default function HowItWorksSection() {
 
 function PreviewFrame({ idx, total, renderFallback }) {
   return (
-    <div className="w-full aspect-[16/10] bg-[#0E0E10] rounded-2xl border border-white/10 overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(198,255,52,0.03)] flex flex-col relative">
-      <div className="px-4 sm:px-5 py-2.5 sm:py-3 border-b border-white/5 bg-[#0B0B0C] flex items-center justify-between shrink-0">
-        <div className="flex gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-          <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-          <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-        </div>
-        <div className="px-2.5 py-0.5 rounded bg-white/5 text-[10px] text-text-secondary font-mono tracking-wider">
-          PREVIEW WINDOW
-        </div>
-        <div className="w-10" />
-      </div>
+    <div className="w-full aspect-[16/10] bg-[#0E0E10] rounded-2xl border border-accent-primary/20 overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(198,255,52,0.15)] flex flex-col relative group">
+      {/* Optional Top Glow on hover */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20" />
 
       <div className="flex-grow relative overflow-hidden bg-black/60">
         {!USE_SINGLE_VIDEO ? (
