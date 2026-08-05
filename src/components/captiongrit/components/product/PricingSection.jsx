@@ -134,15 +134,19 @@ export default function PricingSection({ onBuyNow }) {
           </div>
 
           {/* OS Availability Banner */}
-          <div className="mt-8 inline-flex items-center gap-3 p-3 rounded-lg bg-[#111] border border-white/10 text-sm">
-            <div className="flex items-center gap-1.5 text-white">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2 2h9v9H2V2zm11 0h9v9h-9V2zm0 11h9v9h-9v-9zM2 13h9v9H2v-9z"/></svg>
-              <span className="font-semibold text-white/90">Windows Supported</span>
+          <div className="mt-10 mx-auto max-w-fit flex flex-col sm:flex-row items-center gap-3 sm:gap-5 py-2.5 px-5 rounded-2xl sm:rounded-full bg-white/[0.02] border border-white/10 backdrop-blur-md">
+            <div className="flex items-center gap-2.5 text-white">
+              <div className="p-1.5 rounded-full bg-white/10">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M2 2h9v9H2V2zm11 0h9v9h-9V2zm0 11h9v9h-9v-9zM2 13h9v9H2v-9z"/></svg>
+              </div>
+              <span className="font-medium text-sm">Windows Supported</span>
             </div>
-            <div className="w-px h-4 bg-white/20"></div>
-            <div className="flex items-center gap-1.5 text-text-secondary">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-              <span>Mac Coming Soon</span>
+            <div className="hidden sm:block w-px h-5 bg-white/20"></div>
+            <div className="flex items-center gap-2.5 text-text-secondary">
+              <div className="p-1.5 rounded-full bg-white/5">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              </div>
+              <span className="font-medium text-sm">Mac Coming Soon</span>
             </div>
           </div>
         </motion.div>
