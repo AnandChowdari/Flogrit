@@ -43,7 +43,7 @@ export default function HeroSection({ onBuyNow }) {
               AI-powered captions in 24 languages — One Click, One-Time License. Works inside Adobe Premiere Pro & After Effects.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 mb-8 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-3 mb-6 w-full sm:w-auto">
               <button
                 onClick={onBuyNow}
                 className="bg-accent-primary hover:bg-accent-secondary text-black px-7 py-3.5 rounded-xl font-bold text-base font-display transition-all shadow-[0_0_20px_rgba(198,255,52,0.2)] hover:shadow-[0_0_30px_rgba(198,255,52,0.4)] hover:-translate-y-1"
@@ -56,6 +56,19 @@ export default function HeroSection({ onBuyNow }) {
               >
                 See How It Works
               </a>
+            </div>
+
+            {/* OS Availability Badge */}
+            <div className="flex items-center gap-3 mb-8 w-full sm:w-auto p-3 rounded-lg bg-[#111] border border-white/10 text-sm">
+              <div className="flex items-center gap-1.5 text-white">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2 2h9v9H2V2zm11 0h9v9h-9V2zm0 11h9v9h-9v-9zM2 13h9v9H2v-9z"/></svg>
+                <span className="font-semibold text-white/90">Windows Supported</span>
+              </div>
+              <div className="w-px h-4 bg-white/20"></div>
+              <div className="flex items-center gap-1.5 text-text-secondary">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                <span>Mac Coming Soon</span>
+              </div>
             </div>
             
             <div className="flex flex-wrap gap-x-6 gap-y-3">

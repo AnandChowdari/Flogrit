@@ -204,21 +204,10 @@ export default function CaptiongritPluginDemo() {
   const activeLanguage = LANGUAGES[currentIdx];
 
   return (
-    <div className="w-full bg-[#111111] border border-white/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col font-sans text-white text-left select-none">
+    <div className="w-full bg-[#111111] border border-accent-primary/20 rounded-2xl overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(198,255,52,0.1)] flex flex-col font-sans text-white text-left select-none relative group">
+      {/* Top Glow on hover */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20" />
       
-      {/* 1. macOS Style Header Bar */}
-      <div className="bg-[#18181b] px-4 py-3 border-b border-white/5 flex items-center justify-between shrink-0">
-        <div className="flex gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
-          <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
-          <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
-        </div>
-        <div className="bg-black/40 border border-white/5 rounded-md text-[10px] text-text-secondary px-6 py-1 font-mono tracking-wide w-48 text-center shrink-0">
-          premiere://localhost/workspace
-        </div>
-        <div className="w-12" />
-      </div>
-
       {/* 2. Main Workspace Frame */}
       <div className="flex flex-col lg:flex-row h-auto lg:h-[550px]">
         
