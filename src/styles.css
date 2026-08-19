@@ -58,11 +58,16 @@
   --radius: 0.625rem;
 
   /* Brand */
-  --lime: oklch(0.92 0.22 124);          /* #C6FF34 ish */
-  --lime-soft: oklch(0.85 0.18 124);     /* hover */
-  --purple: oklch(0.66 0.16 295);        /* #8671D3 */
-  --cream: oklch(0.96 0.08 110);         /* #F0F2C0 */
-  --ink: oklch(0.16 0 0);                /* #121212 */
+  --lime: oklch(0.92 0.22 124);
+  /* #C6FF34 ish */
+  --lime-soft: oklch(0.85 0.18 124);
+  /* hover */
+  --purple: oklch(0.66 0.16 295);
+  /* #8671D3 */
+  --cream: oklch(0.96 0.08 110);
+  /* #F0F2C0 */
+  --ink: oklch(0.16 0 0);
+  /* #121212 */
   --surface: oklch(0.205 0 0);
   --surface-2: oklch(0.255 0 0);
   --line: oklch(1 0 0 / 12%);
@@ -119,7 +124,10 @@
     color: var(--color-primary-foreground);
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
@@ -129,6 +137,7 @@
 @utility grain {
   position: relative;
   isolation: isolate;
+
   &::after {
     content: "";
     position: absolute;
@@ -142,11 +151,9 @@
 }
 
 @utility scanline {
-  background-image: repeating-linear-gradient(
-    180deg,
-    transparent 0 3px,
-    color-mix(in oklab, var(--color-lime) 6%, transparent) 3px 4px
-  );
+  background-image: repeating-linear-gradient(180deg,
+      transparent 0 3px,
+      color-mix(in oklab, var(--color-lime) 6%, transparent) 3px 4px);
 }
 
 @utility text-balance {
@@ -154,76 +161,140 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.04); }
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
 }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
-@keyframes logo-mark-a {
-  0%, 100% { transform: translateX(120px); }
-  45%, 55% { transform: translateX(0); }
-}
-@keyframes logo-mark-b {
-  0%, 100% { transform: translateX(-120px); }
-  45%, 55% { transform: translateX(0); }
-}
 
 @keyframes aurora-drift {
-  0%   { transform: translate3d(-6%, -4%, 0) scale(1); }
-  50%  { transform: translate3d(6%, 4%, 0) scale(1.08); }
-  100% { transform: translate3d(-6%, -4%, 0) scale(1); }
+  0% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(6%, 4%, 0) scale(1.08);
+  }
+
+  100% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+  }
 }
 
 @keyframes aurora-drift-2 {
-  0%   { transform: translate3d(8%, 6%, 0) scale(1.05); }
-  50%  { transform: translate3d(-8%, -6%, 0) scale(0.95); }
-  100% { transform: translate3d(8%, 6%, 0) scale(1.05); }
+  0% {
+    transform: translate3d(8%, 6%, 0) scale(1.05);
+  }
+
+  50% {
+    transform: translate3d(-8%, -6%, 0) scale(0.95);
+  }
+
+  100% {
+    transform: translate3d(8%, 6%, 0) scale(1.05);
+  }
 }
 
 @keyframes mesh-drift-a {
-  0%   { transform: translate3d(-4%, -3%, 0) scale(1); }
-  100% { transform: translate3d(9%, 6%, 0) scale(1.12); }
+  0% {
+    transform: translate3d(-4%, -3%, 0) scale(1);
+  }
+
+  100% {
+    transform: translate3d(9%, 6%, 0) scale(1.12);
+  }
 }
+
 @keyframes mesh-drift-b {
-  0%   { transform: translate3d(6%, -4%, 0) scale(1.08); }
-  100% { transform: translate3d(-8%, 8%, 0) scale(0.95); }
+  0% {
+    transform: translate3d(6%, -4%, 0) scale(1.08);
+  }
+
+  100% {
+    transform: translate3d(-8%, 8%, 0) scale(0.95);
+  }
 }
+
 @keyframes mesh-drift-c {
-  0%   { transform: translate3d(-5%, 4%, 0) scale(0.98); }
-  100% { transform: translate3d(7%, -6%, 0) scale(1.1); }
+  0% {
+    transform: translate3d(-5%, 4%, 0) scale(0.98);
+  }
+
+  100% {
+    transform: translate3d(7%, -6%, 0) scale(1.1);
+  }
 }
+
 @keyframes mesh-drift-d {
-  0%   { transform: translate3d(3%, -3%, 0) scale(1.05); }
-  100% { transform: translate3d(-6%, 5%, 0) scale(0.9); }
+  0% {
+    transform: translate3d(3%, -3%, 0) scale(1.05);
+  }
+
+  100% {
+    transform: translate3d(-6%, 5%, 0) scale(0.9);
+  }
 }
 
 @keyframes scrubber {
-  0%   { transform: translateX(0%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 @keyframes wave-bar {
-  0%, 100% { transform: scaleY(0.4); }
-  50%      { transform: scaleY(1); }
+
+  0%,
+  100% {
+    transform: scaleY(0.4);
+  }
+
+  50% {
+    transform: scaleY(1);
+  }
 }
 
 @utility marquee-track {
   animation: marquee 40s linear infinite;
-  &:hover { animation-play-state: paused; }
+
+  &:hover {
+    animation-play-state: paused;
+  }
 }
 
 @utility marquee-fast {
   animation: marquee 24s linear infinite;
-  &:hover { animation-play-state: paused; }
+
+  &:hover {
+    animation-play-state: paused;
+  }
 }
 
 @utility hover-glow {
   position: relative;
   transition: transform 220ms ease, box-shadow 320ms ease, border-color 320ms ease;
+
   &:hover {
     transform: translateY(-2px);
     border-color: color-mix(in oklab, var(--color-lime) 50%, transparent);
@@ -236,6 +307,7 @@
 @utility cursor-glow {
   position: relative;
   overflow: hidden;
+
   &::before {
     content: "";
     position: absolute;
@@ -243,18 +315,20 @@
     pointer-events: none;
     opacity: 0;
     transition: opacity 240ms ease;
-    background: radial-gradient(
-      280px circle at var(--mx, 50%) var(--my, 50%),
-      color-mix(in oklab, var(--color-lime) 18%, transparent),
-      transparent 60%
-    );
+    background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%),
+        color-mix(in oklab, var(--color-lime) 18%, transparent),
+        transparent 60%);
   }
-  &:hover::before { opacity: 1; }
+
+  &:hover::before {
+    opacity: 1;
+  }
 }
 
 @utility story-link {
   position: relative;
   display: inline-block;
+
   &::after {
     content: "";
     position: absolute;
@@ -265,8 +339,9 @@
     background: var(--color-lime);
     transform-origin: right;
     transform: scaleX(0);
-    transition: transform 360ms cubic-bezier(.6,.05,.25,1);
+    transition: transform 360ms cubic-bezier(.6, .05, .25, 1);
   }
+
   &:hover::after {
     transform-origin: left;
     transform: scaleX(1);
@@ -274,8 +349,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track, .marquee-fast { animation: none !important; }
-  [style*="mesh-drift"] { animation: none !important; }
+
+  .marquee-track,
+  .marquee-fast {
+    animation: none !important;
+  }
+
+  [style*="mesh-drift"] {
+    animation: none !important;
+  }
 }
 
 
@@ -299,12 +381,14 @@
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
 }
+
 .glass {
   background-color: color-mix(in srgb, white 3%, transparent);
   backdrop-filter: blur(20px);
   border: 1px solid color-mix(in srgb, white 6%, transparent);
   border-radius: 1rem;
 }
+
 .glass-card {
   background-color: color-mix(in srgb, white 2%, transparent);
   backdrop-filter: blur(12px);
@@ -312,12 +396,14 @@
   border-radius: 1rem;
   transition: all 300ms;
 }
+
 .glass-card:hover {
   background-color: color-mix(in srgb, white 4%, transparent);
   border-color: color-mix(in srgb, var(--color-accent-primary) 20%, transparent);
   transform: translateY(-4px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(198, 255, 52, 0.05);
 }
+
 .glass-card-standard {
   background-color: color-mix(in srgb, white 2%, transparent);
   backdrop-filter: blur(12px);
@@ -325,25 +411,111 @@
   border-radius: 1rem;
   transition: all 300ms;
 }
+
 .glass-card-standard:hover {
   border-color: color-mix(in srgb, var(--color-accent-primary) 20%, transparent);
   transform: translateY(-4px);
   box-shadow: 0 0 32px rgba(198, 255, 52, 0.06);
 }
-.glow-text { text-shadow: 0 0 20px rgba(198, 255, 52, 0.3); }
 
-@keyframes countUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes slideUpFade { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes glowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(198,255,52,0.1); } 50% { box-shadow: 0 0 40px rgba(198,255,52,0.35); } }
-@keyframes stickyDrop { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-@keyframes cgMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-@keyframes cgMarqueeReverse { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+.glow-text {
+  text-shadow: 0 0 20px rgba(198, 255, 52, 0.3);
+}
 
-@utility animate-count-up { animation: countUp 2s ease-out forwards; }
-@utility animate-slide-up-fade { animation: slideUpFade 0.5s ease-out forwards; }
-@utility animate-glow-pulse { animation: glowPulse 3s ease-in-out infinite; }
-@utility animate-sticky-drop { animation: stickyDrop 0.3s ease-out forwards; }
-@utility animate-marquee { animation: cgMarquee 30s linear infinite; }
-@utility animate-marquee-fast { animation: cgMarquee 25s linear infinite; }
-@utility animate-marquee-reverse-fast { animation: cgMarqueeReverse 25s linear infinite; }
-@utility animate-marquee-testimonials { animation: cgMarquee 45s linear infinite; }
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(198, 255, 52, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(198, 255, 52, 0.35);
+  }
+}
+
+@keyframes stickyDrop {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes cgMarquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes cgMarqueeReverse {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@utility animate-count-up {
+  animation: countUp 2s ease-out forwards;
+}
+
+@utility animate-slide-up-fade {
+  animation: slideUpFade 0.5s ease-out forwards;
+}
+
+@utility animate-glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@utility animate-sticky-drop {
+  animation: stickyDrop 0.3s ease-out forwards;
+}
+
+@utility animate-marquee {
+  animation: cgMarquee 30s linear infinite;
+}
+
+@utility animate-marquee-fast {
+  animation: cgMarquee 25s linear infinite;
+}
+
+@utility animate-marquee-reverse-fast {
+  animation: cgMarqueeReverse 25s linear infinite;
+}
+
+@utility animate-marquee-testimonials {
+  animation: cgMarquee 45s linear infinite;
+}
