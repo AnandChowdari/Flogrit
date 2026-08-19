@@ -48,7 +48,7 @@ export default function Navbar({ onBuyNow }) {
           </Link>
           <a href="#" className="flex items-center gap-2 group shrink-0">
             <img
-              src="/captiongrit-logo.svg"
+              src="/flogrit-logo.png"
               alt="Captiongrit"
               className="h-5 w-5 object-contain transition-transform group-hover:scale-110 sm:h-7 sm:w-7 md:h-8 md:w-8"
             />

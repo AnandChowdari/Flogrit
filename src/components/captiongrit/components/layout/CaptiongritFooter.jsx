@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
             <a href="#" className="flex items-center gap-2 mb-4">
-              <img src="/captiongrit-logo.svg" alt="Captiongrit" className="w-8 h-8 object-contain" />
+              <img src="/flogrit-logo.png" alt="Captiongrit" className="w-8 h-8 object-contain" />
               <span className="font-display font-semibold text-xl tracking-tight text-white">Captiongrit</span>
             </a>
             <p className="text-text-secondary text-sm mb-6 leading-relaxed">
@@ -19,7 +19,7 @@ export default function Footer() {
             </Link>
           </div>
 
-          
+
           <div>
             <h4 className="font-bold text-white mb-6">Product</h4>
             <ul className="space-y-4 text-sm text-text-secondary">
@@ -29,7 +29,7 @@ export default function Footer() {
               <li><a href="#" className="hover:text-accent-primary transition-colors">Changelog</a></li>
             </ul>
           </div>
-          
+
           <div>
             <h4 className="font-bold text-white mb-6">Legal</h4>
             <ul className="space-y-4 text-sm text-text-secondary">
@@ -38,7 +38,7 @@ export default function Footer() {
               <li><Link to="/captiongrit-refund" className="hover:text-accent-primary transition-colors">Refund Policy</Link></li>
             </ul>
           </div>
-          
+
           <div>
             <h4 className="font-bold text-white mb-6">Connect</h4>
             <div className="flex gap-4">
@@ -54,7 +54,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        
+
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-text-secondary text-sm text-center md:text-left">
             © 2026 Captiongrit by Flogrit. All rights reserved.
