@@ -97,7 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "Flogrit" },
       { property: "og:title", content: "Flogrit — turn attention into customers" },
       { property: "og:description", content: "Flogrit is a Growth Systems Company. We design and build connected systems for Attention, Conversion and Automation — so the parts of your business work together." },
-      { property: "og:image", content: "https://flogrit.com/captiongrit-logo.svg" },
+      { property: "og:image", content: "https://flogrit.com/flogrit-logo.png" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
@@ -108,8 +108,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&display=swap",
       },
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/svg+xml", href: "/captiongrit-logo.svg" },
-      { rel: "apple-touch-icon", href: "/captiongrit-logo.svg" },
+      { rel: "icon", type: "image/png", href: "/flogrit-logo.png" },
+      { rel: "apple-touch-icon", href: "/flogrit-logo.png" },
     ],
     scripts: [
       {
@@ -119,8 +119,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@type": "Organization",
           "name": "Flogrit",
           "url": "https://flogrit.com",
-          "logo": "https://flogrit.com/captiongrit-logo.svg",
-          "image": "https://flogrit.com/captiongrit-logo.svg"
+          "logo": "https://flogrit.com/flogrit-logo.png",
+          "image": "https://flogrit.com/flogrit-logo.png"
         }),
       },
     ],
