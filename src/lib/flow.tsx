@@ -35,10 +35,10 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         ?? url.searchParams.get("flow")?.toLowerCase();
       if (isFlow(q)) {
         setSystemState(q);
-        localStorage.setItem(KEY, q);
+        sessionStorage.setItem(KEY, q);
         return;
       }
-      const stored = localStorage.getItem(KEY);
+      const stored = sessionStorage.getItem(KEY);
       if (isFlow(stored)) setSystemState(stored);
     } catch {
       /* noop */
@@ -48,7 +48,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
   const setSystem = useCallback((f: Flow) => {
     setSystemState(f);
     try {
-      localStorage.setItem(KEY, f);
+      sessionStorage.setItem(KEY, f);
     } catch {
       /* noop */
     }
@@ -72,7 +72,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
   const clearSystem = useCallback(() => {
     setSystemState(null);
     try {
-      localStorage.removeItem(KEY);
+      sessionStorage.removeItem(KEY);
     } catch {
       /* noop */
     }

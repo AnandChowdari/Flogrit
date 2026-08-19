@@ -8,7 +8,7 @@ export function CaptiongritPopup() {
 
   useEffect(() => {
     // Check if the user has already seen the popup
-    const hasSeenPopup = localStorage.getItem("flogrit_captiongrit_popup");
+    const hasSeenPopup = sessionStorage.getItem("flogrit_captiongrit_popup");
     if (!hasSeenPopup) {
       // Delay popup slightly for a better user experience
       const timer = setTimeout(() => {
@@ -20,7 +20,7 @@ export function CaptiongritPopup() {
 
   const closePopup = () => {
     setIsOpen(false);
-    localStorage.setItem("flogrit_captiongrit_popup", "true");
+    sessionStorage.setItem("flogrit_captiongrit_popup", "true");
   };
 
   return (
