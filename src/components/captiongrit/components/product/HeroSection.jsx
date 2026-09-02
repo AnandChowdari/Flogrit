@@ -21,9 +21,9 @@ export default function HeroSection({ onBuyNow }) {
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-10 lg:gap-14 items-center">
-          
+
           {/* Left Text */}
-          <motion.div 
+          <motion.div
             variants={fadeUpVariant}
             initial="hidden"
             animate="visible"
@@ -31,9 +31,9 @@ export default function HeroSection({ onBuyNow }) {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent-primary/30 bg-accent-primary/5 text-accent-primary text-sm font-semibold mb-8">
               <span className="w-2 h-2 rounded-full bg-accent-primary animate-pulse" />
-              Now Available — Version 1.0
+              Now Available — Version 1.0.1
             </div>
-            
+
             <h1 className="font-display text-[2.6rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] font-extrabold leading-[1.05] mb-5 text-white tracking-tight">
               Don't waste hours.<br />
               <span className="font-accent glow-text text-accent-primary">Create captions in seconds.</span>
@@ -61,16 +61,16 @@ export default function HeroSection({ onBuyNow }) {
             {/* OS Availability Badge */}
             <div className="flex items-center gap-3 mb-8 w-full sm:w-auto p-3 rounded-lg bg-[#111] border border-white/10 text-sm">
               <div className="flex items-center gap-1.5 text-white">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2 2h9v9H2V2zm11 0h9v9h-9V2zm0 11h9v9h-9v-9zM2 13h9v9H2v-9z"/></svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2 2h9v9H2V2zm11 0h9v9h-9V2zm0 11h9v9h-9v-9zM2 13h9v9H2v-9z" /></svg>
                 <span className="font-semibold text-white/90">Windows Supported</span>
               </div>
               <div className="w-px h-4 bg-white/20"></div>
               <div className="flex items-center gap-1.5 text-text-secondary">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" /></svg>
                 <span>Mac Coming Soon</span>
               </div>
             </div>
-            
+
             <div className="flex flex-wrap gap-x-6 gap-y-3">
               {trustItems.map((item, idx) => (
                 <div key={idx} className="flex items-center gap-2 text-sm text-text-secondary">
@@ -82,7 +82,7 @@ export default function HeroSection({ onBuyNow }) {
           </motion.div>
 
           {/* Right Visual: Interactive Plugin Demo */}
-          <motion.div 
+          <motion.div
             variants={slideRightVariant}
             initial="hidden"
             animate="visible"
@@ -91,12 +91,12 @@ export default function HeroSection({ onBuyNow }) {
             <div className="relative w-full max-w-4xl transform lg:rotate-y-[-5deg] lg:rotate-x-[2deg] hover:rotate-y-0 hover:rotate-x-0 transition-transform duration-700 perspective-1000">
               {/* Glow behind demo */}
               <div className="absolute -inset-4 bg-accent-primary/20 rounded-3xl blur-3xl pointer-events-none" />
-              
+
               {/* Demo container */}
               <div className="relative">
                 <CaptiongritPluginDemo />
               </div>
-              
+
               {/* Floating badge */}
               <div className="absolute -bottom-3 -right-3 bg-[#111111] border border-accent-primary/30 rounded-xl px-4 py-2 flex items-center gap-2 shadow-lg z-10">
                 <span className="w-2 h-2 rounded-full bg-accent-primary animate-pulse" />
@@ -104,7 +104,7 @@ export default function HeroSection({ onBuyNow }) {
               </div>
             </div>
           </motion.div>
-          
+
         </div>
       </div>
     </section>

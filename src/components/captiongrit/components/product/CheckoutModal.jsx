@@ -3,8 +3,8 @@ import { motion } from 'motion/react';
 import { X, ShieldCheck, ArrowRight, Loader2 } from 'lucide-react';
 import { createOrderFn, verifyPaymentFn } from '../../../../lib/payment';
 
-export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
-  const [formData, setFormData] = useState({ name: '', email: '' });
+export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingLicenseKey, existingEmail }) {
+  const [formData, setFormData] = useState({ name: '', email: existingEmail || '' });
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -71,7 +71,8 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
                 customer_name: formData.name,
                 plan_name: selectedPlan.data.label,
                 amount: order.amount / 100, // Convert back to standard currency unit
-                currency: order.currency
+                currency: order.currency,
+                existing_license_key: existingLicenseKey
               }
             });
 
@@ -187,7 +188,8 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan }) {
                 placeholder="you@email.com"
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
-                disabled={loading}
+                disabled={loading || !!existingEmail}
+                className={`w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-colors ${existingEmail ? 'opacity-70 cursor-not-allowed' : ''}`}
               />
             </div>
 

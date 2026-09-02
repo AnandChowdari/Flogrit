@@ -30,6 +30,18 @@ export default function LandingPage() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [isBetaModalOpen, setIsBetaModalOpen] = useState(false);
+  const [existingLicenseKey, setExistingLicenseKey] = useState(null);
+  const [existingEmail, setExistingEmail] = useState(null);
+
+  useEffect(() => {
+    // Parse URL parameters for Phase 2 Upgrade Flow
+    const searchParams = new URLSearchParams(window.location.search);
+    const licenseKey = searchParams.get('licenseKey') || searchParams.get('key');
+    const emailParam = searchParams.get('email');
+    
+    if (licenseKey) setExistingLicenseKey(licenseKey);
+    if (emailParam) setExistingEmail(emailParam);
+  }, []);
 
   // When clicking generic 'Buy Now' buttons, we scroll to the pricing section with an offset
   const handleGenericBuyNow = () => {
@@ -92,6 +104,8 @@ export default function LandingPage() {
             isOpen={isCheckoutOpen}
             onClose={() => setIsCheckoutOpen(false)}
             selectedPlan={selectedPlan}
+            existingLicenseKey={existingLicenseKey}
+            existingEmail={existingEmail}
           />
         )}
       </AnimatePresence>

@@ -108,8 +108,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&display=swap",
       },
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/png", href: "/flogrit-logo.png" },
-      { rel: "apple-touch-icon", href: "/flogrit-logo.png" },
+      { rel: "icon", type: "image/svg+xml", href: "/flogrit-logo.svg" },
+      { rel: "apple-touch-icon", href: "/flogrit-logo.svg" },
     ],
     scripts: [
       {

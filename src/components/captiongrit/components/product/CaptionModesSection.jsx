@@ -12,8 +12,8 @@ export default function CaptionModesSection() {
       desc: "one word at a time, TikTok style"
     },
     {
-      title: "Phonetic Mode",
-      desc: "Telugu / Hindi / Tamil / Malayalam"
+      title: "Roman Mode",
+      desc: "Telugu / Hindi / Tamil / Malayalam / ..."
     }
   ];
 
@@ -38,12 +38,12 @@ export default function CaptionModesSection() {
       { text: "over", hl: true },
       { text: " the world.", hl: false }
     ];
-    
+
     function run() {
       if (!active) return;
       setPhrase1Visible([]);
       let i = 0;
-      
+
       function next() {
         if (!active) return;
         if (i > parts.length) {
@@ -83,7 +83,7 @@ export default function CaptionModesSection() {
         return nextIdx;
       });
     }
-    
+
     const timer = setTimeout(nextWord, 550);
     return () => {
       active = false;
@@ -105,10 +105,10 @@ export default function CaptionModesSection() {
   useEffect(() => {
     let active = true;
     const current = phonetics[phoneticIdx % phonetics.length];
-    
+
     setPhoneticFade(true);
     setPhoneticVisible([]);
-    
+
     let i = 0;
     function next() {
       if (!active) return;
@@ -128,7 +128,7 @@ export default function CaptionModesSection() {
       i++;
       setTimeout(next, i <= 1 ? 350 : 230);
     }
-    
+
     const initialTimer = setTimeout(next, 350);
     return () => {
       active = false;
@@ -139,7 +139,7 @@ export default function CaptionModesSection() {
   return (
     <section className="py-32 px-6">
       <div className="max-w-5xl mx-auto">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -153,27 +153,26 @@ export default function CaptionModesSection() {
           {modes.map((mode, idx) => {
             const isActive = activeCard === idx;
             return (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className={`bg-white/[0.03] backdrop-blur-[20px] p-8 flex flex-col items-center text-center rounded-2xl transition-all duration-500 border-2 ${
-                  isActive ? 'border-accent-primary shadow-[0_0_25px_rgba(198,255,52,0.15)]' : 'border-white/[0.06] hover:border-white/10'
-                }`}
+                className={`bg-white/[0.03] backdrop-blur-[20px] p-8 flex flex-col items-center text-center rounded-2xl transition-all duration-500 border-2 ${isActive ? 'border-accent-primary shadow-[0_0_25px_rgba(198,255,52,0.15)]' : 'border-white/[0.06] hover:border-white/10'
+                  }`}
               >
                 <h3 className="font-display font-bold text-lg mb-1.5 text-white">{mode.title}</h3>
                 <p className="text-xs text-text-secondary mb-8 leading-relaxed">{mode.desc}</p>
-                
+
                 <div className="w-full bg-[#0d0d0d] rounded-xl p-6 border border-white/5 relative overflow-hidden min-h-[130px] flex flex-col items-center justify-center">
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 pointer-events-none" />
-                  
+
                   {idx === 0 && (
                     <p className="font-display font-bold text-[15px] relative z-10 leading-relaxed text-center">
                       {phrase1Visible.map((part, pIdx) => (
-                        <span 
-                          key={pIdx} 
+                        <span
+                          key={pIdx}
                           className={part.hl ? 'text-accent-primary glow-text font-bold' : 'text-[#d0d0d0]'}
                         >
                           {part.text}
@@ -191,8 +190,8 @@ export default function CaptionModesSection() {
                           return <span key={j} className="text-[#888]">{w} </span>;
                         } else if (isCurrent) {
                           return (
-                            <span 
-                              key={j} 
+                            <span
+                              key={j}
                               className={`text-[16px] ${wbwHL[j] ? 'text-accent-primary glow-text' : 'text-white'}`}
                             >
                               {w}{' '}
@@ -212,8 +211,8 @@ export default function CaptionModesSection() {
                       </span>
                       <p className="font-display font-bold text-[15px] relative z-10 leading-relaxed text-center">
                         {phoneticVisible.map((part, pIdx) => (
-                          <span 
-                            key={pIdx} 
+                          <span
+                            key={pIdx}
                             className={part.hl ? 'text-accent-primary glow-text font-bold' : 'text-[#d0d0d0]'}
                           >
                             {part.text}
