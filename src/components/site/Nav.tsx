@@ -44,9 +44,9 @@ export function Nav() {
         />
         <Link
           to="/"
-          className="relative z-10 flex items-center gap-2 font-display text-[1.25rem] font-semibold leading-none tracking-[-0.04em] sm:gap-2.5 sm:text-[1.4rem] lg:text-[1.55rem]"
+          className="relative z-10 flex items-center gap-2.5 font-display text-[1.25rem] font-semibold leading-none tracking-[-0.04em] sm:text-[1.4rem] lg:text-[1.55rem]"
         >
-          <LogoMark className="h-7 w-7 shrink-0 text-primary sm:h-8 sm:w-8 lg:h-9 lg:w-9" />
+          <LogoMark className="h-5 w-5 shrink-0 text-primary sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
           <span className="text-foreground">Flogrit</span>
         </Link>
 

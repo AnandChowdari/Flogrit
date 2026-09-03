@@ -57,6 +57,7 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
       plan_name?: string;
       amount?: number;
       currency?: string;
+      existing_license_key?: string;
     }) => data
   )
   .handler(async ({ data }) => {
@@ -68,7 +69,8 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
       customer_name,
       plan_name,
       amount,
-      currency
+      currency,
+      existing_license_key
     } = data;
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -89,14 +91,17 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
       throw new Error("Invalid signature");
     }
 
-    // Generate License Key
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let licenseKey = 'CG-';
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 4; j++) {
-        licenseKey += chars.charAt(Math.floor(Math.random() * chars.length));
+    // Use Existing or Generate License Key
+    let licenseKey = existing_license_key;
+    if (!licenseKey) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      licenseKey = 'CG-';
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 4; j++) {
+          licenseKey += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        if (i < 2) licenseKey += '-';
       }
-      if (i < 2) licenseKey += '-';
     }
 
     // Call GAS Webhook
