@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { X, ShieldCheck, ArrowRight, Loader2 } from 'lucide-react';
-import { createOrderFn, verifyPaymentFn } from '../../../../lib/payment';
+import { X, ShieldCheck, ArrowRight, Loader2, CheckCircle2, AlertTriangle, Copy, Check } from 'lucide-react';
+import { createOrderFn, verifyPaymentFn, recoverPaymentFn } from '../../../../lib/payment';
 
 export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingLicenseKey, existingEmail }) {
   const [formData, setFormData] = useState({ name: '', email: existingEmail || '' });
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [fulfillmentState, setFulfillmentState] = useState('idle'); // 'idle' | 'success' | 'email_delayed' | 'pending' | 'failed'
+  const [createdKey, setCreatedKey] = useState(null);
+  const [copied, setCopied] = useState(false);
+  const [pendingReceipt, setPendingReceipt] = useState(null);
 
   useEffect(() => {
     // Load Razorpay checkout script
@@ -14,12 +18,65 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingL
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
     script.async = true;
     document.body.appendChild(script);
+
+    // Check for cached pending payment receipt on mount
+    try {
+      const cached = localStorage.getItem("captiongrit_pending_payment");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (parsed.paymentId && parsed.orderId) {
+          setPendingReceipt(parsed);
+        }
+      }
+    } catch (e) {}
+
     return () => {
       document.body.removeChild(script);
     };
   }, []);
 
   if (!isOpen || !selectedPlan) return null;
+
+  const handleCopyKey = () => {
+    if (createdKey) {
+      navigator.clipboard.writeText(createdKey);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleRecovery = async (receiptToRecover) => {
+    const r = receiptToRecover || pendingReceipt;
+    if (!r || !r.paymentId || !r.orderId) return;
+    setLoading(true);
+    setErrorMsg(null);
+    try {
+      const recResult = await recoverPaymentFn({
+        data: {
+          paymentId: r.paymentId,
+          orderId: r.orderId
+        }
+      });
+
+      if (recResult.success) {
+        try { localStorage.removeItem("captiongrit_pending_payment"); } catch (e) {}
+        setCreatedKey(recResult.licenseKey);
+        if (recResult.emailSent === false) {
+          setFulfillmentState("email_delayed");
+        } else {
+          setFulfillmentState("success");
+        }
+      } else {
+        setErrorMsg(recResult.error || "Recovery failed. Please contact support with your Payment ID.");
+        setFulfillmentState("failed");
+      }
+    } catch (recErr) {
+      setErrorMsg(recErr.message || "Failed to contact recovery server.");
+      setFulfillmentState("failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCheckout = async (e) => {
     e.preventDefault();
@@ -61,7 +118,21 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingL
         order_id: order.order_id,
         handler: async function (response) {
           try {
-            // 3. Verify Signature
+            // Save sanitized receipt to localStorage (excluding signature)
+            const receiptData = {
+              paymentId: response.razorpay_payment_id,
+              orderId: response.razorpay_order_id,
+              email: formData.email,
+              name: formData.name,
+              plan: selectedPlan.data.label,
+              timestamp: Date.now()
+            };
+            setPendingReceipt(receiptData);
+            try {
+              localStorage.setItem("captiongrit_pending_payment", JSON.stringify(receiptData));
+            } catch (e) {}
+
+            // 3. Verify Signature & Fulfill
             const verifyResult = await verifyPaymentFn({
               data: {
                 razorpay_order_id: response.razorpay_order_id,
@@ -70,20 +141,30 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingL
                 customer_email: formData.email,
                 customer_name: formData.name,
                 plan_name: selectedPlan.data.label,
-                amount: order.amount / 100, // Convert back to standard currency unit
+                amount: order.amount / 100,
                 currency: order.currency,
                 existing_license_key: existingLicenseKey
               }
             });
 
-            if (verifyResult.error) {
-              setErrorMsg(verifyResult.error);
-            } else if (verifyResult.success) {
-              alert('Payment Successful! Welcome to Flogrit.');
-              onClose();
+            if (verifyResult.success) {
+              try { localStorage.removeItem("captiongrit_pending_payment"); } catch (e) {}
+              setCreatedKey(verifyResult.licenseKey);
+              if (verifyResult.emailSent === false) {
+                setFulfillmentState("email_delayed");
+              } else {
+                setFulfillmentState("success");
+              }
+            } else if (verifyResult.fulfillmentStatus === "pending") {
+              setFulfillmentState("pending");
+              setErrorMsg(verifyResult.error || "Activation server is processing. You can check status below.");
+            } else {
+              setFulfillmentState("failed");
+              setErrorMsg(verifyResult.error || "Activation encountered a server delay.");
             }
           } catch (verifyError) {
             console.error('Verification failed', verifyError);
+            setFulfillmentState("failed");
             setErrorMsg(verifyError.message || 'Payment verification failed. Please contact support.');
           }
         },
@@ -138,78 +219,139 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingL
         </div>
 
         <div className="p-8">
-          <h3 className="font-display text-2xl font-bold text-white mb-2">Complete your purchase</h3>
-          <p className="text-text-secondary text-sm mb-8">You're getting the <strong className="text-white">{selectedPlan.data.label}</strong> license.</p>
+          {fulfillmentState === 'success' || fulfillmentState === 'email_delayed' ? (
+            <div className="text-center py-4">
+              <div className="w-16 h-16 bg-accent-primary/10 border border-accent-primary/30 rounded-full flex items-center justify-center mx-auto mb-4 text-accent-primary">
+                <CheckCircle2 className="w-8 h-8" />
+              </div>
+              <h3 className="font-display text-2xl font-bold text-white mb-2">Payment Successful!</h3>
+              <p className="text-text-secondary text-sm mb-6">Your <strong>{selectedPlan.data.label}</strong> license has been activated.</p>
 
-          <div className="glass p-6 mb-6 border-accent-primary/20 bg-accent-primary/5 rounded-xl">
-            <div className="flex justify-between items-center mb-4">
-              <span className="font-bold text-white text-lg">{selectedPlan.data.label} Plan</span>
-              <span className="font-display font-bold text-2xl text-accent-primary">
-                {selectedPlan.currencySymbol || ''}{selectedPlan.data.price}
-              </span>
-            </div>
-            <ul className="space-y-2 text-sm text-text-secondary">
-              {selectedPlan.features?.filter(f => f.included).slice(0, 4).map((f, i) => (
-                <li key={i} className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-accent-primary" />
-                  {f.name}
-                </li>
-              ))}
-              <li className="text-white/50 text-xs italic pt-2">Plus all other included features...</li>
-            </ul>
-          </div>
-
-          {errorMsg && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-sm">
-              {errorMsg}
-            </div>
-          )}
-
-          <form onSubmit={handleCheckout} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-text-secondary mb-1">Full Name</label>
-              <input 
-                type="text" 
-                required
-                className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-colors"
-                placeholder="Your full name"
-                value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-                disabled={loading}
-              />
-            </div>
-            
-            <div className="mb-8">
-              <label className="block text-sm font-medium text-text-secondary mb-1">Email Address</label>
-              <input 
-                type="email" 
-                required
-                className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-colors"
-                placeholder="you@email.com"
-                value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
-                disabled={loading || !!existingEmail}
-                className={`w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-colors ${existingEmail ? 'opacity-70 cursor-not-allowed' : ''}`}
-              />
-            </div>
-
-            <button 
-              type="submit"
-              disabled={loading}
-              className="w-full bg-accent-primary hover:bg-accent-secondary text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(198,255,52,0.2)] hover:shadow-[0_0_25px_rgba(198,255,52,0.4)] disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
-              ) : (
-                <>Proceed to Payment <ArrowRight className="w-5 h-5" /></>
+              {createdKey && (
+                <div className="bg-bg-primary border border-white/10 p-4 rounded-xl mb-6 flex items-center justify-between gap-3">
+                  <div className="text-left font-mono font-bold text-lg text-white tracking-widest truncate">
+                    {createdKey}
+                  </div>
+                  <button
+                    onClick={handleCopyKey}
+                    className="flex items-center gap-1.5 px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-semibold transition-colors shrink-0"
+                  >
+                    {copied ? <Check className="w-4 h-4 text-accent-primary" /> : <Copy className="w-4 h-4" />}
+                    {copied ? "Copied" : "Copy Key"}
+                  </button>
+                </div>
               )}
-            </button>
-          </form>
 
-          <div className="mt-6 flex items-center justify-center gap-2 text-xs text-text-secondary">
-            <ShieldCheck className="w-4 h-4 text-accent-primary" />
-            Secure · Instant delivery to your email
-          </div>
+              {fulfillmentState === 'email_delayed' && (
+                <div className="mb-6 p-3 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-xl text-xs text-left">
+                  Email delivery is delayed, but your license is active above! Please copy and save your license key.
+                </div>
+              )}
+
+              <button
+                onClick={onClose}
+                className="w-full bg-accent-primary hover:bg-accent-secondary text-black font-bold py-3.5 rounded-xl transition-all"
+              >
+                Done & Open Plugin
+              </button>
+            </div>
+          ) : (
+            <>
+              <h3 className="font-display text-2xl font-bold text-white mb-2">Complete your purchase</h3>
+              <p className="text-text-secondary text-sm mb-8">You're getting the <strong className="text-white">{selectedPlan.data.label}</strong> license.</p>
+
+              {pendingReceipt && (fulfillmentState === 'pending' || fulfillmentState === 'failed') && (
+                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl">
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-bold text-white text-sm">Unfulfilled Payment Found</div>
+                      <div className="text-xs text-text-secondary mt-1">
+                        Completed payment ID: <span className="font-mono text-amber-400">{pendingReceipt.paymentId}</span>
+                      </div>
+                      <button
+                        onClick={() => handleRecovery(pendingReceipt)}
+                        disabled={loading}
+                        className="mt-3 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs rounded-lg transition-colors flex items-center gap-1.5"
+                      >
+                        {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <ShieldCheck className="w-3.5 h-3.5" />}
+                        Complete Activation Now
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="glass p-6 mb-6 border-accent-primary/20 bg-accent-primary/5 rounded-xl">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="font-bold text-white text-lg">{selectedPlan.data.label} Plan</span>
+                  <span className="font-display font-bold text-2xl text-accent-primary">
+                    {selectedPlan.currencySymbol || ''}{selectedPlan.data.price}
+                  </span>
+                </div>
+                <ul className="space-y-2 text-sm text-text-secondary">
+                  {selectedPlan.features?.filter(f => f.included).slice(0, 4).map((f, i) => (
+                    <li key={i} className="flex items-center gap-2">
+                      <div className="w-1 h-1 rounded-full bg-accent-primary" />
+                      {f.name}
+                    </li>
+                  ))}
+                  <li className="text-white/50 text-xs italic pt-2">Plus all other included features...</li>
+                </ul>
+              </div>
+
+              {errorMsg && (
+                <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-sm">
+                  {errorMsg}
+                </div>
+              )}
+
+              <form onSubmit={handleCheckout} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-text-secondary mb-1">Full Name</label>
+                  <input 
+                    type="text" 
+                    required
+                    className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-colors"
+                    placeholder="Your full name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    disabled={loading}
+                  />
+                </div>
+                
+                <div className="mb-8">
+                  <label className="block text-sm font-medium text-text-secondary mb-1">Email Address</label>
+                  <input 
+                    type="email" 
+                    required
+                    placeholder="you@email.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    disabled={loading || !!existingEmail}
+                    className={`w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-colors ${existingEmail ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  />
+                </div>
+
+                <button 
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-accent-primary hover:bg-accent-secondary text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(198,255,52,0.2)] hover:shadow-[0_0_25px_rgba(198,255,52,0.4)] disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  {loading ? (
+                    <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
+                  ) : (
+                    <>Proceed to Payment <ArrowRight className="w-5 h-5" /></>
+                  )}
+                </button>
+              </form>
+
+              <div className="mt-6 flex items-center justify-center gap-2 text-xs text-text-secondary">
+                <ShieldCheck className="w-4 h-4 text-accent-primary" />
+                Secure · Instant delivery to your email
+              </div>
+            </>
+          )}
         </div>
       </motion.div>
     </div>
