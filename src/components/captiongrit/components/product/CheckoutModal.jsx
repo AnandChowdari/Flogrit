@@ -7,10 +7,30 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingL
   const [formData, setFormData] = useState({ name: '', email: existingEmail || '' });
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [fulfillmentState, setFulfillmentState] = useState('idle'); // 'idle' | 'success' | 'email_delayed' | 'pending' | 'failed'
+  const [fulfillmentState, setFulfillmentState] = useState('idle'); // 'idle' | 'activating' | 'success' | 'email_delayed' | 'pending' | 'failed'
   const [createdKey, setCreatedKey] = useState(null);
   const [copied, setCopied] = useState(false);
   const [pendingReceipt, setPendingReceipt] = useState(null);
+  const [activationStep, setActivationStep] = useState(0);
+
+  const activationMessages = [
+    "Capturing your transaction...",
+    "Generating your license key...",
+    "Sending your license email...",
+    "Connecting to activation server..."
+  ];
+
+  useEffect(() => {
+    let interval;
+    if (fulfillmentState === 'activating') {
+      interval = setInterval(() => {
+        setActivationStep((prev) => (prev < activationMessages.length - 1 ? prev + 1 : prev));
+      }, 1500);
+    } else {
+      setActivationStep(0);
+    }
+    return () => clearInterval(interval);
+  }, [fulfillmentState]);
 
   useEffect(() => {
     // Load Razorpay checkout script
@@ -49,6 +69,7 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingL
     const r = receiptToRecover || pendingReceipt;
     if (!r || !r.paymentId || !r.orderId) return;
     setLoading(true);
+    setFulfillmentState("activating");
     setErrorMsg(null);
     try {
       const recResult = await recoverPaymentFn({
@@ -118,6 +139,8 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingL
         order_id: order.order_id,
         handler: async function (response) {
           try {
+            setFulfillmentState("activating");
+            
             // Save sanitized receipt to localStorage (excluding signature)
             const receiptData = {
               paymentId: response.razorpay_payment_id,
@@ -219,13 +242,35 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingL
         </div>
 
         <div className="p-8">
-          {fulfillmentState === 'success' || fulfillmentState === 'email_delayed' ? (
+          {fulfillmentState === 'activating' ? (
+            <div className="text-center py-12 flex flex-col items-center">
+              <Loader2 className="w-16 h-16 animate-spin text-accent-primary mb-6" />
+              <h3 className="font-display text-2xl font-bold text-white mb-3">Almost there...</h3>
+              <p className="text-text-secondary text-sm font-medium h-6 animate-pulse transition-all duration-300">
+                {activationMessages[activationStep]}
+              </p>
+            </div>
+          ) : fulfillmentState === 'success' || fulfillmentState === 'email_delayed' ? (
             <div className="text-center py-4">
               <div className="w-16 h-16 bg-accent-primary/10 border border-accent-primary/30 rounded-full flex items-center justify-center mx-auto mb-4 text-accent-primary">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="font-display text-2xl font-bold text-white mb-2">Payment Successful!</h3>
-              <p className="text-text-secondary text-sm mb-6">Your <strong>{selectedPlan.data.label}</strong> license has been activated.</p>
+              <h3 className="font-display text-2xl font-bold text-white mb-2">Purchase Successful!</h3>
+              
+              {fulfillmentState === 'success' ? (
+                <p className="text-text-secondary text-sm mb-6">
+                  Your <strong>{selectedPlan.data.label}</strong> license has been activated and we've sent you an email.
+                </p>
+              ) : (
+                <div className="mb-6">
+                  <p className="text-text-secondary text-sm mb-3">
+                    Your <strong>{selectedPlan.data.label}</strong> license has been activated.
+                  </p>
+                  <div className="p-3 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-xl text-xs text-left">
+                    Your credentials email will arrive shortly. Please copy and save your license key below in the meantime.
+                  </div>
+                </div>
+              )}
 
               {createdKey && (
                 <div className="bg-bg-primary border border-white/10 p-4 rounded-xl mb-6 flex items-center justify-between gap-3">
@@ -242,17 +287,11 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingL
                 </div>
               )}
 
-              {fulfillmentState === 'email_delayed' && (
-                <div className="mb-6 p-3 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-xl text-xs text-left">
-                  Email delivery is delayed, but your license is active above! Please copy and save your license key.
-                </div>
-              )}
-
               <button
                 onClick={onClose}
                 className="w-full bg-accent-primary hover:bg-accent-secondary text-black font-bold py-3.5 rounded-xl transition-all"
               >
-                Done & Open Plugin
+                Enjoy the Plugin
               </button>
             </div>
           ) : (
