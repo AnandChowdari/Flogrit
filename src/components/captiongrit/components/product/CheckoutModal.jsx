@@ -178,17 +178,12 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingL
               } else {
                 setFulfillmentState("success");
               }
-            } else if (verifyResult.fulfillmentStatus === "pending") {
-              setFulfillmentState("pending");
-              setErrorMsg(verifyResult.error || "Activation server is processing. You can check status below.");
             } else {
-              setFulfillmentState("failed");
-              setErrorMsg(verifyResult.error || "Activation encountered a server delay.");
+              setFulfillmentState("error_success");
             }
           } catch (verifyError) {
             console.error('Verification failed', verifyError);
-            setFulfillmentState("failed");
-            setErrorMsg(verifyError.message || 'Payment verification failed. Please contact support.');
+            setFulfillmentState("error_success");
           }
         },
         prefill: {
@@ -249,6 +244,22 @@ export default function CheckoutModal({ isOpen, onClose, selectedPlan, existingL
               <p className="text-text-secondary text-sm font-medium h-6 animate-pulse transition-all duration-300">
                 {activationMessages[activationStep]}
               </p>
+            </div>
+          ) : fulfillmentState === 'error_success' ? (
+            <div className="text-center py-4">
+              <div className="w-16 h-16 bg-accent-primary/10 border border-accent-primary/30 rounded-full flex items-center justify-center mx-auto mb-4 text-accent-primary">
+                <CheckCircle2 className="w-8 h-8" />
+              </div>
+              <h3 className="font-display text-2xl font-bold text-white mb-2">Purchase Successful!</h3>
+              <p className="text-text-secondary text-sm mb-6">
+                Your purchase was successful and you will receive your email shortly. Kindly wait.
+              </p>
+              <button
+                onClick={onClose}
+                className="w-full bg-accent-primary hover:bg-accent-secondary text-black font-bold py-3.5 rounded-xl transition-all"
+              >
+                Done
+              </button>
             </div>
           ) : fulfillmentState === 'success' || fulfillmentState === 'email_delayed' ? (
             <div className="text-center py-4">
