@@ -28,21 +28,20 @@ export default function PricingSection({ onBuyNow }) {
       name: 'Basic',
       data: pricingData.tiers.basic,
       description: 'Ideal for getting started with clean, automated captions.',
-      accuracy: '95% Accuracy',
-      duration: 'Up to 30 Sec per take',
+      accuracy: '95% accuracy',
+      duration: '60 sec/take',
       buttonText: 'Get Basic',
       isPopular: false,
       features: [
-        { name: 'All 24 languages supported', included: true },
+        { name: '24 languages supported', included: true },
         { name: 'Natural phrase mode', included: true },
         { name: 'English phonetic mode', included: true },
-        { name: 'Self Installation Guide', included: true },
-        { name: 'Email Support', included: true },
-        { name: 'Up to 30 Sec conversion per take', included: true },
-        { name: '95% Accuracy', included: true },
-        { name: 'Word by word mode', included: false },
-        { name: 'Double pass by AI', included: false },
-        { name: 'Custom Dictionary & Text Editor', included: false },
+        { name: 'Self-install guide', included: true },
+        { name: 'Email support', included: true },
+        { name: 'Word-by-Word mode', included: false },
+        { name: 'AI Double Pass', included: false },
+        { name: 'Custom Dictionary', included: false },
+        { name: 'Caption Editor', included: false },
       ]
     },
     {
@@ -50,29 +49,29 @@ export default function PricingSection({ onBuyNow }) {
       name: 'Pro',
       data: pricingData.tiers.pro,
       description: 'Our flagship plan. Highly accurate and fully customizable captions.',
-      accuracy: '98% Accuracy',
-      duration: 'Up to 2:30 min per take',
+      accuracy: '98% accuracy',
+      duration: '180 sec/take',
       buttonText: 'Get Pro',
       isPopular: true,
       features: [
         { name: 'Everything in Basic', included: true },
-        { name: 'Word by word mode', included: true },
-        { name: 'Double pass by AI', included: true },
-        { name: 'Custom Dictionary & Text Editor', included: true },
-        { name: 'Video Installation Guide', included: true },
-        { name: 'Up to 2:30 min long version per take', included: true },
-        { name: '98% Accuracy', included: true },
+        { name: 'Word-by-Word mode', included: true },
+        { name: 'AI Double Pass', included: true },
+        { name: 'Custom Dictionary', included: true },
+        { name: 'Caption Editor', included: true },
+        { name: 'Video installation guide', included: true },
         { name: 'Advanced Batch processing', included: false },
-        { name: 'Priority & Personal support', included: false },
+        { name: 'Priority / personal support', included: false },
       ]
     },
     {
       id: 'extreme',
       name: 'Extreme',
       data: pricingData.tiers.extreme,
-      description: 'Designed for production agencies needing top-tier speed and custom support.',
-      accuracy: '99% Accuracy',
-      duration: 'Advanced Batch processing',
+      description: 'Agency-focused. Designed for production agencies needing top-tier speed and custom support.',
+      accuracy: 'Up to 99% accuracy',
+      duration: 'Unlimited duration',
+      billingLabel: 'Monthly retainer when launched',
       buttonText: 'Coming Soon',
       isPopular: false,
       isComingSoon: true,
@@ -80,12 +79,10 @@ export default function PricingSection({ onBuyNow }) {
       features: [
         { name: 'Everything in Pro', included: true },
         { name: 'Advanced Batch processing', included: true },
-        { name: 'Personal custom support', included: true },
-        { name: 'Access up to 99% Accuracy', included: true },
-        { name: '10+ Custom presets', included: true },
-        { name: 'Mogrt (Advanced)', included: true },
-        { name: 'Text Animations', included: true },
-        { name: 'Priority Support', included: true },
+        { name: '10+ custom presets', included: true },
+        { name: 'Advanced MOGRT', included: true },
+        { name: 'Text animations', included: true },
+        { name: 'Personal / priority support', included: true },
       ]
     }
   ];
@@ -199,20 +196,31 @@ export default function PricingSection({ onBuyNow }) {
                                 {plan.name}
                               </span>
                               {plan.isComingSoon && (
-                                <span className="bg-white/10 text-white px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                <span className="bg-accent-primary/10 border border-accent-primary/30 text-accent-primary px-2 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider">
                                   Soon
                                 </span>
                               )}
                             </div>
-                            <span className="text-[10px] text-text-secondary uppercase tracking-widest font-mono">
+                            <span className="text-[10px] text-text-secondary uppercase tracking-widest font-mono shrink-0 ml-2">
                               {plan.isRetainer ? 'Monthly Retainer' : 'One-Time'}
                             </span>
                           </div>
 
-                          <div className="flex items-baseline gap-1">
-                            <span className={`text-4xl font-display font-extrabold text-white ${plan.isComingSoon ? 'blur-sm select-none opacity-70' : ''}`}>
-                              {pricingData.currency}{plan.isComingSoon ? '9,999' : plan.data.price}
-                            </span>
+                          <div className="flex flex-col justify-center min-h-[48px]">
+                            {plan.isComingSoon ? (
+                              <div>
+                                <span className="text-2xl sm:text-3xl font-display font-extrabold text-accent-primary tracking-tight block">
+                                  Coming Soon
+                                </span>
+                                <span className="text-[11px] text-text-secondary font-mono block mt-0.5">
+                                  Monthly retainer when launched
+                                </span>
+                              </div>
+                            ) : (
+                              <span className="text-4xl font-display font-extrabold text-white">
+                                {pricingData.currency}{plan.data.price}
+                              </span>
+                            )}
                           </div>
 
                           <ul className="space-y-2 text-xs text-text-secondary border-t border-white/5 pt-4">
@@ -227,7 +235,7 @@ export default function PricingSection({ onBuyNow }) {
                           </ul>
 
                           <div className="mt-auto pt-3 flex justify-between items-center text-xs font-bold text-accent-primary">
-                            <span>{plan.isComingSoon ? 'Coming Soon' : 'View details'}</span>
+                            <span>View details</span>
                             <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
                           </div>
                         </button>
@@ -276,11 +284,17 @@ export default function PricingSection({ onBuyNow }) {
                       {/* Large Price Display */}
                       <div className="py-4 border-y border-white/5">
                         <div className="flex items-baseline gap-2">
-                          <span className={`text-5xl font-display font-extrabold text-white ${selectedPlan.isComingSoon ? 'blur-md select-none opacity-70' : ''}`}>
-                            {pricingData.currency}{selectedPlan.isComingSoon ? '9,999' : selectedPlan.data.price}
-                          </span>
+                          {selectedPlan.isComingSoon ? (
+                            <span className="text-4xl font-display font-extrabold text-accent-primary">
+                              Coming Soon
+                            </span>
+                          ) : (
+                            <span className="text-5xl font-display font-extrabold text-white">
+                              {pricingData.currency}{selectedPlan.data.price}
+                            </span>
+                          )}
                           <span className="text-xs text-text-secondary uppercase tracking-widest font-mono">
-                            {selectedPlan.isRetainer ? 'Monthly Retainer' : 'One-Time Purchase'}
+                            {selectedPlan.isComingSoon ? (selectedPlan.billingLabel || 'Monthly retainer when launched') : (selectedPlan.isRetainer ? 'Monthly Retainer' : 'One-Time Purchase')}
                           </span>
                         </div>
                       </div>

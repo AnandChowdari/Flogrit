@@ -104,56 +104,213 @@ export const verifyPaymentFn = createServerFn({ method: "POST" })
       }
     }
 
-    // Call GAS Webhook
+    // Call GAS Webhook (Fail closed if credentials missing)
     const gasUrl = process.env.VITE_GOOGLE_APPS_SCRIPT_URL || import.meta.env?.VITE_GOOGLE_APPS_SCRIPT_URL;
-    const gasSecret = process.env.GAS_WEBHOOK_SECRET || import.meta.env?.GAS_WEBHOOK_SECRET || 'default_secret';
+    const gasSecret = process.env.GAS_WEBHOOK_SECRET || import.meta.env?.GAS_WEBHOOK_SECRET;
 
-    if (gasUrl) {
-      try {
-        const payload = {
-          secret: gasSecret,
-          action: "paid_signup",
-          data: {
-            paymentId: razorpay_payment_id,
-            orderId: razorpay_order_id,
-            email: customer_email,
-            name: customer_name,
-            plan: plan_name,
-            licenseKey: licenseKey,
-            amount: amount,
-            currency: currency,
-            timestamp: new Date().toISOString(),
-            status: "success"
-          }
-        };
-
-        const response = await fetch(gasUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-
-        const responseText = await response.text();
-        console.log("GAS Webhook Raw Response:", responseText);
-        
-        let responseJson;
-        try {
-          responseJson = JSON.parse(responseText);
-        } catch (e) {
-          console.error("GAS Webhook did not return JSON. Raw:", responseText);
-        }
-
-        if (responseJson && responseJson.status === "error") {
-          console.error("GAS Webhook processed but returned an error:", responseJson);
-          // We still return success to the user because their money was deducted,
-          // but you (the admin) should check the server logs!
-        }
-      } catch (err) {
-        console.error("Failed to call GAS Webhook:", err);
-      }
-    } else {
-      console.error("CRITICAL: VITE_GOOGLE_APPS_SCRIPT_URL is not set. Webhook completely skipped.");
+    if (!gasUrl || !gasSecret) {
+      console.error("CRITICAL: VITE_GOOGLE_APPS_SCRIPT_URL or GAS_WEBHOOK_SECRET is not set. Fail closed.");
+      return {
+        success: false,
+        fulfillmentStatus: "failed",
+        error: "Server configuration missing (GAS Webhook Secret). Payment recorded with ID: " + razorpay_payment_id,
+        paymentId: razorpay_payment_id,
+        licenseKey
+      };
     }
 
-    return { success: true, licenseKey };
+    let responseJson: any = null;
+    try {
+      const payload = {
+        secret: gasSecret,
+        action: "paid_signup",
+        data: {
+          paymentId: razorpay_payment_id,
+          orderId: razorpay_order_id,
+          email: customer_email,
+          name: customer_name,
+          plan: plan_name,
+          licenseKey: licenseKey,
+          amount: amount,
+          currency: currency,
+          timestamp: new Date().toISOString(),
+          status: "success"
+        }
+      };
+
+      console.log(`[PAYMENT_BRIDGE] gas_request_start: paymentId=${razorpay_payment_id}, orderId=${razorpay_order_id}, plan=${plan_name}, email=${customer_email}`);
+
+      const response = await fetch(gasUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      console.log(`[PAYMENT_BRIDGE] gas_response: paymentId=${razorpay_payment_id}, status=${response.status}`);
+
+      if (!response.ok) {
+        console.error(`[PAYMENT_BRIDGE] fulfillment_failure: HTTP error ${response.status}`);
+        return {
+          success: false,
+          fulfillmentStatus: "pending",
+          error: `Payment received, but activation is still processing (HTTP ${response.status}). Your payment ID is ${razorpay_payment_id}.`,
+          paymentId: razorpay_payment_id,
+          licenseKey
+        };
+      }
+
+      const responseText = await response.text();
+      console.log(`[PAYMENT_BRIDGE] raw_response_text: ${responseText.substring(0, 300)}...`);
+
+      try {
+        responseJson = JSON.parse(responseText);
+      } catch (e) {
+        console.error(`[PAYMENT_BRIDGE] fulfillment_failure: Invalid JSON returned. Raw:`, responseText);
+        return {
+          success: false,
+          fulfillmentStatus: "pending",
+          error: `Payment received, but activation is still processing (Invalid response format). Your payment ID is ${razorpay_payment_id}.`,
+          paymentId: razorpay_payment_id,
+          licenseKey
+        };
+      }
+    } catch (err: any) {
+      console.error(`[PAYMENT_BRIDGE] fulfillment_failure: Failed to call GAS Webhook:`, err);
+      return {
+        success: false,
+        fulfillmentStatus: "pending",
+        error: `Payment received, but activation is still processing (Network error). Your payment ID is ${razorpay_payment_id}.`,
+        paymentId: razorpay_payment_id,
+        licenseKey
+      };
+    }
+
+    if (!responseJson || responseJson.status !== "success") {
+      console.error(`[PAYMENT_BRIDGE] fulfillment_failure: GAS Webhook rejected or failed:`, responseJson);
+      return {
+        success: false,
+        fulfillmentStatus: responseJson?.status === "error" ? "failed" : "pending",
+        error: responseJson?.message || `Payment received, but activation is still processing (Server error). Your payment ID is ${razorpay_payment_id}.`,
+        paymentId: razorpay_payment_id,
+        licenseKey
+      };
+    }
+
+    console.log(`[PAYMENT_BRIDGE] fulfillment_success: paymentId=${razorpay_payment_id}`);
+    console.log(`[PAYMENT_BRIDGE] payment_success: paymentId=${razorpay_payment_id}, orderId=${razorpay_order_id}`);
+
+    const finalKey = responseJson?.data?.licenseKey || licenseKey;
+    const emailSent = responseJson?.data?.emailSent !== false;
+
+    return {
+      success: true,
+      fulfillmentStatus: "fulfilled",
+      licenseKey: finalKey,
+      emailSent: emailSent,
+      paymentId: razorpay_payment_id
+    };
   });
+
+export const recoverPaymentFn = createServerFn({ method: "POST" })
+  .validator(
+    (data: {
+      paymentId: string;
+      orderId: string;
+    }) => data
+  )
+  .handler(async ({ data }) => {
+    const { paymentId, orderId } = data;
+
+    if (!paymentId || !orderId) {
+      return { success: false, error: "Missing required recovery parameters." };
+    }
+
+    const key_id = process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || import.meta.env?.VITE_RAZORPAY_KEY_ID;
+    const key_secret = process.env.RAZORPAY_KEY_SECRET;
+
+    if (!key_id || !key_secret) {
+      return { success: false, error: "Razorpay credentials are not configured on the server." };
+    }
+
+    const gasUrl = process.env.VITE_GOOGLE_APPS_SCRIPT_URL || import.meta.env?.VITE_GOOGLE_APPS_SCRIPT_URL;
+    const gasSecret = process.env.GAS_WEBHOOK_SECRET || import.meta.env?.GAS_WEBHOOK_SECRET;
+
+    if (!gasUrl || !gasSecret) {
+      console.error("CRITICAL: VITE_GOOGLE_APPS_SCRIPT_URL or GAS_WEBHOOK_SECRET is not set. Fail closed.");
+      return { success: false, error: "Server webhook credentials missing." };
+    }
+
+    try {
+      const razorpay = new Razorpay({ key_id, key_secret });
+      const payment: any = await razorpay.payments.fetch(paymentId);
+
+      if (!payment || payment.status !== "captured") {
+        return { success: false, error: "Payment is not verified as captured by Razorpay." };
+      }
+
+      if (payment.order_id !== orderId) {
+        return { success: false, error: "Payment order ID mismatch." };
+      }
+
+      const amountInStandardUnits = payment.amount / 100;
+      let verifiedPlan = "";
+      if (amountInStandardUnits === 399 || amountInStandardUnits === 9) {
+        verifiedPlan = "Basic";
+      } else if (amountInStandardUnits === 599 || amountInStandardUnits === 15) {
+        verifiedPlan = "Pro";
+      } else if (amountInStandardUnits === 999 || amountInStandardUnits === 25) {
+        verifiedPlan = "Extreme";
+      } else {
+        return { success: false, error: `Unrecognized payment amount: ${amountInStandardUnits} ${payment.currency}` };
+      }
+
+      const trustedEmail = payment.email || payment.notes?.email;
+      const trustedName = payment.notes?.name || "Customer";
+
+      if (!trustedEmail) {
+        return { success: false, error: "Payment record lacks a verified customer email address." };
+      }
+
+      const payload = {
+        secret: gasSecret,
+        action: "paid_signup",
+        data: {
+          paymentId: payment.id,
+          orderId: payment.order_id,
+          email: trustedEmail,
+          name: trustedName,
+          plan: verifiedPlan,
+          amount: amountInStandardUnits,
+          currency: payment.currency,
+          timestamp: new Date().toISOString(),
+          status: "success",
+          isRecovery: true
+        }
+      };
+
+      const gasResponse = await fetch(gasUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const responseText = await gasResponse.text();
+      let resJson: any = null;
+      try { resJson = JSON.parse(responseText); } catch (e) {}
+
+      if (resJson && resJson.status === "error") {
+        return { success: false, error: resJson.message || "Fulfillment server failed during recovery." };
+      }
+
+      return {
+        success: true,
+        fulfillmentStatus: "fulfilled",
+        licenseKey: resJson?.data?.licenseKey,
+        emailSent: resJson?.data?.emailSent !== false
+      };
+    } catch (err: any) {
+      console.error("recoverPaymentFn error:", err);
+      return { success: false, error: err.message || "Failed to recover payment via Razorpay API." };
+    }
+  });
+
