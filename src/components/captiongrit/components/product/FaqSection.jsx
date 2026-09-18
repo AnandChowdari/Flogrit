@@ -8,7 +8,7 @@ export default function FaqSection() {
   const [filter, setFilter] = useState('');
 
   const faqs = [
-    { q: "What's the difference between Basic, Pro, and Extreme?", a: "Basic gives you standard captions in English + 5 Indian languages. Pro unlocks all 24 languages, phonetic modes, and custom dictionaries. Extreme adds a second AI verification pass for maximum accuracy, lifetime updates, and 1-on-1 setup support." },
+    { q: "What's the difference between Basic, Pro, and Extreme?", a: "Basic gives you standard captions in all 24 languages. Pro unlocks Word-by-Word mode, Double-Check Accuracy, Custom Dictionary, and the Caption Editor. Extreme adds Advanced Batch processing, custom presets, MOGRT animations, and priority support." },
     { q: "Is this a one-time payment or a subscription?", a: "It's a strict one-time payment for the software license. You bring your own API key for the generation model (which costs pennies per hour of video), so we don't have to charge you a monthly subscription." },
     { q: "How do I receive the plugin after purchase?", a: "You'll receive an email instantly with a secure download link for the .zxp plugin file, along with your license key and installation instructions." },
     { q: "Can I use the license on multiple devices?", a: "No, each license key allows activation on up to 1 device for a single user." },
