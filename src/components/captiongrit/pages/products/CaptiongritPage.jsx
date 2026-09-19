@@ -116,7 +116,6 @@ export default function LandingPage() {
       />
 
       {/* Hidden Beta Floating Button (Uncomment to enable) */}
-      {/* 
       <button 
         onClick={() => setIsBetaModalOpen(true)}
         className="fixed bottom-8 right-8 z-[90] bg-[#111111] text-white px-6 py-4 rounded-full shadow-[0_0_30px_rgba(198,255,52,0.15)] hover:shadow-[0_0_50px_rgba(198,255,52,0.3)] hover:-translate-y-1 transition-all duration-300 font-semibold flex items-center gap-3 border border-accent-primary/30 group"
@@ -128,7 +127,6 @@ export default function LandingPage() {
         </span>
         <span className="relative z-10 tracking-wide text-sm group-hover:text-accent-primary transition-colors">Join Beta Program</span>
       </button>
-      */}
     </div>
   );
 }
