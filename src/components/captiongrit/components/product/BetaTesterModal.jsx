@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Loader2, CheckCircle, AlertCircle, X } from 'lucide-react';
 
 export default function BetaTesterModal({ isOpen, onClose }) {
-  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
   const [status, setStatus] = useState('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -27,7 +27,8 @@ export default function BetaTesterModal({ isOpen, onClose }) {
         body: JSON.stringify({
           action: "beta_signup",
           name: formData.name,
-          email: formData.email
+          email: formData.email,
+          phone: formData.phone
         })
       });
       const data = await response.json();
@@ -136,6 +137,22 @@ export default function BetaTesterModal({ isOpen, onClose }) {
                       onChange={handleChange}
                       className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-all text-white placeholder-white/30"
                       placeholder="you@example.com"
+                    />
+                  </div>
+                  
+                  <div className="space-y-1.5">
+                    <label htmlFor="phone" className="text-xs font-medium text-text-secondary pl-1">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      required
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full bg-bg-primary border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary transition-all text-white placeholder-white/30"
+                      placeholder="Your Phone Number"
                     />
                   </div>
                 </div>
