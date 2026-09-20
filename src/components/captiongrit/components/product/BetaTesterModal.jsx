@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Loader2, CheckCircle, AlertCircle, X } from 'lucide-react';
 
@@ -35,7 +35,13 @@ export default function BetaTesterModal({ isOpen, onClose }) {
       if (data.success) {
         setStatus('success');
       } else {
-        setErrorMessage(data.reason === "already_registered" ? "Email already registered." : "Error. Try again.");
+        if (data.reason === "beta_daily_limit_reached") {
+          setErrorMessage("Today's Beta spots are full. Please check back tomorrow.");
+        } else if (data.reason === "already_registered") {
+          setErrorMessage("Email already registered.");
+        } else {
+          setErrorMessage("Error. Try again.");
+        }
         setStatus('error');
       }
     } catch (error) {
@@ -88,6 +94,19 @@ export default function BetaTesterModal({ isOpen, onClose }) {
               <p className="text-text-secondary text-sm">
                 Join our beta test and get your license key automatically.
               </p>
+              
+              <div className="mt-6 flex flex-col items-center gap-3">
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <div className="bg-bg-primary border border-white/5 px-3 py-2 rounded-lg text-xs min-w-[100px]">
+                    <div className="text-text-secondary mb-0.5">Beta Members</div>
+                    <div className="text-white font-semibold text-sm">23</div>
+                  </div>
+                  <div className="bg-bg-primary border border-white/5 px-3 py-2 rounded-lg text-xs min-w-[100px]">
+                    <div className="text-text-secondary mb-0.5">Converted to Subscription</div>
+                    <div className="text-white font-semibold text-sm">7</div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {status === 'success' ? (
