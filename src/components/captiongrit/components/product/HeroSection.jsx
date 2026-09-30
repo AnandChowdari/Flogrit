@@ -31,7 +31,7 @@ export default function HeroSection({ onBuyNow }) {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent-primary/30 bg-accent-primary/5 text-accent-primary text-sm font-semibold mb-8">
               <span className="w-2 h-2 rounded-full bg-accent-primary animate-pulse" />
-              Now Available — Version 1.0.1
+              🎉 Mac Version is Now Available!
             </div>
 
             <h1 className="font-display text-[2.6rem] sm:text-5xl md:text-6xl lg:text-[4.5rem] font-extrabold leading-[1.05] mb-5 text-white tracking-tight">
@@ -65,9 +65,9 @@ export default function HeroSection({ onBuyNow }) {
                 <span className="font-semibold text-white/90">Windows Supported</span>
               </div>
               <div className="w-px h-4 bg-white/20"></div>
-              <div className="flex items-center gap-1.5 text-text-secondary">
+              <div className="flex items-center gap-1.5 text-white">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" /></svg>
-                <span>Mac Coming Soon</span>
+                <span className="font-semibold text-white/90">Mac Supported</span>
               </div>
             </div>
 
