@@ -139,11 +139,11 @@ export default function PricingSection({ onBuyNow }) {
               <span className="font-medium text-sm">Windows Supported</span>
             </div>
             <div className="hidden sm:block w-px h-5 bg-white/20"></div>
-            <div className="flex items-center gap-2.5 text-text-secondary">
-              <div className="p-1.5 rounded-full bg-white/5">
+            <div className="flex items-center gap-2.5 text-white">
+              <div className="p-1.5 rounded-full bg-white/10">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
               </div>
-              <span className="font-medium text-sm">Mac Coming Soon</span>
+              <span className="font-medium text-sm">Mac Supported</span>
             </div>
           </div>
         </motion.div>

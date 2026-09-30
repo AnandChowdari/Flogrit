@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
+import { X } from 'lucide-react';
 
 // Layout
 import CaptiongritNavbar from '../../components/layout/CaptiongritNavbar';
@@ -32,6 +33,7 @@ export default function LandingPage() {
   const [isBetaModalOpen, setIsBetaModalOpen] = useState(false);
   const [existingLicenseKey, setExistingLicenseKey] = useState(null);
   const [existingEmail, setExistingEmail] = useState(null);
+  const [showMacPopup, setShowMacPopup] = useState(true);
 
   useEffect(() => {
     // Parse URL parameters for Phase 2 Upgrade Flow
@@ -127,6 +129,35 @@ export default function LandingPage() {
         </span>
         <span className="relative z-10 tracking-wide text-sm group-hover:text-accent-primary transition-colors">Join Beta Program</span>
       </button>
+
+      {/* Mac Available Popup */}
+      <AnimatePresence>
+        {showMacPopup && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ delay: 0.5, duration: 0.5, type: 'spring' }}
+            className="fixed bottom-28 right-8 z-[90] bg-[#111111] text-white p-4 rounded-2xl shadow-[0_10px_40px_rgba(198,255,52,0.15)] border border-accent-primary/30 flex items-start gap-4 max-w-sm"
+          >
+            <div className="flex-shrink-0 bg-accent-primary/10 p-2 rounded-full text-accent-primary mt-1">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            </div>
+            <div>
+              <h4 className="font-bold text-sm mb-1 text-white">Mac Plugin Available! 🎉</h4>
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Good news! Captiongrit is now fully supported on Mac. Get your one-time license today.
+              </p>
+            </div>
+            <button 
+              onClick={() => setShowMacPopup(false)}
+              className="text-text-secondary hover:text-white transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

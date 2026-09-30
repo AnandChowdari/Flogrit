@@ -10,13 +10,13 @@ export default function FaqSection() {
   const faqs = [
     { q: "What's the difference between Basic, Pro, and Extreme?", a: "Basic gives you standard captions in all 24 languages. Pro unlocks Word-by-Word mode, Double-Check Accuracy, Custom Dictionary, and the Caption Editor. Extreme adds Advanced Batch processing, custom presets, MOGRT animations, and priority support." },
     { q: "Is this a one-time payment or a subscription?", a: "It's a strict one-time payment for the software license. You bring your own API key for the generation model (which costs pennies per hour of video), so we don't have to charge you a monthly subscription." },
-    { q: "How do I receive the plugin after purchase?", a: "You'll receive an email instantly with a secure download link for the .zxp plugin file, along with your license key and installation instructions." },
+    { q: "How do I receive the plugin after purchase?", a: "You'll receive an email instantly with a secure download link for the .zip file (which is a CEP plugin), along with your license key and installation instructions." },
     { q: "Can I use the license on multiple devices?", a: "No, each license key allows activation on up to 1 device for a single user." },
     { q: "Can I upgrade from Basic to Pro later?", a: "Yes, you can upgrade at any time by paying just the difference in price between the two tiers." },
     { q: "Why is the pricing different for India?", a: "We believe in Purchasing Power Parity (PPP). We've priced the Indian version locally to make it accessible to regional creators while maintaining global standards for international users." },
     { q: "What Adobe versions are supported?", a: "Captiongrit works natively with Adobe Premiere Pro CC 2022 and newer, and Adobe After Effects CC 2022 and newer (Pro/Extreme tiers)." },
     { q: "Do I need my own API key?", a: "Yes. To keep the plugin a one-time purchase, you use your own API key (like OpenAI or Groq). This means you pay wholesale rates (often less than $0.10 per hour of video) directly to the provider. We guide you through the 2-minute setup." },
-    { q: "Which Indian languages are supported?", a: "We support Telugu, Hindi, Tamil, Kannada, Malayalam, Marathi, Bengali, Gujarati, Punjabi, and Odia — all with Phonetic Romanization support in Pro/Extreme." },
+    { q: "Which Indian languages are supported?", a: "We support Telugu, Hindi, Tamil, Kannada, Malayalam, Marathi, Bengali, Gujarati, Punjabi, and Odia — all with Phonetic Romanization support." },
     { q: "Does it work offline?", a: "No, the AI transcription models require an internet connection to process the audio and generate the text." }
   ];
 
