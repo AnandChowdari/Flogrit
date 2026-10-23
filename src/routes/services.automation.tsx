@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { pillars } from "@/lib/data";
 import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
-import { PricingMatrix } from "@/components/pricing/PricingMatrix";
+import { PricingDiscussSection } from "@/components/pricing/PricingDiscussSection";
 import { Testimonials } from "@/components/site/Testimonials";
 
 const p = pillars.automation;
@@ -68,7 +68,7 @@ function AutomationPage() {
         </div>
       </section>
 
-      <PricingMatrix pillar="automation" />
+      <PricingDiscussSection pillarKey="automation" />
       <Testimonials pillar="automation" heading="Systems doing the quiet work." />
     </>
   );

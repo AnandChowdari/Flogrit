@@ -112,12 +112,13 @@ export default function LandingPage() {
         )}
       </AnimatePresence>
 
+      {/* Hidden Beta Modal & Floating Button (Uncomment to enable) */}
+      {/*
       <BetaTesterModal 
         isOpen={isBetaModalOpen} 
         onClose={() => setIsBetaModalOpen(false)} 
       />
 
-      {/* Hidden Beta Floating Button (Uncomment to enable) */}
       <button 
         onClick={() => setIsBetaModalOpen(true)}
         className="fixed bottom-8 right-8 z-[90] bg-[#111111] text-white px-6 py-4 rounded-full shadow-[0_0_30px_rgba(198,255,52,0.15)] hover:shadow-[0_0_50px_rgba(198,255,52,0.3)] hover:-translate-y-1 transition-all duration-300 font-semibold flex items-center gap-3 border border-accent-primary/30 group"
@@ -129,6 +130,7 @@ export default function LandingPage() {
         </span>
         <span className="relative z-10 tracking-wide text-sm group-hover:text-accent-primary transition-colors">Join Beta Program</span>
       </button>
+      */}
 
       {/* Mac Available Popup */}
       <AnimatePresence>
@@ -138,7 +140,7 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             transition={{ delay: 0.5, duration: 0.5, type: 'spring' }}
-            className="fixed bottom-28 right-8 z-[90] bg-[#111111] text-white p-4 rounded-2xl shadow-[0_10px_40px_rgba(198,255,52,0.15)] border border-accent-primary/30 flex items-start gap-4 max-w-sm"
+            className="fixed bottom-8 right-8 z-[90] bg-[#111111] text-white p-4 rounded-2xl shadow-[0_10px_40px_rgba(198,255,52,0.15)] border border-accent-primary/30 flex items-start gap-4 max-w-sm"
           >
             <div className="flex-shrink-0 bg-accent-primary/10 p-2 rounded-full text-accent-primary mt-1">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
