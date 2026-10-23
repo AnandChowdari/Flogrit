@@ -9,66 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CaptiongritTermsRouteImport } from './routes/captiongrit-terms'
-import { Route as CaptiongritRefundRouteImport } from './routes/captiongrit-refund'
-import { Route as CaptiongritPrivacyRouteImport } from './routes/captiongrit-privacy'
-import { Route as CaptiongritRouteImport } from './routes/captiongrit'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as CaptiongritRouteImport } from './routes/captiongrit'
+import { Route as CaptiongritPrivacyRouteImport } from './routes/captiongrit-privacy'
+import { Route as CaptiongritRefundRouteImport } from './routes/captiongrit-refund'
+import { Route as CaptiongritTermsRouteImport } from './routes/captiongrit-terms'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ServicesAttentionRouteImport } from './routes/services.attention'
+import { Route as ServicesAutomationRouteImport } from './routes/services.automation'
+import { Route as ServicesConversionRouteImport } from './routes/services.conversion'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
-import { Route as ServicesConversionRouteImport } from './routes/services.conversion'
-import { Route as ServicesAutomationRouteImport } from './routes/services.automation'
-import { Route as ServicesAttentionRouteImport } from './routes/services.attention'
 
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RefundPolicyRoute = RefundPolicyRouteImport.update({
-  id: '/refund-policy',
-  path: '/refund-policy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CaptiongritTermsRoute = CaptiongritTermsRouteImport.update({
-  id: '/captiongrit-terms',
-  path: '/captiongrit-terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CaptiongritRefundRoute = CaptiongritRefundRouteImport.update({
-  id: '/captiongrit-refund',
-  path: '/captiongrit-refund',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CaptiongritPrivacyRoute = CaptiongritPrivacyRouteImport.update({
-  id: '/captiongrit-privacy',
-  path: '/captiongrit-privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CaptiongritRoute = CaptiongritRouteImport.update({
-  id: '/captiongrit',
-  path: '/captiongrit',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -76,9 +36,64 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CaptiongritRoute = CaptiongritRouteImport.update({
+  id: '/captiongrit',
+  path: '/captiongrit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaptiongritPrivacyRoute = CaptiongritPrivacyRouteImport.update({
+  id: '/captiongrit-privacy',
+  path: '/captiongrit-privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaptiongritRefundRoute = CaptiongritRefundRouteImport.update({
+  id: '/captiongrit-refund',
+  path: '/captiongrit-refund',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaptiongritTermsRoute = CaptiongritTermsRouteImport.update({
+  id: '/captiongrit-terms',
+  path: '/captiongrit-terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesAttentionRoute = ServicesAttentionRouteImport.update({
+  id: '/services/attention',
+  path: '/services/attention',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesAutomationRoute = ServicesAutomationRouteImport.update({
+  id: '/services/automation',
+  path: '/services/automation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesConversionRoute = ServicesConversionRouteImport.update({
+  id: '/services/conversion',
+  path: '/services/conversion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkIndexRoute = WorkIndexRouteImport.update({
@@ -89,21 +104,6 @@ const WorkIndexRoute = WorkIndexRouteImport.update({
 const WorkSlugRoute = WorkSlugRouteImport.update({
   id: '/work/$slug',
   path: '/work/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesConversionRoute = ServicesConversionRouteImport.update({
-  id: '/services/conversion',
-  path: '/services/conversion',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesAutomationRoute = ServicesAutomationRouteImport.update({
-  id: '/services/automation',
-  path: '/services/automation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesAttentionRoute = ServicesAttentionRouteImport.update({
-  id: '/services/attention',
-  path: '/services/attention',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -240,67 +240,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/refund-policy': {
-      id: '/refund-policy'
-      path: '/refund-policy'
-      fullPath: '/refund-policy'
-      preLoaderRoute: typeof RefundPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/captiongrit-terms': {
-      id: '/captiongrit-terms'
-      path: '/captiongrit-terms'
-      fullPath: '/captiongrit-terms'
-      preLoaderRoute: typeof CaptiongritTermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/captiongrit-refund': {
-      id: '/captiongrit-refund'
-      path: '/captiongrit-refund'
-      fullPath: '/captiongrit-refund'
-      preLoaderRoute: typeof CaptiongritRefundRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/captiongrit-privacy': {
-      id: '/captiongrit-privacy'
-      path: '/captiongrit-privacy'
-      fullPath: '/captiongrit-privacy'
-      preLoaderRoute: typeof CaptiongritPrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/captiongrit': {
-      id: '/captiongrit'
-      path: '/captiongrit'
-      fullPath: '/captiongrit'
-      preLoaderRoute: typeof CaptiongritRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -310,11 +254,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/captiongrit': {
+      id: '/captiongrit'
+      path: '/captiongrit'
+      fullPath: '/captiongrit'
+      preLoaderRoute: typeof CaptiongritRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/captiongrit-privacy': {
+      id: '/captiongrit-privacy'
+      path: '/captiongrit-privacy'
+      fullPath: '/captiongrit-privacy'
+      preLoaderRoute: typeof CaptiongritPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/captiongrit-refund': {
+      id: '/captiongrit-refund'
+      path: '/captiongrit-refund'
+      fullPath: '/captiongrit-refund'
+      preLoaderRoute: typeof CaptiongritRefundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/captiongrit-terms': {
+      id: '/captiongrit-terms'
+      path: '/captiongrit-terms'
+      fullPath: '/captiongrit-terms'
+      preLoaderRoute: typeof CaptiongritTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/attention': {
+      id: '/services/attention'
+      path: '/services/attention'
+      fullPath: '/services/attention'
+      preLoaderRoute: typeof ServicesAttentionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/automation': {
+      id: '/services/automation'
+      path: '/services/automation'
+      fullPath: '/services/automation'
+      preLoaderRoute: typeof ServicesAutomationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/conversion': {
+      id: '/services/conversion'
+      path: '/services/conversion'
+      fullPath: '/services/conversion'
+      preLoaderRoute: typeof ServicesConversionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/work/': {
@@ -329,27 +350,6 @@ declare module '@tanstack/react-router' {
       path: '/work/$slug'
       fullPath: '/work/$slug'
       preLoaderRoute: typeof WorkSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/conversion': {
-      id: '/services/conversion'
-      path: '/services/conversion'
-      fullPath: '/services/conversion'
-      preLoaderRoute: typeof ServicesConversionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/automation': {
-      id: '/services/automation'
-      path: '/services/automation'
-      fullPath: '/services/automation'
-      preLoaderRoute: typeof ServicesAutomationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/attention': {
-      id: '/services/attention'
-      path: '/services/attention'
-      fullPath: '/services/attention'
-      preLoaderRoute: typeof ServicesAttentionRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
