@@ -3,7 +3,7 @@ import { pillars } from "@/lib/data";
 import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { ReelGallery } from "@/components/attention/ReelGallery";
-import { PricingMatrix } from "@/components/pricing/PricingMatrix";
+import { PricingDiscussSection } from "@/components/pricing/PricingDiscussSection";
 import { Testimonials } from "@/components/site/Testimonials";
 
 const p = pillars.attention;
@@ -74,7 +74,7 @@ function AttentionPage() {
       </section>
 
       <ReelGallery />
-      <PricingMatrix pillar="attention" />
+      <PricingDiscussSection pillarKey="attention" />
       <Testimonials pillar="attention" heading="Attention that actually converts." />
     </>
   );

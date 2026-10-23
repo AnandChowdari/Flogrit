@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { pillars } from "@/lib/data";
 import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
-import { PricingMatrix } from "@/components/pricing/PricingMatrix";
+import { PricingDiscussSection } from "@/components/pricing/PricingDiscussSection";
 import { Testimonials } from "@/components/site/Testimonials";
 
 const p = pillars.conversion;
@@ -68,7 +68,7 @@ function ConversionPage() {
         </div>
       </section>
 
-      <PricingMatrix pillar="conversion" />
+      <PricingDiscussSection pillarKey="conversion" />
       <Testimonials pillar="conversion" heading="Funnels that actually close." />
     </>
   );

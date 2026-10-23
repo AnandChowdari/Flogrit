@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useFlow, type Flow } from "@/lib/flow";
 import { pillars, type PillarKey } from "@/lib/data";
-import { PricingMatrix } from "@/components/pricing/PricingMatrix";
+import { PricingDiscussSection } from "@/components/pricing/PricingDiscussSection";
 import { CalendlyButton } from "@/components/site/CalendlyButton";
 import type { CapabilityGroup, NextDirection, ProcessStep } from "@/lib/systemJourneys";
 
@@ -95,67 +95,8 @@ export function ProcessCadence({ steps }: { steps: ProcessStep[] }) {
   );
 }
 
-export function PricingReveal({
-  pillarKey,
-  label,
-}: {
-  pillarKey: PillarKey;
-  label: string;
-}) {
-  const [open, setOpen] = useState(false);
-  const reduce = useReducedMotion();
-
-  return (
-    <section className="bg-background">
-      <div className="mx-auto max-w-7xl px-5 pt-16 lg:px-8 lg:pt-20">
-        <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          {open ? "Live pricing · tap a quantity to update" : "Transparent Pricing"}
-        </p>
-        
-        <div className="relative">
-          <motion.div
-            initial={false}
-            animate={{ height: open ? "auto" : 350 }}
-            transition={{ duration: 0.5, ease: [0.2, 0.7, 0.2, 1] }}
-            className="overflow-hidden"
-          >
-            <div 
-              className={
-                !open 
-                  ? "pointer-events-none select-none blur-[4px] opacity-50 transition-all duration-500" 
-                  : "transition-all duration-500"
-              }
-            >
-              <PricingMatrix pillar={pillarKey} compact />
-            </div>
-          </motion.div>
-
-          <AnimatePresence>
-            {!open && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-gradient-to-t from-background via-background/40 to-transparent"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpen(true)}
-                  className="group inline-flex items-center gap-3 rounded-full border border-primary/40 bg-background/80 px-8 py-4 text-base font-semibold text-foreground shadow-[0_0_50px_-12px_rgba(139,92,246,0.4)] backdrop-blur-xl transition-all hover:scale-105 hover:border-primary/80 hover:bg-secondary"
-                >
-                  {label}
-                  <span className="grid size-7 place-items-center rounded-full bg-primary/20 text-primary transition-transform group-hover:translate-y-0.5">
-                    <ChevronDown size={16} />
-                  </span>
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-    </section>
-  );
-}
+export { PricingDiscussSection };
+export const PricingReveal = PricingDiscussSection;
 
 export function JourneyPrimaryCTA({
   pillarKey,
